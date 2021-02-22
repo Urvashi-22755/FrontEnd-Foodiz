@@ -20,7 +20,7 @@ import {
 import Form from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import * as Yup from "yup";
+/* import * as Yup from "yup"; */
 
 const CustomRadio = withStyles({
   root: {
@@ -53,6 +53,7 @@ const initialState = {
   lastname: "",
   email: "",
   phone: "",
+  birthDate:"",
   password: "",
   role: "user",
   vehicleNumber: "",
@@ -134,6 +135,13 @@ export default function SignUp() {
     setData(data1);
   };
 
+  const changeBirthDate = (event) => {
+    var data1 = { ...data };
+    data1.birthDate = event.target.value;
+    console.log("activity status No", data1.birthDate);
+    setData(data1);
+  }
+
   const validate = () => {
     let firstNameError = "";
     let lastNameError = "";
@@ -176,12 +184,14 @@ export default function SignUp() {
     return true;
   };
 
-  const onSubmit1 = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log("onsubmit");
+    console.log("onsubmit checked", checked);
     const isValid = { validate };
     let registerUserObj;
     if (checked) {
+      
       registerUserObj = {
         firstname: data.firstname,
         lastname: data.lastname,
@@ -257,7 +267,7 @@ export default function SignUp() {
           Sign Up Form
         </Typography>
 
-        <Form style={{ width: "500px", marginRight: "2%" }} onSubmit={onSubmit1}>
+        <form style={{ width: "500px", marginRight: "2%" }} onSubmit={handleSubmit}>
           <TextField
             label="FirstName"
             value={data.firstname}
@@ -318,6 +328,8 @@ export default function SignUp() {
           <TextField
             className={classes.textField}
             label="Birthdate"
+            value={data.birthDate}
+            onChange={changeBirthDate}
             name="birthdate"
             type="date"
             style={{ paddingTop: "4%" }}
@@ -380,7 +392,7 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
-        </Form>
+        </form>
       </div>
     </div>
   );
