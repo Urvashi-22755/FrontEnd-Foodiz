@@ -17,7 +17,7 @@ const breakPoints = [
   { width: 1, itemsToShow: 1 },
   { width: 768, itemsToShow: 2 },
   { width: 855, itemsToShow: 3 },
-  { width: 1200, itemsToShow: 5 }
+  { width: 1200, itemsToShow: 4 }
 ];
 
 function Carousels() {
@@ -26,15 +26,16 @@ function Carousels() {
     border: "2px solid white",
     width: "345px",
     marginTop: "10%", 
-   
+  
     marginBottom: "5%",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    borderRadius: "15px",
+    borderRadius: "25px",
     "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" }
   };
   const mediastyle = {
     height: 250,
-    width: "100%"
+    width: "100%",
+    
     
   };
   const carddiv = {

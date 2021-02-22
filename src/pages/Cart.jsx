@@ -131,14 +131,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
   },
 }));
-const initialAddressState = {
-  FlatNo: "",
-  locality: "",
-  street: "",
-  landmark: "",
-  zipCode: "",
-  phoneNo: "",
-};
+
 export default function Cart(props) {
   const classes = useStyles();
   const [totalprice, setTotalPrice] = useState(0);
@@ -147,7 +140,7 @@ export default function Cart(props) {
   const [address, setAddress] = useState(null);
 
   const data = foodData();
-  let name = "urvashi gajjar";
+
   let totalValue = 0;
 
   useEffect(async () => {

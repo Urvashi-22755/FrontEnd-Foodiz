@@ -9,35 +9,25 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import NavAppBar from "../components/Navbar";
-import FooterGrid from "../components/Footer";
+import NavAppBar from "./Navbar";
+import FooterGrid from "./Footer";
 import { grid } from "@material-ui/system";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    //margin: "2%",
-    // backgroundColor:'#e4e3ff'
     textAlign: "center",
   },
   paper: {
-   /*  width: "auto", */
     height: "auto",
-    // margin: "10%",
-    /*  marginLeft: "20px",
-    marginRight: "auto", */
+    width:'auto',
     padding: "2vw",
   },
   orderBackground: {
-    // height: "auto",
-  /*   backgroundImage: `url('https://image.freepik.com/free-photo/top-view-copy-space-limes-with-lemon-cutting-board-gray-background_141793-49761.jpg')`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover", */
-    // marginTop: "2%",
     padding: "20px",
-    // width: "100%",
+
   },
   table: {
-    minWidth: 'auto',
+    minWidth: "auto",
     padding: "10%",
   },
   sectionGrid: {
@@ -63,12 +53,14 @@ const OrderSummary = () => {
   const classes = useStyles();
   return (
     <>
-      <NavAppBar />
+     
       <div className={classes.root}>
         <Container>
-          <Grid container spacing={2}>
-            <Grid item lg={8}>Product Details section</Grid>
-            <Grid item  lg={4} md={4} sm={4} xs={4}>
+          <Grid spacing={2}>
+        {/*     <Grid item lg={8}>
+              Product Details section
+            </Grid> */}
+            {/* <Grid item lg={4} md={4} sm={4} xs={4}> */}
               <Paper className={classes.paper}>
                 <Grid item conatiner lg={12} md={12} sm={12} xs={12}>
                   <Typography variant="h4">
@@ -114,7 +106,7 @@ const OrderSummary = () => {
                   xs={12}
                   container
                   className={classes.sectionGrid}
-                />{" "}
+                />
                 <Grid
                   item
                   lg={12}
@@ -132,9 +124,12 @@ const OrderSummary = () => {
                           <TableCell>
                             <b>Food Item</b>
                           </TableCell>
+                          <TableCell>
+                            <b>Quantity</b>
+                          </TableCell>
 
                           <TableCell align="right">
-                            <b>Quantity</b>
+                            <b>Price / item</b>
                           </TableCell>
                         </TableRow>
                       </TableHead>
@@ -144,8 +139,10 @@ const OrderSummary = () => {
                             <TableCell component="th" scope="row">
                               {row.name}
                             </TableCell>
-
                             <TableCell align="right">{row.protein}</TableCell>
+                            <TableCell component="th" align="right"scope="row">
+                            Rs. 100
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -161,10 +158,10 @@ const OrderSummary = () => {
                   <Typography variant="h6">Total Amount : 2500</Typography>
                 </Grid>
               </Paper>
-            </Grid>
+           {/*  </Grid> */}
           </Grid>
         </Container>
-        <FooterGrid />
+       {/*  <FooterGrid /> */}
       </div>
     </>
   );

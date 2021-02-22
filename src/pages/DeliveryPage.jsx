@@ -1,157 +1,166 @@
-import React from "react";
+import React,{useState} from 'react';
+import NavAppBar from '../components/Navbar';
+import FooterGrid from '../components/Footer';
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Paper, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import foodData from "../data/Restaurants";
+import OrderData from '../data/OrdersData';
+import { fade, Grid, Card } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
+import Container from "@material-ui/core/Container"
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    textAlign: "center",
+    // marginTop: '2%'
+    // backgroundColor: "#2c446e",
   },
   paper: {
-    width: "auto",
-    height: "auto",
+    padding: theme.spacing(4),
+    textAlign: 'left',
+    marginTop: '5%',
+    color: 'white',
+    backgroundColor: '#171a29',
+    height: 'auto'
+  },
+  orderDetails:{
+    padding: '3%',
+    marginTop: '2%',
+    color: '#171a29',
+    fontWeight: 600,
+    height: '20vh',
+    backgroundColor: 'white'
+  },
+  acceptButton:{
+    backgroundColor: '#171a29',
+    float: 'right',
+    "&:hover":{
+      backgroundColor: '#3e4a87'
+    }
+  },
 
-    padding: "2vw",
-  },
-  orderBackground: {
   
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-  
-    padding: "20px",
+  deliveryImageDiv:{
+    backgroundColor: '#171a29',
+    textAlign: 'center',
+       width: '100%',
+          height: '60vh'
+      },
     
-  },
-  table: {
-    minWidth: 650,
-    padding: "10%",
-  },
-  sectionGrid: {
-    margin: "20px",
-  },
-  centralBorder: {
-    borderBottom: "2px solid #171A29",
-  },
+      deliveryImg:{
+            width: '50%',
+            marginTop: '5%',
+            borderRadius: '15px',
+            height: '40vh'
+      },
+  
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+
+
+
+
+export default function DeliveryPage(){
+  const classes = useStyles();
+  const restaurants = foodData();
+  const orders = OrderData();
+// console.log(orders);
+
+      //empty array
+       const [orderarray,setorderArray] = useState([]);
+  
+      //setting the text of a button
+       const [buttontext, setbuttonText] = useState('Accept');
+
+
+// const {allorders} = orders;
+
+const  handleOrders = (order) => {
+    console.log(orders);
+    setorderArray(arr => [...arr, order]);
+
+    const index = orders.indexOf(order);
+    console.log(index);
+    console.log(orders[index]._id);
+    console.log(order._id);
+    
+  if(orders[index]._id === order._id){
+    //setbuttonText('Accepted');
+     console.log('matched');
+
+  }
+    
+    // acceptedOrders.push(order);
+
+
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-const DeliveryPage = () => {
-  const classes = useStyles();
-  return (
-    <>
-      <div className={classes.root}>
-        <Container maxWidth="lg" >
-        <Grid className={classes.orderBackground}>
-          <Grid item container lg={6} md={6} sm={12} xs={12}>
-            <Paper className={classes.paper}>
-              <Grid item conatiner lg={6} md={6} sm={12} xs={12}>
-                <Typography variant="h4">
-                  Order Id: <b>#2876428712</b>
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                container
-                className={classes.sectionGrid}
-              />
-              <Grid item lg={12}>
-                Your order has been placed successfully!
-              </Grid>
-              <Grid
-                item
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                container
-                className={classes.sectionGrid}
-              />
-              <div className={classes.centralBorder}></div>
-              <Grid
-                item
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                container
-                className={classes.sectionGrid}
-              />
-              <Grid
-                item
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                container
-                className={classes.sectionGrid}
-              />{" "}
-              <Grid
-                item
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                container
-                className={classes.sectionGrid}
-              />
-              <Grid item container lg={12} md={12} sm={12} xs={12}>
-                <TableContainer>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>
-                          <b>Food Item</b>
-                        </TableCell>
 
-                        <TableCell align="right">
-                          <b>Quantity</b>
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow key={row.name}>
-                          <TableCell component="th" scope="row">
-                            {row.name}
-                          </TableCell>
 
-                          <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+
+  return(
+    <React.Fragment>
+      <NavAppBar></NavAppBar>
+
+      <div  className={classes.root}>   
+      <div className={classes.deliveryImageDiv}>
+            <img src='https://image.freepik.com/free-vector/food-delivery-staff-ride-motorcycles-deliver-food-during-confinement-home-from-corona-virus_68708-821.jpg'  className={classes.deliveryImg} />
+
+            </div>
+         <Container maxWidth="lg">
+            <Grid container spacing={3}>
+               <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
+
+                <Grid item xs={12} sm={12} md={12} lg={5}>
+                        <Paper className={classes.paper}>
+
+            {orders.map((order) => (
+              <Grid item xs={12} sm={6} md={6} lg={12}>
+                <div className={classes.orderDetails}>
+                    <div>Order Id: {order._id}</div>
+                    <div>Restaurant Id: {order.restId}</div>
+                    <div>From:{order.restLocation}</div>
+                    <div>  To: {order.orderLocation}</div>
+                    <div>
+                    <Button onClick={()=>handleOrders(order)} 
+                    className={classes.acceptButton} variant="contained" color="secondary">
+                      { buttontext}
+                  </Button>
+                  </div>
+                </div>
+                
               </Grid>
-              <div className={classes.centralBorder}></div>
-              <Grid container justify="flex-end" style={{ marginTop: "20px" }}>
-                <Typography variant="h6">Total Amount : 2500</Typography>
+            ))}
+
+                        </Paper>
+                      
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={7}>
+                    <Paper className={classes.paper}>
+            {orderarray.map((Acceptedorder) => (
+              <Grid item xs={12} sm={6} md={6} lg={12}>
+                <div className={classes.orderDetails}>
+                    <div>Order Id: {Acceptedorder._id}</div>
+                    <div>Restaurant Id: {Acceptedorder.restId}</div>
+                    <div>From:{Acceptedorder.restLocation}</div>
+                    <div>  To: {Acceptedorder.orderLocation}</div>
+                </div>
+                
               </Grid>
-            </Paper>
-          </Grid>
+            ))}
+
+                    </Paper>
+                </Grid>
         </Grid>
-          </Container>
+                
+            
+      </Grid>
+      </Container>
       </div>
-    </>
-  );
-};
-export default DeliveryPage;
+
+    <FooterGrid></FooterGrid>
+    </React.Fragment>
+  )
+}
+
