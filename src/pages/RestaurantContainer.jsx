@@ -344,8 +344,8 @@ const RestaurantContainer = ({  }) => {
             <div className={classes.checkBoxStyle}>
          
              { console.log('veg irem check',items.every((item)   =>item.type==='veg'))}
-       { allVeg ? <Paper class={classes.vegSection}><EcoOutlinedIcon classes={classes.ecoOutlinedIcon} style={{color :'green', transform:'scaleX(-1)'}}/> <EcoIcon style={{marginLeft:'-13px',color :'green'}}/><b>Pure Veg</b> </Paper>
-       : null
+       { allVeg && <Paper class={classes.vegSection}><EcoOutlinedIcon classes={classes.ecoOutlinedIcon} style={{color :'green', transform:'scaleX(-1)'}}/> <EcoIcon style={{marginLeft:'-13px',color :'green'}}/><b>Pure Veg</b> </Paper>
+       
       }{
         !allVeg ?  <Paper class="classes.vegSection">
         <FormControlLabel
