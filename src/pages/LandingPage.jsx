@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,7 +24,8 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Dialog, DialogContent } from "@material-ui/core";
-import SignUp from './../components/Signup';
+import SignUp from '../components/SignUp';
+import SignIn from '../components/SignIn';
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -175,18 +176,32 @@ const handleId = (rest) => {
 export default function LandingPage() {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false); //State to open Dialgoues!
+  const [openSignUp, setOpenSignUp] = useState(false); //State to open Dialgoues Sign UP!
+  const [openSignIn, setOpenSignIn] = useState(false); //State to open Dialgoues Login!
+
+  const authenticated = localStorage.getItem('role');
 
   const restaurants = foodData();
 
   //Open and CLose Dialgoue Forms
-  const handleClickOpen = () => {
-    open ? setOpen(false) : setOpen(true);
+  const handleClickSignUpOpen = () => {
+    openSignUp ? setOpenSignUp(false) : setOpenSignUp(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickSignUpClose = () => {
+    setOpenSignUp(false);
   };
+
+   //Open and CLose Dialgoue Forms
+   const handleClickLoginOpen = () => {
+    openSignIn ? setOpenSignIn(false) : setOpenSignIn(true);
+  };
+
+  const handleClickLoginClose = () => {
+    setOpenSignIn(false);
+  };
+
+  
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -202,10 +217,10 @@ export default function LandingPage() {
                 {/* <div className={classes.spaceText}>SignUp</div>
                   <div className={classes.spaceText}>Login</div> */}
                 <div className={classes.spaceText}>
-                  <p className={classes.signUpText} onClick={() => handleClickOpen()}>
+                  <p className={classes.signUpText} onClick={ handleClickSignUpOpen}>
                     <PersonIcon /> Signup
                   </p>
-                  <p>
+                  <p className={classes.signUpText} onClick={handleClickLoginOpen}>
                     <ExitToAppIcon /> Login
                   </p>
                 </div>
@@ -220,17 +235,32 @@ export default function LandingPage() {
         </Grid>
 
         {/* Dialouge For Register/ SignUp form */}
-
+ 
         <Dialog
-          open={open}
+          open={openSignUp}
           TransitionComponent={Transition}
           keepMounted
-          onClose={handleClose}
+          onClose={handleClickSignUpClose}
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogContent>
-            <SignUp  />
+            <SignUp />
+          </DialogContent>
+        </Dialog>
+
+         {/* Dialouge For Login/Sign In form */}
+
+         <Dialog
+          open={openSignIn}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClickLoginClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+           <SignIn />
           </DialogContent>
         </Dialog>
 

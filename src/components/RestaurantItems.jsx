@@ -20,15 +20,15 @@ const useStyles = makeStyles({
 
 function RestaurantItems(props) {
   const classes = useStyles();
-  const { items } = props;
-  console.log("in rest items", items);
+  const { items, restaurantId } = props;
+  console.log("in rest items & rest Id", items, restaurantId);
   /* const {
     account: { role },
   } = useSelector((state) => state.auth); */
 
   return (
     <Container>
-      <Grid item container direction="" style={{ marginTop: "20px" }}>
+      <Grid item container style={{ marginTop: "20px" }}>
               <Grid item xs={12} sm={12} lg={12} />
               
         <Grid item sm={12} md={12} lg={12}>
@@ -38,14 +38,14 @@ function RestaurantItems(props) {
                 items.map((item) => (
                   <Grid
                     item
-                    justify="center"
+                   
                     xs={12}
                     sm={12}
                     lg={12}
                     md={12}
                     key={item._id}
                   >
-                    <ItemCard {...item} />
+                    <ItemCard restaurantId={restaurantId} {...item} />
                   </Grid>
                 ))
               ) : (
@@ -62,4 +62,4 @@ function RestaurantItems(props) {
   );
 }
 
-export default React.memo(RestaurantItems);
+export default RestaurantItems;

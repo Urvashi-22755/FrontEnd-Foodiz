@@ -15,18 +15,18 @@ import { Box } from "@material-ui/core";
 import DrawerExample from "../components/DrawerForm";
 import FooterGrid from "../components/Footer";
 import NavAppBar from "../components/Navbar";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop:'2%',
+    marginTop: "2%",
     //margin: "2%",
     // backgroundColor:'#e4e3ff'
   },
   paper: {
-  
     padding: theme.spacing(4),
-     border: "1px solid rgb(23,26,41)",
+    border: "1px solid rgb(23,26,41)",
     // height: "50vh",
     //textAlign: "center",
     // color: theme.palette.text.secondary,
@@ -138,14 +138,45 @@ export default function Cart(props) {
   const [items, setItems] = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [address, setAddress] = useState(null);
+  const [restaurant, setRestaurant] = useState({});
 
   const data = foodData();
 
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   let totalValue = 0;
 
-  useEffect(async () => {
-    await setItems(data);
-    calculateTotalPrice(items);
+  const FetchCartData = async () => {
+    console.log("in cart ");
+    const res = await axios.get("http://localhost:5000/cart/getcart", {
+      headers: headers,
+    });
+    console.log('full res', res);
+    setTotalPrice(res.data.totalAmount);
+    setItems(res.data.cartFoodList);
+    setRestaurant(res.data.restaurantDetails);
+    console.log('price', totalprice)
+    return res;
+  };
+
+  useEffect(() => {
+    (async function () {
+      const result = await FetchCartData();
+
+      setItems(result.data.cartFoodList);
+      setRestaurant(result.data.restaurantDetails);
+      setTotalPrice(result.data.totalAmount);
+      console.log("rest data", result.data.restaurantDetails);
+      console.log("Response Data food", result.data.cartFoodList);
+      console.log('price', totalprice)
+      //  await setItems(data);
+/*       calculateTotalPrice(items);
+ */    })();
   }, []);
 
   const handleDrawer = () => {
@@ -162,47 +193,59 @@ export default function Cart(props) {
   const handlePlaceOrder = (items, address) => {
     console.log("order for items", items);
     console.log("delivery address", address);
-    props.history.push('/order-summary');
+    props.history.push("/order-summary");
     //redirection to order Summary Page
   };
 
-  const calculateTotalPrice = (newData) => {
-    totalValue = 0;
-    newData.map((item) => {
-      if (item.quantity > 0) return (totalValue += item.price * item.quantity);
-    });
-    setTotalPrice(totalValue);
-  };
+  
 
   //increment data
-  const handleIncrement = (currentItem) => {
-    const newData = [...items];
-    const index = newData.indexOf(currentItem);
-    console.log("index Of", index);
-    newData[index].quantity++;
-    calculateTotalPrice(newData);
-    setItems(newData);
+  const handleIncrement = async (currentItem) => {
+    console.log("increment");
+    const data = {
+      foodId: currentItem.foodItem._id,
+      restaurantId: restaurant.restaurantId,
+    };
+
+    const res = await axios.post("http://localhost:5000/cart/addtocart", data, {
+      headers: headers,
+    });
+    const response = await FetchCartData();
+    
   };
 
-  const handleDecrement = (currentItem) => {
-    const newData = [...items];
-    const index = newData.indexOf(currentItem);
-    console.log("index Of", index);
-    if (newData[index].quantity > 0) newData[index].quantity--;
-    if (newData[index].quantity === 0) newData.splice(index, 1);
+  const handleDecrement = async (currentItem) => {
+    console.log(currentItem.foodItem._id);
+    const data = {
+      foodId: currentItem.foodItem._id,
+    };
 
-    calculateTotalPrice(newData);
-    setTotalPrice(totalValue);
-    setItems(newData);
+    const res = await axios.post(
+      "http://localhost:5000/cart/reducequantitytocart",
+      data,
+      { headers: headers }
+    );
+
+    console.log("response decrement", res);
+
+    const response = await FetchCartData();
   };
 
-  const removeItem = (item) => {
-    const newData = [...items];
-    const index = newData.indexOf(item);
-    newData.splice(index, 1);
-    calculateTotalPrice(newData);
-    setItems(newData);
-    console.log(newData);
+  const removeItem = async (currentItem) => {
+    console.log(currentItem.foodItem._id);
+    const data = {
+      foodId: currentItem.foodItem._id,
+    };
+
+    const res = await axios.post(
+      "http://localhost:5000/cart/removefromcart",
+      data,
+      { headers: headers }
+    );
+
+    console.log("response remove item", res);
+
+    const response = await FetchCartData();
   };
   //Drawer Calling Const
   const drawerTag = (
@@ -225,65 +268,69 @@ export default function Cart(props) {
             <Paper className={classes.paper}>
               {/* first card */}
 
-              {items.map((item) => (
-                <Card className={classes.cardstyle} variant="outlined">
-                  <div className={classes.details}>
-                    <CardContent className={classes.content}>
-                      <Typography component="h5" variant="h5">
-                        {item.title}
-                      </Typography>
-                      <Typography
-                        variant="subtitle1"
-                        color="textSecondary"
-                        noWrap
-                      >
-                        {item.description}
-                      </Typography>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Rs. {item.price}
-                      </Typography>
-                    </CardContent>
+              {items.map((item) => {
+                return (
+                  <>
+                    <Card className={classes.cardstyle} variant="outlined">
+                      <div className={classes.details}>
+                        <CardContent className={classes.content}>
+                          <Typography component="h5" variant="h5">
+                            {item.foodItem.foodName}
+                          </Typography>
+                          <Typography
+                            variant="subtitle1"
+                            color="textSecondary"
+                            noWrap
+                          >
+                            {item.foodItem.foodDescription}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            Rs. {item.foodItem.foodPrice}
+                          </Typography>
+                        </CardContent>
 
-                    <Box display="flex" flexDirection="row">
-                      <Button
-                        className={classes.addTocart}
-                        variant="contained"
-                        onClick={() => {
-                          removeItem(item);
-                        }}
-                      >
-                        Remove Item
-                      </Button>
+                        <Box display="flex" flexDirection="row">
+                          <Button
+                            className={classes.addTocart}
+                            variant="contained"
+                            onClick={() => {
+                              removeItem(item);
+                            }}
+                          >
+                            Remove Item
+                          </Button>
 
-                      <div className={classes.displayCounters}>
-                        <div
-                          className={classes.counter}
-                          onClick={() => handleDecrement(item)}
-                        >
-                          -
-                        </div>
+                          <div className={classes.displayCounters}>
+                            <div
+                              className={classes.counter}
+                              onClick={() => handleDecrement(item)}
+                            >
+                              -
+                            </div>
 
-                        <div className={classes.quantity}>
-                          <b>{item.quantity}</b>
-                        </div>
-                        <div
-                          className={classes.counter}
-                          onClick={() => handleIncrement(item)}
-                        >
-                          +
-                        </div>
+                            <div className={classes.quantity}>
+                              <b>{item.quantity}</b>
+                            </div>
+                            <div
+                              className={classes.counter}
+                              onClick={() => handleIncrement(item)}
+                            >
+                              +
+                            </div>
+                          </div>
+                        </Box>
                       </div>
-                    </Box>
-                  </div>
 
-                  <CardMedia
-                    justify="flex-end"
-                    className={classes.cover}
-                    image={item.imageUrl}
-                    title="Item order"
-                  />
-                </Card>
-              ))}
+                      <CardMedia
+                        justify="flex-end"
+                        className={classes.cover}
+                        image={item.foodItem.foodImage}
+                        title="Item order"
+                      />
+                    </Card>
+                  </>
+                );
+              })}
 
               <b>
                 <hr />

@@ -20,6 +20,7 @@ import {
 import Form from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 /* import * as Yup from "yup"; */
 
 const CustomRadio = withStyles({
@@ -53,9 +54,9 @@ const initialState = {
   lastname: "",
   email: "",
   phone: "",
-  birthDate:"",
+  birthDate: "",
   password: "",
-  role: "user",
+  role: "NU",
   vehicleNumber: "",
   location: "",
   activityStatus: "",
@@ -140,7 +141,7 @@ export default function SignUp() {
     data1.birthDate = event.target.value;
     console.log("activity status No", data1.birthDate);
     setData(data1);
-  }
+  };
 
   const validate = () => {
     let firstNameError = "";
@@ -185,42 +186,68 @@ export default function SignUp() {
   };
 
   const handleSubmit = (event) => {
+
+
     event.preventDefault();
     console.log("onsubmit");
     console.log("onsubmit checked", checked);
     const isValid = { validate };
     let registerUserObj;
+
     if (checked) {
-      
+      console.log("in checked ", checked);
       registerUserObj = {
-        firstname: data.firstname,
-        lastname: data.lastname,
+        firstName: data.firstname,
+        lastName: data.lastname,
         email: data.email,
-        phone: data.phone,
+        mobileNumber: parseInt(data.phone),
         password: data.password,
-        role: data.role,
-        vehicleNumber: data.vehicleNumber,
-        location: data.location,
-        activityStatus: data.activityStatus,
+        role: "DE",
+        deliveryExecutive: {
+          vehicleNumber: data.vehicleNumber,
+          deliveryExecutiveLocation: {
+            streetAddress: "AA",
+            landMark: "BB",
+            area: "sdasda",
+            city: "Gandhinagar",
+            zip:1111,
+            state: "Gujarat",
+            country: "India",
+            latitude: 52.004,
+            longitude:15.0225
+          },
+          activityStatus:true,
+          deliveryExecutiveRatings:[],
+        },
         gender: data.gender,
         birthDate: data.birthDate,
       };
+      console.log("in checked register delivery", registerUserObj);
     } else {
       registerUserObj = {
-        firstname: data.firstname,
-        lastname: data.lastname,
+        firstName: data.firstname,
+        lastName: data.lastname,
         email: data.email,
-        phone: data.phone,
+        mobileNumber: parseInt(data.phone),
         password: data.password,
         role: data.role,
-        location: data.location,
         gender: data.gender,
         birthDate: data.birthDate,
       };
       console.log(registerUserObj);
     }
+
+    //post method to register user
+    registerUserPost(registerUserObj);
+
   };
   /* Display feilds for delivery executive */
+  const registerUserPost = async (userDetail) => {
+    
+    console.log('in register method',userDetail)
+   await  axios.post('http://localhost:5000/user/registeruser',userDetail)
+    .then(res=>console.log('Response of post',res.data))
+  };
 
   const radioYes = checked ? (
     <div>
@@ -267,7 +294,10 @@ export default function SignUp() {
           Sign Up Form
         </Typography>
 
-        <form style={{ width: "500px", marginRight: "2%" }} onSubmit={handleSubmit}>
+        <form
+          style={{ width: "500px", marginRight: "2%" }}
+          onSubmit={handleSubmit}
+        >
           <TextField
             label="FirstName"
             value={data.firstname}

@@ -19,8 +19,11 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import RestaurantInfoCarausal from "./../components/RestaurantInfoCarausal";
 import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
+import axios from "axios";
 /* caraausaal data */
 import images from "../data/RestCarausalData";
+
+import { getRestaurantById } from "../services/axiosData";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -115,17 +118,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RestaurantContainer = ({}) => {
+const RestaurantContainer = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [vegChecked, setvegChecked] = useState(false);
   const allVeg = items.every((item) => item.type === "veg");
   const data = foodData();
+  const [restaurantData, setRestaurant] = useState({});
 
-  useEffect(async () => {
-    await setItems(data);
-  }, []);
+  /* const getRestaurant = async () => {
+    console.log(props.match.params.restaurantId);
+    const res = await axios(
+      "http://localhost:5000/restaurant/getrestaurantbyid/" +
+        props.match.params.restaurantId
+    );
+    setRestaurant(res.data);
+    setItems(res.data.menuDetails);
+  } */
+  console.log('hello above effect');
+  useEffect(() => {
 
+    (async function () {
+      const res = await getRestaurantById(props.match.params.restaurantId);
+      console.log('method response', res)
+      setRestaurant(res);
+      setItems(res.menuDetails);
+    })();
+
+  
+   /*  console.log('rest data', restaurantData)
+    console.log("rest data images", restaurantData.restaurantImages);
+    console.log('food items', items);
+     */
+  },[]);
+  
   // console.log(items);
 
   //filter based on  search
@@ -145,7 +171,7 @@ const RestaurantContainer = ({}) => {
           search.title.toLowerCase().includes(value)
         );
       });
-      console.log("filteredItemsVeg", filteredItemsVeg);
+    //  console.log("filteredItemsVeg", filteredItemsVeg);
       setItems(filteredItemsVeg);
     } else if (value !== "") {
       setItems(filteredItems);
@@ -161,11 +187,11 @@ const RestaurantContainer = ({}) => {
       setvegChecked(true);
 
       let filter = data.filter((d) => d.type === event.target.value);
-      console.log("veg data", filter);
-      console.log(event.target.value);
+      // console.log("veg data", filter);
+      // console.log(event.target.value);
       setItems(filter);
 
-      console.log("filter [0] - ", filter);
+      //console.log("filter [0] - ", filter);
     }
   };
 
@@ -173,21 +199,6 @@ const RestaurantContainer = ({}) => {
   return (
     <>
       <NavAppBar></NavAppBar>
-
-      {/*   <div className={classes.restBack} component="span" mt={5} ml={5}>
-        <Grid container item className={classes.root}>
-          <Grid container item xs={12} s={12} md={4} lg={3}></Grid>
-          <Grid item xs={12} s={12} md={8} lg={9} style={{ marginTop: 40 }}>
-            <div className={classes.restDetails}> */}
-      {/*   <Carousels></Carousels> */}
-      {/*   </div>
-          </Grid> */}
-
-      {/*  <Grid item xs={false} sm={1} />  */}
-      {/*   </Grid> */}
-
-      {/* below Restuarent detail!1 */}
-      {/*    </div> */}
 
       <Container>
         <Grid container className={classes.orderbox}>
@@ -219,21 +230,21 @@ const RestaurantContainer = ({}) => {
                 >
                   {/*   Id is : {match.params.id} */}
                   <br />
-                  The Bean Box
+                  {restaurantData.restaurantName}
                 </Typography>
                 <Typography
-                  variant="subtitle"
-                  color="#171A29"
-                  component="subtitle"
+                  variant="body2"
+                  style={{color:'#171A29'}}
+                  component="body2"
                   className={classes.typographyDetails}
                 >
-                  Punjabi, Chinese, NorthIndian
+                {  <div>{restaurantData?.restaurantCategory?.join(",  ")?? "No Categories defined"}</div>}
                 </Typography>
 
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
-                  color="#171A29"
+                  style={{color:'#171A29'}}
                 >
                   Anything
                 </Typography>
@@ -241,9 +252,12 @@ const RestaurantContainer = ({}) => {
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
-                  color="#171A29"
+                  style={{color:'#171A29'}}
                 >
-                  <b>Address</b>: Navrangpura, Navrangpura
+                  <b>Address</b>:
+                  {/* {restaurantData['restaurantLocation'].map((add) => {
+                    <div> {add.landmark}</div> 
+                  })} */}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -285,7 +299,7 @@ const RestaurantContainer = ({}) => {
             <Grid item xs={12} sm={12} md={7} lg={6}>
               <Box className={classes.imgContainer}>
                 {/*Rest caaarausala for images */}
-                <RestaurantInfoCarausal images={images} />
+                 <RestaurantInfoCarausal images={restaurantData.restaurantImages} /> 
               </Box>
             </Grid>
           </Grid>
@@ -347,7 +361,7 @@ const RestaurantContainer = ({}) => {
                 items.every((item) => item.type === "veg")
               )}
               {allVeg ? (
-                <Paper class={classes.vegSection}>
+                <Paper className={classes.vegSection}>
                   <EcoOutlinedIcon
                     classes={classes.ecoOutlinedIcon}
                     style={{ color: "green", transform: "scaleX(-1)" }}
@@ -356,20 +370,20 @@ const RestaurantContainer = ({}) => {
                   <b>Pure Veg</b>{" "}
                 </Paper>
               ) : null}
-             {/*  {!allVeg ? ( */}
-                <Paper class="classes.vegSection">
-                  <FormControlLabel
-                    control={
-                      <GreenCheckbox
-                        checked={vegChecked}
-                        value="veg"
-                        onChange={handleChange}
-                      />
-                    }
-                    label="Veg Only"
-                  />
-                </Paper>
-            {/*   ) : null} */}
+              {/*  {!allVeg ? ( */}
+              <Paper className="classes.vegSection">
+                <FormControlLabel
+                  control={
+                    <GreenCheckbox
+                      checked={vegChecked}
+                      value="veg"
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Veg Only"
+                />
+              </Paper>
+              {/*   ) : null} */}
             </div>
           </Grid>
         </Grid>
@@ -382,7 +396,7 @@ const RestaurantContainer = ({}) => {
         md={12}
         //style={{ marginTop: 20, marginLeft: "20", paddingLeft: 10 }}
       >
-        <RestaurantItems items={items} />
+        <RestaurantItems items={items} restaurantId={props.match.params.restaurantId}/>
       </Grid>
       <FooterGrid />
     </>

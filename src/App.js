@@ -6,7 +6,7 @@ import NavAppBar from './components/Navbar';
 import FooterGrid from './components/Footer';
 import  Container  from '@material-ui/core/Container';
 import  Typography  from '@material-ui/core/Typography';
-import AllRestaurants from './pages/AllRestaurants';
+import  AllRestaurants  from './pages/AllRestaurants';
 import RecipeReviewCard from './card';
 import Cart from './pages/Cart';
 import OrderSummaryPage from './pages/OrderSummaryPage';
@@ -35,17 +35,17 @@ function App() {
       {/* <DrawerExample></DrawerExample> */}
       
       {/* ROUTES  */}
-   {/*    <Route path='/allrestaurants/:id' exact component={RestaurantContainer}></Route>
-      <Route path='/allrestaurants' exact component={AllRestaurants}></Route>  */}
-   {/*    <Route path='/order-summary' exact component={OrderSummaryPage}></Route> */}
-     {/*  <Route path='/profile' exact component={ProfileSection}></Route>
-      <Route path='/cart' exact component={Cart}></Route>*/}
+      <Route path='/allrestaurants/:restaurantId' exact component={RestaurantContainer}></Route>
+      <Route path='/allrestaurants' exact component={AllRestaurants}></Route> 
+      <Route path='/order-summary' exact component={OrderSummaryPage}></Route> 
+      <Route path='/profile' exact component={ProfileSection}></Route>
+      <Route path='/cart' exact component={Cart}></Route>
  <Route path='/' exact component={LandingPage}></Route>
    {/*   <Checkboxes></Checkboxes> */}
 
    {/*   <RestaurantContainer>   </RestaurantContainer>   */}
-          {/*     <Route path='/deliverylandingpage' exact component={DeliveryLandingPage}></Route> 
-              <Route path='/deliverypage' exact component={DeliveryPage}></Route> */}
+             {/*  <Route path='/deliverylandingpage' exact component={DeliveryLandingPage}></Route>  */}
+              <Route path='/deliverypage' exact component={DeliveryPage}></Route>
       
     </div>
   );

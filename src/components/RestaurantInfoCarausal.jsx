@@ -50,18 +50,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RestaurantInfoCarausal = ( {images }) => {
-    const classes = useStyles();
+  const classes = useStyles();
     const [currImg, setCurrImg] =  useState(0);
              
     return (
-         <>
-         <Box className={classes.App} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-          <Box className={classes.carausalInner} style={{backgroundImage:`url(${images[currImg].img})`}}>
+      <>{
+        images ? <Box className={classes.App} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+          <Box className={classes.carausalInner} style={{backgroundImage:`url(${images[currImg]})`}}>
             <Box className={classes.left} flex='5%' onClick={() => {currImg > 0 && setCurrImg(currImg - 1)}}><ArrowBackIosIcon /></Box>
             <Box flex='90%'></Box>
             <Box className={classes.right}  flex='5%' height='100%' onClick={() => {currImg  < images.length -1 && setCurrImg(currImg + 1)}}><ArrowForwardIosIcon /></Box>
         </Box>
-    </Box> 
+    </Box>  : null
+         }
+         
     </>);
  }
 export default RestaurantInfoCarausal;

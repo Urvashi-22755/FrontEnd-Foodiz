@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Box } from "@material-ui/core";
+import  axios  from 'axios';
 
 // Icons
 /* import DeleteIcon from "@material-ui/icons/Delete";
@@ -26,6 +27,7 @@ import MyButton from "../util/MyButton";
 import { deleteItem, editItem } from "../redux/actions/dataActions";
 import ItemDialog from "../components/ItemDialog"; */
 /* import { addToCart } from "../redux/actions/dataActions"; */
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,32 +84,28 @@ function Alert(props) {
 
 export default function ItemCard(props) {
   const classes = useStyles();
-  const { title, imageUrl, description, price, _id } = props;
+  const { restaurantId,foodName,foodCategory, foodDescription, foodImage,foodType,foodPrice, _id } = props;
+//  console.log('rest id in cart.jsx', restaurantId)
 
-  /* const imageUrlSplit = imageUrl.split("\\");
-  const finalImageUrl = `${process.env.REACT_APP_SERVER_URL}/${imageUrlSplit[0]}/${imageUrlSplit[1]}`; //3002 - server port
-
-  const dispatch = useDispatch();
- */
-
-  // const authenticated = true;
-  /* const {
-    authenticated,
-    account: { role },
-  } = useSelector((state) => state.auth); */
-  //const { addCartSuccess } = useSelector((state) => state.data);
-
-  //const [open, setOpen] = useState(false);
-
+  const token = localStorage.getItem('token');
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const data = {
+    "foodId": _id, "restaurantId": restaurantId
+  }
   const [openSnackBar, setSnackBar] = useState(false); //open close snack bar
 
-  const handleCart = () => {
-    const itemData = {
-      itemId: _id,
-    };
-
-    setSnackBar(true);
-
+  const handleCart =  async(_id) => {
+    console.log("ajkhsd");
+    const res = await axios.post('http://localhost:5000/cart/addtocart',
+    data,
+      { headers: headers });
+    console.log('addtocart data response',res);
+    console.log('FOod Id, Rest ID, User Id', foodName, restaurantId);
+    
+    // userId ? setSnackBar(true) : setSnackBar(false) ;
     //dispatch(addToCart(itemData));
   };
 
@@ -130,13 +128,13 @@ export default function ItemCard(props) {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
-              {title}
+              {foodName}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary" noWrap>
-              {description}
+              {foodDescription}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              Rs.{price}
+              Rs.{foodPrice}
             </Typography>
           </CardContent>
 
@@ -145,7 +143,7 @@ export default function ItemCard(props) {
             className={classes.addTocart}
             variant="contained"
             onClick={() => {
-              handleCart();
+              handleCart(_id);
               handleSnackBar({ vertical: "bottom", horizontal: "right" });
             }}
           >
@@ -166,7 +164,7 @@ export default function ItemCard(props) {
         <CardMedia
           justify="flex-end"
           className={classes.cover}
-          image={imageUrl}
+          image={foodImage}
           title="Item order"
         />
       </Card>

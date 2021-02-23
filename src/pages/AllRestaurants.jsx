@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
-import { Link } from "react-router-dom";
+import { Link }  from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { fade, Grid, Card } from "@material-ui/core";
@@ -18,6 +18,9 @@ import CardActions from "@material-ui/core/CardActions";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import SearchBar from "material-ui-search-bar";
 import FullWidthTabs from '../components/ratings';
+import axios from "axios";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -107,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
     maxwidth: "100%",
     /*  "&$selected": {
           backgroundColor: "white !important"
+import { axios } from 'axios';
 
         } */
         boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
@@ -149,12 +153,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleId = (rest) => {
-  console.log(rest);
+  console.log('Rest Id',rest);
 };
 
 export default function AllRestaurants() {
   const classes = useStyles();
-  const restaurants = foodData();
+  // const restaurants = foodData();
+
+  const [restaurants, setRestaurants] = useState([]);
+  
+  useEffect(()=>{
+    (async function () {
+        console.log("sdfsdf");
+        const res = await axios.get('http://localhost:5000/restaurant/getrestaurants');
+        console.log(res);
+        setRestaurants(res.data)
+      })();
+  },[])
 
   return (
     <React.Fragment>
@@ -192,20 +207,20 @@ export default function AllRestaurants() {
                       <CardActionArea>
                         <CardMedia
                           className={classes.media}
-                          image={rest.imageUrl}
+                          image={rest.restaurantImages[0]}
                           title=""
                           onClick={() => handleId(rest)}
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="h2">
-                            {rest.title}
+                          {rest.restaurantName}
                           </Typography>
                           <Typography
                             variant="body2"
                             color="textSecondary"
                             component="p"
                           >
-                            {rest.description}
+                            {/* {rest.description} */}
                           </Typography>
 
                           <Typography
