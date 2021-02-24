@@ -14,6 +14,7 @@ import RestaurantContainer from './pages/RestaurantContainer'
 import DeliveryPage from './pages/DeliveryPage';
 import DeliveryLandingPage from './pages/DeliveryLandingPage'
 
+import SelectDropdown from './components/select';
 function App() {
   return (
     <div className="App">
@@ -35,18 +36,18 @@ function App() {
       {/* <DrawerExample></DrawerExample> */}
       
       {/* ROUTES  */}
-      <Route path='/allrestaurants/:restaurantId' exact component={RestaurantContainer}></Route>
+      {/* <Route path='/allrestaurants/:restaurantId' exact component={RestaurantContainer}></Route>
       <Route path='/allrestaurants' exact component={AllRestaurants}></Route> 
       <Route path='/order-summary' exact component={OrderSummaryPage}></Route> 
       <Route path='/profile' exact component={ProfileSection}></Route>
-      <Route path='/cart' exact component={Cart}></Route>
- <Route path='/' exact component={LandingPage}></Route>
+  <Route path='/cart' exact component={Cart}></Route> */}
+ {/* <Route path='/' exact component={LandingPage}></Route>  */}
    {/*   <Checkboxes></Checkboxes> */}
 
    {/*   <RestaurantContainer>   </RestaurantContainer>   */}
              {/*  <Route path='/deliverylandingpage' exact component={DeliveryLandingPage}></Route>  */}
               <Route path='/deliverypage' exact component={DeliveryPage}></Route>
-      
+      {/* <SelectDropdown></SelectDropdown> */}
     </div>
   );
 }
