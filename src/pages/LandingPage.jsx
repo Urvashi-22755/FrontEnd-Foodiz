@@ -214,8 +214,7 @@ export default function LandingPage() {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <div className={classes.SignupLogin}>
               <div className={classes.logintext}>
-                {/* <div className={classes.spaceText}>SignUp</div>
-                  <div className={classes.spaceText}>Login</div> */}
+                <img src="" />
                 <div className={classes.spaceText}>
                   <p className={classes.signUpText} onClick={ handleClickSignUpOpen}>
                     <PersonIcon /> Signup

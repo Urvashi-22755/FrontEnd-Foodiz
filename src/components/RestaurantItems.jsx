@@ -1,6 +1,5 @@
 import React from "react";
 
-
 //material-ui
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
@@ -29,22 +28,14 @@ function RestaurantItems(props) {
   return (
     <Container>
       <Grid item container style={{ marginTop: "20px" }}>
-              <Grid item xs={12} sm={12} lg={12} />
-              
+        <Grid item xs={12} sm={12} lg={12} />
+
         <Grid item sm={12} md={12} lg={12}>
           <Grid container spacing={2}>
             {items ? (
               items.length > 0 ? (
                 items.map((item) => (
-                  <Grid
-                    item
-                   
-                    xs={12}
-                    sm={12}
-                    lg={12}
-                    md={12}
-                    key={item._id}
-                  >
+                  <Grid item xs={12} sm={12} lg={12} md={12} key={item._id}>
                     <ItemCard restaurantId={restaurantId} {...item} />
                   </Grid>
                 ))

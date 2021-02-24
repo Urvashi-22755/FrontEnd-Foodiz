@@ -19,7 +19,7 @@ import { shadows } from "@material-ui/system";
 import currencyInr from "@iconify-icons/mdi/currency-inr";
 import { Icon, InlineIcon } from "@iconify/react";
 import _ from "lodash";
-
+import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
   root: {
     //   margin: '2%',
@@ -101,6 +101,13 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: "#2c446e",
     borderTop: "1px dashed #2c446e"
   },
+  detailsBtn:{
+    float: 'right',
+    backgroundColor: '#2c446e',
+    width: '150px',
+    color: 'white',
+    borderRadius: '5px'
+  },
 
   loaditems: {
     height: "100px"
@@ -114,44 +121,44 @@ const handleId = rest => {
 export default function PastOrders() {
   const classes = useStyles();
   const restaurants = foodData();
-  const length = restaurants.length;
-  console.log(length);
-  let limit = 2;
+  // const length = restaurants.length;
+  // console.log(length);
+  // let limit = 2;
 
-  const [showMore, setShowMore] = useState(true);
-  console.log("rest", restaurants);
+  // const [showMore, setShowMore] = useState(true);
+  // console.log("rest", restaurants);
   
-  const [list, setList] = useState(
-    _(restaurants)
-      .slice(0)
-      .take(limit)
-      .value()
-  );
+  // const [list, setList] = useState(
+  //   _(restaurants)
+  //     .slice(0)
+  //     .take(limit)
+  //     .value()
+  // );
 
-  const [index, setIndex] = useState(limit);
-  console.log(index);
+  // const [index, setIndex] = useState(limit);
+  // console.log(index);
 
-  const loadMore = () => {
-    const newIndex = index + limit;
+  // const loadMore = () => {
+  //   const newIndex = index + limit;
     
-    console.log("index", index);
-    console.log("new indedx", newIndex);
-    const newShowMore = newIndex <= length - 1;
-    console.log("new show more", newShowMore);
-    const newList = _.concat(
-      list,
-      _(restaurants)
-        .slice(limit,newIndex)
-        .take(limit)
-        .value()
-    );
-    console.log("new list", newList);
-    setIndex(newIndex);
-    setList(newList);
-    setShowMore(newShowMore);
-  };
+  //   console.log("index", index);
+  //   console.log("new indedx", newIndex);
+  //   const newShowMore = newIndex <= length - 1;
+  //   console.log("new show more", newShowMore);
+  //   const newList = _.concat(
+  //     list,
+  //     _(restaurants)
+  //       .slice(limit,newIndex)
+  //       .take(limit)
+  //       .value()
+  //   );
+  //   console.log("new list", newList);
+  //   setIndex(newIndex);
+  //   setList(newList);
+  //   setShowMore(newShowMore);
+  // };
 
-  console.log(list);
+  // console.log(list);
   return (
     <div className={classes.root}>
       <Container>
@@ -161,7 +168,7 @@ export default function PastOrders() {
               <Typography className={classes.pastordertext}>
                 Past Orders
               </Typography>
-              {list.map(rest => (
+              {restaurants.map(rest => (
                 <Paper className={classes.paper1}>
                   <div className={classes.pastorders}>
                     <div className={classes.pastImage}>
@@ -185,13 +192,20 @@ export default function PastOrders() {
                           Total Paid: <Icon icon={currencyInr} />
                           {rest.price}
                         </Typography>
+                        <div className={classes.detailsBtn}>
+
+                        <Link style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }} to={`/order-summary/`}>
+                        <Button className={classes.detailsBtn}>Order Details</Button>
+                         </Link>
+                       
+                        </div>
                       </div>
                     </div>
                   </div>
                 </Paper>
               ))}
             </Paper>
-            {showMore && <button onClick={loadMore}> Load More </button>}
+            {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
           </Grid>
         </Grid>
       </Container>
