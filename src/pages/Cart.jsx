@@ -21,15 +21,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: "2%",
-    //margin: "2%",
-    // backgroundColor:'#e4e3ff'
   },
   paper: {
     padding: theme.spacing(4),
     border: "1px solid rgb(23,26,41)",
-    // height: "50vh",
-    //textAlign: "center",
-    // color: theme.palette.text.secondary,
+
   },
   paperAddress: {
     padding: theme.spacing(4),
@@ -193,7 +189,7 @@ export default function Cart(props) {
   const handlePlaceOrder = (items, address) => {
     console.log("order for items", items);
     console.log("delivery address", address);
-    props.history.push("/order-summary");
+    props.history.push("/my-orders");
     //redirection to order Summary Page
   };
 
