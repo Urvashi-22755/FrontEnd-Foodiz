@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     } )`,
   },
   timeLineItem: {
-    height: "100px",
+    height: "150px",
   },
 }));
 
@@ -45,12 +45,12 @@ export default function CustomizedTimeline(props) {
   const classes = useStyles();
 
   const { status } = props;
-
-  const allStatus = ["Placed", "Accepted", "Out For Delivery", "Completed"];
+  console.log("My sttaus", status);
+  /*  const allStatus = ["Placed", "Accepted", "Out For Delivery", "Completed"];
 
   const cuuStatus = allStatus.indexOf(status);
   console.log("cuurr status", cuuStatus);
-
+ */
   return (
     <div>
       <Timeline align="alternate">
@@ -62,9 +62,9 @@ export default function CustomizedTimeline(props) {
           </TimelineOppositeContent>
           <TimelineSeparator>
             {status == "Placed" ||
-            "Accepted" ||
-            "Out For Delivery" ||
-            "Completed" ? (
+            status == "Accepted" ||
+            status == "Out For Delivery" ||
+            status == "Completed" ? (
               <TimelineDot style={{ backgroundColor: "green" }}>
                 <CheckCircleOutlineIcon style={{ color: "white" }} />
               </TimelineDot>
@@ -76,7 +76,10 @@ export default function CustomizedTimeline(props) {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
-            {status == "Accepted" && "Placed" ? (
+            {status == "Placed" ||
+            status == "Accepted" ||
+            status == "Out For Delivery" ||
+            status == "Completed" ? (
               <Paper elevation={3} className={classes.paper}>
                 <Typography variant="body2" component="h">
                   Placed
@@ -93,7 +96,9 @@ export default function CustomizedTimeline(props) {
             </Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
-            {status == "Accepted" && "Placed" && "Out For Delivery" ? (
+            {status == "Accepted" ||
+            status == "Out For Delivery" ||
+            status == "Completed" ? (
               <TimelineDot style={{ backgroundColor: "green" }}>
                 <RestaurantIcon />
               </TimelineDot>
@@ -105,17 +110,21 @@ export default function CustomizedTimeline(props) {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
-            <Paper elevation={3} className={classes.paper}>
-              <Typography variant="h6" component="h1">
-                Accepted
-              </Typography>
-              <Typography>The Pans are on Flame!</Typography>
-            </Paper>
+            {status == "Accepted" ||
+            status == "Out For Delivery" ||
+            status == "Completed" ? (
+              <Paper elevation={3} className={classes.paper}>
+                <Typography variant="h6" component="h1">
+                  Accepted
+                </Typography>
+                <Typography>The Pans are on Flame!</Typography>
+              </Paper>
+            ) : null}
           </TimelineContent>
         </TimelineItem>
         <TimelineItem className={classes.timeLineItem}>
           <TimelineSeparator>
-            {status == "Out For Delivery" && "Placed" && "Accepted" ? (
+            {status == "Out For Delivery" || status == "Completed" ? (
               <TimelineDot style={{ backgroundColor: "green" }}>
                 <MotorcycleIcon />
               </TimelineDot>
@@ -128,12 +137,14 @@ export default function CustomizedTimeline(props) {
             <TimelineConnector className={classes.secondaryTail} />
           </TimelineSeparator>
           <TimelineContent>
-            <Paper elevation={3} className={classes.paper}>
-              <Typography variant="h6" component="h1">
-                Out for Delivery
-              </Typography>
-              <Typography>Just a little wait!</Typography>
-            </Paper>
+            {status == "Out For Delivery" || status == "Completed" ? (
+              <Paper elevation={3} className={classes.paper}>
+                <Typography variant="h6" component="h1">
+                  Out for Delivery
+                </Typography>
+                <Typography>Just a little wait!</Typography>
+              </Paper>
+            ) : null}
           </TimelineContent>
         </TimelineItem>
         <TimelineItem className={classes.timeLineItem}>
@@ -149,15 +160,17 @@ export default function CustomizedTimeline(props) {
             )}
           </TimelineSeparator>
           <TimelineContent>
-            <Paper elevation={3} className={classes.paper}>
-              <Typography variant="h6" component="h1">
-                Handed Over
-              </Typography>
-              <Typography>
-                Grab & Enjoy your Meal! <br />
-                See you soon{" "}
-              </Typography>
-            </Paper>
+            {status == "Completed" ? (
+              <Paper elevation={3} className={classes.paper}>
+                <Typography variant="h6" component="h1">
+                  Handed Over
+                </Typography>
+                <Typography>
+                  Grab & Enjoy your Meal! <br />
+                  See you soon{" "}
+                </Typography>
+              </Paper>
+            ) : null}
           </TimelineContent>
         </TimelineItem>
       </Timeline>
