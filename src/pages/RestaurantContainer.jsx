@@ -207,7 +207,7 @@ const RestaurantContainer = (props) => {
             xs={2}
             sm={2}
             md={2}
-            lg={2}
+            lg={1}
             className={classes.grid1}
           ></Grid>
           <Grid
@@ -216,7 +216,7 @@ const RestaurantContainer = (props) => {
             xs={10}
             s={10}
             md={10}
-            lg={10}
+            lg={11}
             className={classes.grid2}
           >
             <Grid item xs={12} s={12} md={5} lg={6}>

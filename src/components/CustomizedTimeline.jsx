@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Timeline from "@material-ui/lab/Timeline";
 import TimelineItem from "@material-ui/lab/TimelineItem";
@@ -15,8 +15,9 @@ import Paper from "@material-ui/core/Paper";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import MotorcycleIcon from "@material-ui/icons/Motorcycle";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Typography from "@material-ui/core/Typography";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 16px",
   },
   secondaryTail: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   orderAccepted: {
     width: "auto",
@@ -36,47 +37,71 @@ const useStyles = makeStyles((theme) => ({
     } )`,
   },
   timeLineItem: {
-    height: "150px",
-  }
+    height: "100px",
+  },
 }));
 
-export default function CustomizedTimeline() {
+export default function CustomizedTimeline(props) {
   const classes = useStyles();
+
+  const { status } = props;
+
+  const allStatus = ["Placed", "Accepted", "Out For Delivery", "Completed"];
+
+  const cuuStatus = allStatus.indexOf(status);
+  console.log("cuurr status", cuuStatus);
 
   return (
     <div>
-      <Timeline align="alternate" >
-        <TimelineItem  className={classes.timeLineItem}>
+      <Timeline align="alternate">
+        <TimelineItem className={classes.timeLineItem}>
           <TimelineOppositeContent>
             <Typography variant="body2" color="textSecondary">
-              9:30 am
+              {/*  9:30 am */}
             </Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot>
-              <CheckCircleOutlineIcon />
-            </TimelineDot>
+            {status == "Placed" ||
+            "Accepted" ||
+            "Out For Delivery" ||
+            "Completed" ? (
+              <TimelineDot style={{ backgroundColor: "green" }}>
+                <CheckCircleOutlineIcon style={{ color: "white" }} />
+              </TimelineDot>
+            ) : (
+              <TimelineDot style={{ backgroundColor: "white" }}>
+                <CheckCircleOutlineIcon style={{ color: "grey" }} />
+              </TimelineDot>
+            )}
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
-            <Paper elevation={3} className={classes.paper}>
-              <Typography variant="h6" component="h1">
-                Placed
-              </Typography>
-              <Typography>Wait till your order arrives!</Typography>
-            </Paper>
+            {status == "Accepted" && "Placed" ? (
+              <Paper elevation={3} className={classes.paper}>
+                <Typography variant="body2" component="h">
+                  Placed
+                </Typography>
+                <Typography>Wait till your order arrives!</Typography>
+              </Paper>
+            ) : null}
           </TimelineContent>
         </TimelineItem>
-        <TimelineItem  className={classes.timeLineItem}>
+        <TimelineItem className={classes.timeLineItem}>
           <TimelineOppositeContent>
             <Typography variant="body2" color="textSecondary">
-              10:00 am
+              {/*  10:00 am */}
             </Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot style={{ backgroundColor: "orange" }}>
-              <RestaurantIcon />
-            </TimelineDot>
+            {status == "Accepted" && "Placed" && "Out For Delivery" ? (
+              <TimelineDot style={{ backgroundColor: "green" }}>
+                <RestaurantIcon />
+              </TimelineDot>
+            ) : (
+              <TimelineDot style={{ backgroundColor: "grey" }}>
+                <RestaurantIcon />
+              </TimelineDot>
+            )}
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
@@ -88,11 +113,18 @@ export default function CustomizedTimeline() {
             </Paper>
           </TimelineContent>
         </TimelineItem>
-        <TimelineItem  className={classes.timeLineItem}>
+        <TimelineItem className={classes.timeLineItem}>
           <TimelineSeparator>
-            <TimelineDot color="primary" variant="outlined">
-              <MotorcycleIcon />
-            </TimelineDot>
+            {status == "Out For Delivery" && "Placed" && "Accepted" ? (
+              <TimelineDot style={{ backgroundColor: "green" }}>
+                <MotorcycleIcon />
+              </TimelineDot>
+            ) : (
+              <TimelineDot style={{ backgroundColor: "grey" }}>
+                <MotorcycleIcon />
+              </TimelineDot>
+            )}
+
             <TimelineConnector className={classes.secondaryTail} />
           </TimelineSeparator>
           <TimelineContent>
@@ -104,18 +136,27 @@ export default function CustomizedTimeline() {
             </Paper>
           </TimelineContent>
         </TimelineItem>
-        <TimelineItem  className={classes.timeLineItem}>
+        <TimelineItem className={classes.timeLineItem}>
           <TimelineSeparator>
-            <TimelineDot variant="outlined">
-              <CheckCircleIcon style={{color:'green'}}/>
-            </TimelineDot>
+            {status == "Completed" ? (
+              <TimelineDot style={{ backgroundColor: "green" }}>
+                <CheckCircleIcon />
+              </TimelineDot>
+            ) : (
+              <TimelineDot style={{ color: "grey" }}>
+                <CheckCircleIcon />
+              </TimelineDot>
+            )}
           </TimelineSeparator>
           <TimelineContent>
             <Paper elevation={3} className={classes.paper}>
               <Typography variant="h6" component="h1">
                 Handed Over
               </Typography>
-              <Typography>Grab & Enjoy your Meal! <br />See you soon </Typography>
+              <Typography>
+                Grab & Enjoy your Meal! <br />
+                See you soon{" "}
+              </Typography>
             </Paper>
           </TimelineContent>
         </TimelineItem>

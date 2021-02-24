@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(4),
     border: "1px solid rgb(23,26,41)",
-
   },
   paperAddress: {
     padding: theme.spacing(4),
@@ -152,11 +151,11 @@ export default function Cart(props) {
     const res = await axios.get("http://localhost:5000/cart/getcart", {
       headers: headers,
     });
-    console.log('full res', res);
+    console.log("full res", res);
     setTotalPrice(res.data.totalAmount);
     setItems(res.data.cartFoodList);
     setRestaurant(res.data.restaurantDetails);
-    console.log('price', totalprice)
+    console.log("price", totalprice);
     return res;
   };
 
@@ -169,10 +168,11 @@ export default function Cart(props) {
       setTotalPrice(result.data.totalAmount);
       console.log("rest data", result.data.restaurantDetails);
       console.log("Response Data food", result.data.cartFoodList);
-      console.log('price', totalprice)
+      console.log("price", totalprice);
       //  await setItems(data);
-/*       calculateTotalPrice(items);
- */    })();
+      /*       calculateTotalPrice(items);
+       */
+    })();
   }, []);
 
   const handleDrawer = () => {
@@ -182,18 +182,24 @@ export default function Cart(props) {
 
   const handleSubmit = (addData) => {
     //  e.preventDefault();
-    console.log("On Submit Data from drawee:", typeof addData);
+    console.log("On Submit Data from drawee:", addData);
     setAddress(addData);
     setDrawer(false);
   };
-  const handlePlaceOrder = (items, address) => {
-    console.log("order for items", items);
-    console.log("delivery address", address);
-    props.history.push("/my-orders");
-    //redirection to order Summary Page
-  };
 
-  
+  //Place order method
+  const handlePlaceOrder = async(address) => {
+    // console.log("order for items", items);
+    console.log("delivery address", address);
+    console.log("before");
+    const res = await axios.post("http://localhost:5000/order/postorder", { "orderLocation": address },{
+      headers: headers,
+    });
+    console.log("after");
+    console.log("order data : ", res); 
+    props.history.push("/my-orders");
+
+  };
 
   //increment data
   const handleIncrement = async (currentItem) => {
@@ -207,7 +213,6 @@ export default function Cart(props) {
       headers: headers,
     });
     const response = await FetchCartData();
-    
   };
 
   const handleDecrement = async (currentItem) => {
@@ -264,7 +269,7 @@ export default function Cart(props) {
             <Paper className={classes.paper}>
               {/* first card */}
 
-              {items.map((item) => {
+              {items?.map((item) => {
                 return (
                   <>
                     <Card className={classes.cardstyle} variant="outlined">
@@ -326,7 +331,7 @@ export default function Cart(props) {
                     </Card>
                   </>
                 );
-              })}
+              })??'cart empty'}
 
               <b>
                 <hr />
@@ -355,9 +360,9 @@ export default function Cart(props) {
                   {address ? (
                     <>
                       <div className={classes.addressDisplay}>
-                        <HomeIcon /> {address.FlatNo}, {address.locality},{" "}
-                        {address.street} <br /> {address.landmark},{" "}
-                        {address.zipCode}.
+                        <HomeIcon /> {address.streetAddress},{address.landmark},
+                        {address.area} , {address.city}, {address.zip},
+                        {address.state}, {address.country}.
                       </div>
                       <hr /> <p>Total Amount: {totalprice}</p>
                     </>
@@ -367,16 +372,6 @@ export default function Cart(props) {
                   className={classes.addAddressButtonContainer}
                   component="div"
                 >
-                  {/*   <Button
-                    className={classes.addAddressButton}
-                    variant="outlined"
-                    onClick={() => {
-                      // nextStep();
-                      handleDrawer();
-                    }}
-                  >
-                    Proceed to checkout
-                  </Button> */}
                   {!address ? (
                     <Button
                       className={classes.addAddressButton}
@@ -392,7 +387,7 @@ export default function Cart(props) {
                     <Button
                       className={classes.addAddressButton}
                       variant="outlined"
-                      onClick={() => handlePlaceOrder(items, address)}
+                      onClick={() => handlePlaceOrder(address)}
                     >
                       Place Order
                     </Button>

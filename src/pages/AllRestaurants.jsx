@@ -197,8 +197,8 @@ export default function AllRestaurants() {
         >
           <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6}>
             {restaurants.map((rest) => (
-              <Grid item xs={12} sm={6} md={6} lg={4}>
-                <div className={classes.cardborder}>
+              <Grid item xs={12} sm={6} md={6} lg={4} key={rest._id}>
+                <div className={classes.cardborder} >
                   <Link
                     style={{ textDecoration: "none" }}
                     to={`/allrestaurants/${rest._id}`}

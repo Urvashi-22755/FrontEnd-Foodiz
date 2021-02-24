@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Paper, Typography } from "@material-ui/core";
@@ -13,6 +13,8 @@ import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
 import OrderSummary from "../components/OrderSummary";
 import CustomizedTimeline from "./../components/CustomizedTimeline";
+import axios from "axios";
+import OrderData from "./../data/OrdersData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,37 +41,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-const OrderSummaryPage = () => {
+const OrderSummaryPage = (props) => {
   const classes = useStyles();
+  const [orderData, setOrderData] = useState({});
+  //order Id
+  const orderId = props.match.params.orderId;
+
+  //header data
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const FetchOrderByID = async () => {
+    const res = await axios.get(
+      `http://localhost:5000/order/getOrderDetailByOrderId/${orderId}`,
+      { headers: headers }
+    );
+    return res.data;
+  };
+
+  console.log("Id of order", props.match.params.orderId);
+  useEffect(() => {
+    (async () => {
+      const res = await FetchOrderByID();
+      setOrderData(res);
+      console.log("response order sumary", res);
+    })();
+  }, []);
+
+  console.log('Order status in order summary',orderData.orderStatus)
+
   return (
     <>
       <NavAppBar />
-      <div className={classes.root}>
-        <Container>
-          <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <OrderSummary />
+      {!orderData ? (
+        "No orders Placed "
+      ) : (
+        <div className={classes.root}>
+          <Container>
+            <Grid container spacing={2}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+                <OrderSummary orderData={orderData} />
+              </Grid>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+                {/* Order Timeline */}
+                <Typography variant="h4" color="Primary">
+                  Track your Order Here!
+                </Typography>
+                <br />
+                  <CustomizedTimeline status={ orderData?.orderStatus}/>
+              </Grid>
             </Grid>
-            <Grid item lg={6}  md={6} sm={12} xs={12}>
-              {/* Order Timeline */}
-              <Typography variant='h4' color='Primary'>Track your Order Here!</Typography><br />
-              <CustomizedTimeline />
-            </Grid>
-          </Grid>
-        </Container>
-        <FooterGrid />
-      </div>
+          </Container>
+        </div>
+      )}
+
+      <FooterGrid />
     </>
   );
 };

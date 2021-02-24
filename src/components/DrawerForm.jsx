@@ -11,17 +11,9 @@ const useStyles = makeStyles({
     // width: "40vw",
     "& > *": {
       width: "40vw",
-      //   margin: "5",
-      /*  width: "30vw", */
-      /*  marginLeft: "10vw",
-      marginRight: "10%", */
-      //  padding: "10px",
     },
   },
 
-  /*  drawer: {
-    width: "200px",
-  }, */
   textField: {
     margin: "2%",
     width: "25vw",
@@ -78,7 +70,16 @@ const DrawerExample = (props) => {
             >
               Address:
             </Typography>
-
+           {/*  <TextField
+              id="phoneNo"
+              name="phoneNo"
+              label="Contact Number"
+              className={classes.textField}
+              type="tel"
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
             <TextField
               id="FlatNo"
               name="FlatNo"
@@ -90,9 +91,9 @@ const DrawerExample = (props) => {
               // error={aptError ? true : false}
               fullWidth
               required
-            />
+            /> */}
             <br />
-            <TextField
+            {/* <TextField
               id="locality"
               name="locality"
               label="Locality"
@@ -100,11 +101,11 @@ const DrawerExample = (props) => {
               onChange={handleInputChange}
               fullWidth
               required
-            />
+            /> */}
             <br />
             <TextField
               id="street"
-              name="street"
+              name="streetAddress"
               label="Street"
               className={classes.textField}
               onChange={handleInputChange}
@@ -120,10 +121,29 @@ const DrawerExample = (props) => {
               fullWidth
               required
             />
+            <TextField
+              id="area"
+              name="area"
+              label="Area"
+              className={classes.textField}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
+            <br />
+            <TextField
+              id="city"
+              name="city"
+              label="City"
+              className={classes.textField}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />{" "}
             <br />
             <TextField
               id="zipCode"
-              name="zipCode"
+              name="zip"
               label="Zip Code"
               className={classes.textField}
               onChange={handleInputChange}
@@ -133,16 +153,24 @@ const DrawerExample = (props) => {
             />
             <br />
             <TextField
-              id="phoneNo"
-              name="phoneNo"
-              label="Contact Number"
+              id="state"
+              name="state"
+              label="State"
               className={classes.textField}
-              type="tel"
+              onChange={handleInputChange}
+              type="text"
+              fullWidth
+              required
+            /><br/>
+            <TextField
+              id="country"
+              name="country"
+              label="Country"
+              className={classes.textField}
               onChange={handleInputChange}
               fullWidth
               required
             />
-
             <br />
             <Button
               className={classes.addTocart}
