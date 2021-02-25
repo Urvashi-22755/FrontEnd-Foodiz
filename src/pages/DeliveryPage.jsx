@@ -20,6 +20,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
+import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -73,8 +74,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "15px",
     backgroundColor: "white",
   },
-  orderdiv:{
-    marginTop: '10px'
+  orderdiv: {
+    marginTop: "10px",
   },
 
   orderDetailsDisplay: {
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#171a29",
     },
   },
-  
+
   acptbtnDiv: {
     marginTop: "8%",
     float: "right",
@@ -138,22 +139,35 @@ export default function DeliveryPage() {
   const classes = useStyles();
   //const restaurants = foodData();
   const [orders, setOrders] = useState([]);
-  
-
+  const [acceptedOrder, setAcceptedOrder] = useState({});
   const getPlacedOrderForDeliveryExecutive = async () => {
     const res = await axios.get(
       "http://localhost:5000/order/getplacedorderfordeliveryexecutive"
     );
-    console.log("getplacedorderfordeliveryexecutive :", res);
-   return res.data;
+    console.log("get placed order for delivery executive :", res);
+    return res.data;
   };
+
+  const getOrderDetailAcceptedByDeliveryExecutive = async () => {
+    const res = await axios.get(
+      "http://localhost:5000/delivery/getorderdetailacceptedbydeliveryexecutive"
+    );
+    console.log("order detail accepted by delivery executive :", res);
+    return res.data;
+  };
+
   useEffect(() => {
     (async function () {
-     const res =  await getPlacedOrderForDeliveryExecutive();
-     console.log('use effect res', res);
-     setOrders(res)
+      const res = await getPlacedOrderForDeliveryExecutive();
+      console.log("use effect res1", res);
+      setOrders(res);
     })();
-  },[]);
+    (async function () {
+      const res = await getOrderDetailAcceptedByDeliveryExecutive();
+      console.log("use effect res2", res);
+      setAcceptedOrder(res);
+    })();
+  }, []);
   // const orders = OrderData();
   console.log(orders);
 
@@ -176,33 +190,66 @@ export default function DeliveryPage() {
     createData("Gingerbread", 356, 16.0, 49, 3.9),
   ];
 
-  const handleOrders = (order) => {
-    console.log(orders);
-    setorderArray((arr) => [...arr, order]);
+  const handleOrders = async (orderId) => {
+    console.log(orderId);
+    const res = await axios.post(
+      "http://localhost:5000/delivery/addDeliveryExecutive",
+      { orderId: orderId }
+      // , {
+      // headers: headers,
+      // }
+    );
+    console.log("add delivery Executive",res.data);
+    // console.log(orders);
+    // setorderArray((arr) => [...arr, order]);
 
-    const index = orders.indexOf(order);
-    console.log(index);
-    console.log(orders[index]._id);
-    console.log(order._id);
+    // const index = orders.indexOf(order);
+    // console.log(index);
+    // console.log(orders[index]._id);
+    // console.log(order._id);
 
-    if (orders[index]._id === order._id) {
-      //setbuttonText('Accepted');
-      console.log("matched");
-    }
+    // if (orders[index]._id === order._id) {
+    //   //setbuttonText('Accepted');
+    //   console.log("matched");
+    // }
 
     // acceptedOrders.push(order);
   };
-  const [state, setState] = React.useState({
-    status: "",
-    name: "hai",
-  });
+  const [state, setState] = useState("None");
+  const [optstate, setOtp] = useState();
 
+  const handleotp = (event) => {
+    const otp = event.target.value;
+    setOtp(otp);
+    console.log(otp);
+  }
   const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
+    const name = event.target.value;
+    setState(name);
+  };
+
+  const handleStatus =async () => {
+    console.log("In confirm", state);
+    if (state == "Completed") {
+      const res = await axios.post(
+        "http://localhost:5000/delivery/changeorderstatus",
+        { "orderId": acceptedOrder._id,"orderStatus":state,"orderOtp":parseInt(optstate)}
+        // , {
+        // headers: headers,
+        // }
+        );
+        console.log("handle status", res);
+    } else {
+      const res = await axios.post(
+        "http://localhost:5000/delivery/changeorderstatus",
+        { "orderId": acceptedOrder._id,"orderStatus":state}
+        // , {
+        // headers: headers,
+        // }
+        );
+        console.log("handle status", res);
+    }
+    
   };
 
   return (
@@ -252,11 +299,27 @@ export default function DeliveryPage() {
                   <Paper className={classes.paper}>
                     <div className={classes.orderDetails}>
                       <Grid item container xs={6} sm={6} md={6} lg={12}>
-                        <Grid item xs={12} sm={6} md={6} lg={6} className={classes.orderdiv}>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          className={classes.orderdiv}
+                        >
                           <div className={classes.orderdiv}> Order Id: </div>
-                          <div className={classes.orderdiv}> Restaurant Name:</div>
-                          <div className={classes.orderdiv}> PickUp Address: </div>
-                          <div className={classes.orderdiv}> Drop address: </div>
+                          <div className={classes.orderdiv}>
+                            {" "}
+                            Restaurant Name:
+                          </div>
+                          <div className={classes.orderdiv}>
+                            {" "}
+                            PickUp Address:{" "}
+                          </div>
+                          <div className={classes.orderdiv}>
+                            {" "}
+                            Drop address:{" "}
+                          </div>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6} lg={6}>
                           <div className={classes.orderdiv}>
@@ -269,19 +332,25 @@ export default function DeliveryPage() {
                           </div>
                           <div className={classes.orderdiv}>
                             {" "}
-                            <b>{order.orderLocation.streetAddress},
-                            {order.orderLocation.landmark?order.orderLocation.landmark+",":""}
-                            {order.orderLocation.area},{order.orderLocation.city},{order.orderLocation.state}</b>
+                            <b>
+                              {order.orderLocation.streetAddress},
+                              {order.orderLocation.landmark
+                                ? order.orderLocation.landmark + ","
+                                : ""}
+                              {order.orderLocation.area},
+                              {order.orderLocation.city},
+                              {order.orderLocation.state}
+                            </b>
                           </div>
-                           <div className={classes.orderdiv}>
+                          <div className={classes.orderdiv}>
                             {" "}
                             {/* <b>{order.restaurantDetails.restaurantLocation.streetAddress}</b> */}
-                          </div> 
+                          </div>
                         </Grid>
 
                         <div className={classes.acptbtnDiv}>
                           <Button
-                            onClick={() => handleOrders(order)}
+                            onClick={() => handleOrders(order._id)}
                             className={classes.acceptButton}
                             variant="contained"
                             color="secondary"
@@ -296,136 +365,157 @@ export default function DeliveryPage() {
               </Grid>
 
               <Grid item xs={12} sm={12} md={12} lg={7}>
-                {orderarray.map((Acceptedorder) => (
-                  <Grid item xs={12} sm={6} md={6} lg={12}>
-                    <div className={classes.orderDetailsDisplay}>
-                      <Typography
-                        variant="h4"
-                        style={{ textAlign: "center", marginBottom: "5%" }}
-                      >
-                        Order Details
-                      </Typography>
-                      <Grid item container xs={12} sm={6} md={6} lg={12}>
-                        <Grid item xs={12} sm={6} md={6} lg={6}>
-                          <div> Order Id: </div>
-                          <div> Restaurant Name:</div>
-                          <div> PickUp Address: </div>
-                          <div> Drop address: </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6} lg={6}>
-                          <div>
-                            {" "}
-                            <b>#2876428712</b>{" "}
-                          </div>
-                          <div>
-                            {" "}
-                            <b>Sankalp Restaurant</b>
-                          </div>
-                          <div>
-                            {" "}
-                            <b>{Acceptedorder.orderLocation}</b>
-                          </div>
-                          <div>
-                            {" "}
-                            <b>{Acceptedorder.restLocation} Chiloda Gujarat</b>
-                          </div>
-                        </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={12}>
+                  <div className={classes.orderDetailsDisplay}>
+                    <Typography
+                      variant="h4"
+                      style={{ textAlign: "center", marginBottom: "5%" }}
+                    >
+                      Order Details
+                    </Typography>
+                    <Grid item container xs={12} sm={6} md={6} lg={12}>
+                      <Grid item xs={12} sm={6} md={6} lg={6}>
+                        <div> Order Id: </div>
+                        <div> Restaurant Name:</div>
+                        <div> PickUp Address: </div>
+                        <div> Drop address: </div>
                       </Grid>
+                      <Grid item xs={12} sm={6} md={6} lg={6}>
+                        <div>
+                          {" "}
+                          <b>#{acceptedOrder._id}</b>{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          <b>{ acceptedOrder?.restaurantDetails?.restaurantName}</b>
+                        </div>
+                        <div>
+                          {" "}
+                          <b>{
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.streetAddress + ','+
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.landmark + ','+
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.area + ','+
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.city + ','+
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.state + ','+
+                            acceptedOrder?.restaurantDetails?.restaurantLocation?.country
+                          }</b>
+                        </div>
+                        <div>
+                          
+                          <b>{
+                            acceptedOrder?.orderLocation?.streetAddress + ','+
+                            acceptedOrder?.orderLocation?.landmark + ','+
+                            acceptedOrder?.orderLocation?.area + ','+
+                            acceptedOrder?.orderLocation?.city + ','+
+                            acceptedOrder?.orderLocation?.state + ','+
+                            acceptedOrder?.orderLocation?.country
+                          }</b>
+                        </div>
+                      </Grid>
+                    </Grid>
 
-                      <Grid item container lg={12} md={12} sm={12} xs={12}>
-                        <TableContainer className={classes.tablecontainer}>
-                          <Table
-                            className={classes.table}
-                            aria-label="simple table"
-                          >
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <b>Food Item</b>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <b>Quantity</b>
-                                </TableCell>
+                    <Grid item container lg={12} md={12} sm={12} xs={12}>
+                      <TableContainer className={classes.tablecontainer}>
+                        <Table
+                          className={classes.table}
+                          aria-label="simple table"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <b>Food Item</b>
+                              </TableCell>
+                              <TableCell align="right">
+                                <b>Quantity</b>
+                              </TableCell>
 
-                                <TableCell align="right">
-                                  <b>Price / item</b>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {rows.map((row) => (
-                                <TableRow key={row.name}>
+                              <TableCell align="right">
+                                <b>Price / item</b>
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                          {acceptedOrder?.foodList?.map((food) => (
+                                <TableRow key={food._id}>
                                   <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {food?.foodItem?.foodName}
                                   </TableCell>
                                   <TableCell align="right">
-                                    {row.protein}
+                                  {food?.quantity}
                                   </TableCell>
                                   <TableCell
                                     component="th"
                                     align="right"
                                     scope="row"
                                   >
-                                    Rs. 100
+                                    {food?.foodItem?.foodPrice*food?.quantity}
                                   </TableCell>
                                 </TableRow>
                               ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
 
-                        <Grid
-                          container
-                          justify="flex-end"
-                          style={{ marginTop: "20px" }}
-                        >
-                          <Typography variant="h6">
-                            Total Amount : 2500
-                          </Typography>
-                        </Grid>
+                      <Grid
+                        container
+                        justify="flex-end"
+                        style={{ marginTop: "20px" }}
+                      >
+                        <Typography variant="h6">
+                          Total Amount : { acceptedOrder.totalAmount}
+                        </Typography>
+                      </Grid>
 
-                        <Grid item container xs={12} sm={6} md={6} lg={12}>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
-                            <div className={classes.statusSelect}>
-                              <FormControl
-                                variant="outlined"
-                                className={classes.formControl}
+                      <Grid item container xs={12} sm={6} md={6} lg={12}>
+                        <Grid item xs={12} sm={6} md={6} lg={4}>
+                          <div className={classes.statusSelect}>
+                            <FormControl
+                              variant="outlined"
+                              className={classes.formControl}
+                            >
+                              <InputLabel htmlFor="age-native-simple">
+                                Status
+                              </InputLabel>
+                              <Select
+                                native
+                                value={state}
+                                onChange={handleChange}
+                                label="Status"
+                                className={classes.formselect}
                               >
-                                <InputLabel htmlFor="outlined-age-native-simple">
-                                  Status
-                                </InputLabel>
-                                <Select
-                                  native
-                                  value={state.age}
-                                  onChange={handleChange}
-                                  label="Status"
-                                  className={classes.formselect}
-                                  inputProps={{
-                                    name: "Status",
-                                    id: "outlined-age-native-simple",
-                                  }}
-                                >
-                                  <option aria-label="None" value="" />
-                                  <option value={10}>Completed</option>
-                                  {/* <option value={20}>In Process</option> */}
-                                  <option value={30}>Out for Delivery</option>
-                                </Select>
-                              </FormControl>
-                            </div>
-                          </Grid>
-
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
-                            <div>
-                              <Button className={classes.confirmBtn}>
-                                Confirm
-                              </Button>
-                            </div>
-                          </Grid>
+                                <option aria-label="None" value="" />
+                                <option value="Completed">Completed</option>
+                                {/* <option value={20}>In Process</option> */}
+                                <option value="Out For Delivery">
+                                  Out for Delivery
+                                </option>
+                              </Select>
+                            
+                            </FormControl>
+                          
+                          </div>
+                         
+                        </Grid>
+                        {state == "Completed" ?  <Grid item xs={12} sm={6} md={6} lg={4}>
+                         <TextField  onChange={handleotp} style={{marginTop: '12%'}} id="standard-basic" name="otp" label="Standard" /> 
+                          </Grid> : null}
+                       
+                        <Grid item container xs={12} sm={6} md={6} lg={4} justify="flex-end">
+                      
+                          <div>
+                         
+                            <Button
+                              className={classes.confirmBtn}
+                              onClick={handleStatus}
+                            >
+                              Confirm
+                            </Button>
+                          </div>
                         </Grid>
                       </Grid>
-                    </div>
-                  </Grid>
-                ))}
+                    </Grid>
+                  </div>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
