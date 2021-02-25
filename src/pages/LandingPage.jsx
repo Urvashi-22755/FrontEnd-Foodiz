@@ -140,7 +140,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "16px",
     maxwidth: "100%",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)",transition:'0.4s',transitionTimingFunction: 'ease-in-out'  },
+    
   },
   restcontainer: {
     marginTop: "5%",
@@ -317,6 +318,32 @@ export default function LandingPage() {
                     <CardMedia
                       className={classes.media}
                       image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                      title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        Grab some amazing food
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        Enjoy limitless dining privileges
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+
+
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
+                <Card className={classes.card}>
+                  <CardActionArea>
+                    <CardMedia
+                      className={classes.media}
+                      image="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80"
                       title="Contemplative Reptile"
                     />
                     <CardContent>

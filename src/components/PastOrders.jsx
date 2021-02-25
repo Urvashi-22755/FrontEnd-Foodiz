@@ -121,6 +121,8 @@ const handleId = rest => {
 export default function PastOrders() {
   const classes = useStyles();
   const restaurants = foodData();
+  const [myOrders, setMyOrder] = useState([]);
+  
   // const length = restaurants.length;
   // console.log(length);
   // let limit = 2;

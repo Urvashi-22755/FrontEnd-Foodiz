@@ -114,7 +114,7 @@ import { axios } from 'axios';
 
         } */
         boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" ,transition:"0.7s"},
   },
 
   restcontainer: {
@@ -150,6 +150,13 @@ import { axios } from 'axios';
       },
     },
   },
+
+  rating: {
+    marginTop: "5%",
+    width: "60px",
+    backgroundColor: "#48c479",
+    color: "white"
+  }
 }));
 
 const handleId = (rest) => {
@@ -186,7 +193,7 @@ export default function AllRestaurants() {
 
 
 
-<FullWidthTabs></FullWidthTabs>
+{/* <FullWidthTabs></FullWidthTabs> */}
 
         <Grid
           item
@@ -201,7 +208,7 @@ export default function AllRestaurants() {
                 <div className={classes.cardborder} >
                   <Link
                     style={{ textDecoration: "none" }}
-                    to={`/allrestaurants/${rest._id}`}
+                    to={`restaurant/${rest._id}`}
                   >
                     <Card className={classes.card}>
                       <CardActionArea>
@@ -218,21 +225,28 @@ export default function AllRestaurants() {
                           <Typography
                             variant="body2"
                             color="textSecondary"
-                            component="p"
+                            
                           >
-                            {/* {rest.description} */}
+                             { rest.restaurantCategory.join(',')}
                           </Typography>
-
+                          <Typography gutterBottom variant="body2" component="p" color="textSecondary">
+                          {rest.restaurantDescription}
+                          </Typography>
                           <Typography
                             variant="body2"
                             color="textSecondary"
                             component="h3"
                           >
-                            Rs. {rest.price} for Two
+                            {rest?.restaurantLocation?.streetAddress + ","
+                    + rest?.restaurantLocation?.area + " ,"
+                    + rest?.restaurantLocation?.landmark + " ,"
+                    + rest?.restaurantLocation?.city + " ,"
+                    + rest?.restaurantLocation?.state + " ,"
+                  +rest?.restaurantLocation?.country}
                           </Typography>
                           <Typography>
                             <p className={classes.rating}>
-                              <StarRateIcon /> 4.5
+                              <StarRateIcon />{rest.rating_avg}
                             </p>
                           </Typography>
                         </CardContent>

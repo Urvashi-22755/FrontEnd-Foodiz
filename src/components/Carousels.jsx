@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Carousel from "react-elastic-carousel";
 import Box from "@material-ui/core/Box";
@@ -9,53 +9,64 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import Fade from "@material-ui/core/Fade";
+import axios from "axios";
+import { Link }  from "react-router-dom";
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
   { width: 768, itemsToShow: 2 },
-  { width: 855, itemsToShow: 3 },
-  { width: 1200, itemsToShow: 4 }
+  { width: 900, itemsToShow: 3 },
+  { width: 1200, itemsToShow: 4 },
 ];
 
 function Carousels() {
-  const restaurants = foodData();
+  // const restaurants = foodData();
+  const [restaurants, setRestaurants] = useState([]);
+  useEffect(() => {
+    (async function () {
+      console.log("sdfsdf");
+      const res = await axios.get(
+        "http://localhost:5000/restaurant/gettoprestaurants"
+      );
+      console.log(res);
+      setRestaurants(res.data);
+    })();
+  }, []);
   const cardstyle = {
     border: "2px solid white",
     width: "345px",
-    marginTop: "10%", 
-  
+    marginTop: "10%",
+
     marginBottom: "5%",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
     borderRadius: "25px",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" }
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
   };
   const mediastyle = {
     height: 250,
     width: "100%",
-    
-    
   };
   const carddiv = {
-    maxWidth: "100%"
+    maxWidth: "100%",
   };
   const rating = {
     marginTop: "5%",
     width: "60px",
     backgroundColor: "#48c479",
-    color: "white"
+    color: "white",
   };
   const heading = {
     marginTop: "8%",
     fontWeight: 700,
     fontSize: "4rem",
     textAlign: "center",
-    color: "#282c3f"
+    color: "#282c3f",
   };
   const rate = {
-    color: "yellow"
+    color: "yellow",
   };
   return (
     <>
@@ -77,37 +88,39 @@ function Carousels() {
       </div>
       <div>
         <Carousel breakPoints={breakPoints}>
-          {restaurants.map(rest => (
+          {restaurants.map((rest) => (
             <Box>
-              <Card style={cardstyle}>
-                <CardActionArea>
-                  <CardMedia
-                    style={mediastyle}
-                    image={rest.imageUrl}
-                    title=""
-                  />
+              <Link style={{ textDecoration: "none" }} to={`/restaurant/${rest._id}`}>
+                <Card style={cardstyle}>
+                  <CardActionArea>
+                    <CardMedia
+                      style={mediastyle}
+                      image={rest.restaurantImages[0]}
+                      title=""
+                    />
 
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {rest.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {rest.description}
-                      <p>Rs.{rest.price} for Two</p>
-                    </Typography>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {rest.restaurantName}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {rest?.restaurantCategory.join(" ,")}
+                        <p>Rs.{rest.price} for Two</p>
+                      </Typography>
 
-                    <Typography>
-                      <p style={rating}>
-                        <StarRateIcon /> 5.0
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+                      <Typography>
+                        <p style={rating}>
+                          <StarRateIcon /> {rest.rating_avg}
+                        </p>
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
             </Box>
           ))}
         </Carousel>
