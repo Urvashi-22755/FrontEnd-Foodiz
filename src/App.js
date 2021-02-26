@@ -37,12 +37,12 @@ function App() {
         ></Route>
         <Route path="/allrestaurants" exact component={AllRestaurants}></Route>
 
-        <UserRoute
+        <AuthRoute
           path="/ordersummary/:orderId"
           exact
           component={OrderSummaryPage}
-        ></UserRoute>
-        <UserRoute path="/profile" exact component={ProfileSection}></UserRoute>
+        ></AuthRoute>
+        <AuthRoute path="/profile" exact component={ProfileSection}></AuthRoute>
         <UserRoute path="/myorders" exact component={MyOrders}></UserRoute>
         <UserRoute path="/cart" exact component={Cart}></UserRoute>
 
@@ -56,6 +56,12 @@ function App() {
           exact
           component={AcceptedOrders}
         ></DeliveryExecutiveRoute>
+{/* 
+        <DeliveryExecutiveRoute
+          path="/profile/:"
+          exact
+          component={ProfileSection}
+        ></DeliveryExecutiveRoute> */}
       </Switch>
 
       <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
