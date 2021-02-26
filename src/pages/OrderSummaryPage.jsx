@@ -15,7 +15,7 @@ import OrderSummary from "../components/OrderSummary";
 import CustomizedTimeline from "./../components/CustomizedTimeline";
 import axios from "axios";
 import OrderData from "./../data/OrdersData";
-
+// import Container from '@material-ui/core/Container';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -39,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
   centralBorder: {
     borderBottom: "2px solid #171A29",
   },
+  onlyOrderSummaryDisplay: {
+    marginTop: '10%',
+    width: '60%'
+  }
 }));
 
 const OrderSummaryPage = (props) => {
@@ -56,9 +60,10 @@ const OrderSummaryPage = (props) => {
   };
   const FetchOrderByID = async () => {
     const res = await axios.get(
-      `http://localhost:5000/order/getOrderDetailByOrderId/${orderId}`,
+      `http://localhost:5000/order/getorderdetailbyorderid/${orderId}`,
       { headers: headers }
     );
+    console.log(res);
     return res.data;
   };
 
@@ -66,12 +71,12 @@ const OrderSummaryPage = (props) => {
   useEffect(() => {
     (async () => {
       const res = await FetchOrderByID();
-      setOrderData(res);
-      console.log("response order sumary", res);
+      setOrderData(res.orderData);
+      console.log("response order sumary", res.orderData);
     })();
   }, []);
 
-  console.log('Order status in order summary',orderData.orderStatus)
+  //console.log('Order status in order summary',orderData.orderStatus)
 
   return (
     <>
@@ -82,17 +87,33 @@ const OrderSummaryPage = (props) => {
         <div className={classes.root}>
           <Container>
             <Grid container spacing={2}>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                <OrderSummary orderData={orderData} />
-              </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                {/* Order Timeline */}
-                <Typography variant="h4" color="Primary">
-                  Track your Order Here!
-                </Typography>
-                <br />
-                  <CustomizedTimeline status={ orderData?.orderStatus}/>
-              </Grid>
+              {orderData.orderStatus === "Completed" ||
+                  orderData.orderStatus === "Cancelled" ? (
+                    <Container className={classes.onlyOrderSummaryDisplay}>
+                    <Grid container  >
+                      <Grid item container lg={12} md={12} sm={12} xs={12} >
+                        <OrderSummary orderData={orderData} />
+                            </Grid>
+                      </Grid>
+                      </Container>
+              ) : (
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <OrderSummary orderData={orderData} />
+                </Grid>
+              )}
+
+              <br />
+              {orderData.orderStatus === "Completed" ||
+              orderData.orderStatus === "Cancelled" ? null : (
+                <>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Typography variant="h4" color="Primary">
+                      Track your Order Here!
+                    </Typography>{" "}
+                    <CustomizedTimeline status={orderData?.orderStatus} />
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Container>
         </div>

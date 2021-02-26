@@ -84,7 +84,7 @@ function Alert(props) {
 
 export default function ItemCard(props) {
   const classes = useStyles();
-  const { restaurantId,foodName,foodCategory, foodDescription, foodImage,foodType,foodPrice, _id } = props;
+  const { restaurantId,foodName,foodCategory, foodDescription, foodImage,foodType,foodPrice, _id ,avgRating} = props;
 //  console.log('rest id in cart.jsx', restaurantId)
 
   const token = localStorage.getItem('token');
@@ -130,11 +130,20 @@ export default function ItemCard(props) {
             <Typography component="h5" variant="h5">
               {foodName}
             </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              { foodCategory.join(',')}
+            </Typography>
             <Typography variant="subtitle1" color="textSecondary" noWrap>
               {foodDescription}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
               Rs.{foodPrice}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              { avgRating}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              { foodType}
             </Typography>
           </CardContent>
 

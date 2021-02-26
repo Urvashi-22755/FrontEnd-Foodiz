@@ -156,14 +156,16 @@ const RestaurantContainer = (props) => {
 
   //filter based on  search
   const handleSearch = (value) => {
-    let filteredItems = items.filter((search) => {
+
+    
+    let filteredItems = items?.filter((search) => {
       return (
-        search.description.toLowerCase().includes(value) ||
-        search.title.toLowerCase().includes(value)
+        search.foodDescription.toLowerCase().includes(value) ||
+        search.foodName.toLowerCase().includes(value)
       );
     });
-
-    if (vegChecked === true && value !== "") {
+    setItems(filteredItems);
+  /*   if (vegChecked === true && value !== "") {
       let filteredItemsVeg = items.filter((search) => {
         return (
           (search.type === "veg" &&
@@ -175,7 +177,7 @@ const RestaurantContainer = (props) => {
       setItems(filteredItemsVeg);
     } else if (value !== "") {
       setItems(filteredItems);
-    } else setItems(data);
+    } else setItems(data); */
   };
 
   //filter based on veg-only..
@@ -246,7 +248,7 @@ const RestaurantContainer = (props) => {
                   className={classes.typographyDetails}
                   style={{color:'#171A29'}}
                 >
-                  Anything
+                  {restaurantData.restaurantDescription}
                 </Typography>
                 <br />
                 <Typography
@@ -254,24 +256,27 @@ const RestaurantContainer = (props) => {
                   className={classes.typographyDetails}
                   style={{color:'#171A29'}}
                 >
-                  <b>Address</b>:
-                  {/* {restaurantData['restaurantLocation'].map((add) => {
-                    <div> {add.landmark}</div> 
-                  })} */}
+                  {/* <b>Address</b>: */}
+                  {restaurantData?.restaurantLocation?.streetAddress + ","
+                    + restaurantData?.restaurantLocation?.area + ","
+                    + restaurantData?.restaurantLocation?.landmark + ","
+                    + restaurantData?.restaurantLocation?.city + ","
+                    + restaurantData?.restaurantLocation?.state + ","
+                  +restaurantData?.restaurantLocation?.country}
                 </Typography>
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
                   color="#171A29"
                 >
-                  Call: +91 9198765423
+                  Call: {restaurantData?.restaurantMobileNumber}
                 </Typography>
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
                   color="#171A29"
                 >
-                  Dine-In Timing: 1pm to 12am
+                  Dine-In Timing: {restaurantData?.workingHours?.start} AM to {restaurantData?.workingHours?.end} PM
                 </Typography>
                 <Box
                   display="flex"
@@ -280,14 +285,12 @@ const RestaurantContainer = (props) => {
                 >
                   <div className={classes.restDetailRatingDiv}>
                     <p className={classes.rating}>
-                      <StarRateIcon /> 5.0
+                      <StarRateIcon /> {restaurantData.rating_avg}
                     </p>
                   </div>
+                  
                   <div className={classes.restDetailRatingDiv}>
-                    <b>Rs.1000</b> <br /> Minimum order{" "}
-                  </div>
-                  <div className={classes.restDetailRatingDiv}>
-                    <b>Rs. 200 </b>
+                    <b>Rs. { restaurantData.restaurantCostForTwo}</b>
                     <br />
                     Costs for Two
                   </div>
@@ -299,7 +302,7 @@ const RestaurantContainer = (props) => {
             <Grid item xs={12} sm={12} md={7} lg={6}>
               <Box className={classes.imgContainer}>
                 {/*Rest caaarausala for images */}
-                 <RestaurantInfoCarausal images={restaurantData.restaurantImages} /> 
+                 <RestaurantInfoCarausal images={restaurantData?.restaurantImages} /> 
               </Box>
             </Grid>
           </Grid>

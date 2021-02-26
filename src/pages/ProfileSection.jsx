@@ -17,7 +17,7 @@ import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
 const useStyles = makeStyles((theme) => ({
   root: {
-     marginTop: '5%',
+     marginTop: '3%',
   //  padding: "2%",
     height: "auto",
     backgroundColor: "#d8dee8",
@@ -74,7 +74,7 @@ export default function ProfileSection() {
           <Grid item xs={12} lg={12} md={12}>
             <Paper className={classes.paper}>
               <Grid container spacing={3}>
-                <Grid item xs={12} lg={4} md={12}>
+                <Grid item xs={12} sm={4} lg={4} md={4}>
                   <Tabs
                     orientation="vertical"
                     variant="scrollable"
@@ -104,7 +104,7 @@ export default function ProfileSection() {
                     />
                   </Tabs>
                 </Grid>
-                <Grid item sm={12} xs={12} lg={8} md={12}>
+                <Grid item sm={8} xs={12} lg={8} md={8}>
                   {selectedTab === 0 && <MyProfile />}
                   {selectedTab === 1 && <PastOrders />}
                 </Grid>

@@ -66,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomizedInputBase(props) {
   const classes = useStyles();
-  
+  const [search, setSearch] = useState('');
+
   const [address, setAddress] = useState(
     localStorage.getItem("location") || ""
   );
@@ -102,7 +103,9 @@ export default function CustomizedInputBase(props) {
   };
  */
   const handleSearch = (event) => {
-    props.handleSearch(event.target.value);
+    const val = event.target.value
+    setSearch(val)
+    props.handleSearch(search);
   };
 /* 
   const getUserAddressBy = (lat, long) => {
@@ -144,7 +147,8 @@ export default function CustomizedInputBase(props) {
       lg={12}
       md={12} >
         <InputBase
-          className={classes.input}
+            className={classes.input}
+            value={search}
           placeholder="Search Items"
           onChange={handleSearch}
           inputProps={{ "aria-label": "search for items" }}

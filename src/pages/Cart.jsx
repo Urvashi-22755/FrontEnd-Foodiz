@@ -197,7 +197,7 @@ export default function Cart(props) {
     });
     console.log("after");
     console.log("order data : ", res); 
-    props.history.push("/my-orders");
+    props.history.push("/myorders");
 
   };
 

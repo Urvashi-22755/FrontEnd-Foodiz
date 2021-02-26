@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { withRouter} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -20,6 +21,7 @@ import currencyInr from "@iconify-icons/mdi/currency-inr";
 import { Icon, InlineIcon } from "@iconify/react";
 import _ from "lodash";
 import Button from '@material-ui/core/Button';
+import axios from "axios";
 const useStyles = makeStyles(theme => ({
   root: {
     //   margin: '2%',
@@ -76,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     height: 200
   },
   pastImage: {
-    borderRadius: "20px",
+    borderRadius: "10px",
     border: "2px solid white",
     width: "40%",
     margin: "2%"
@@ -88,10 +90,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: "white !important"
     } */
   },
-  price: {
-    // paddingTop: '10px',
-    // paddingLeft: '10px'
-  },
+ 
   pastordertext: {
     color: "#2c446e",
     fontSize: "30px",
@@ -118,9 +117,55 @@ const handleId = rest => {
   console.log(rest);
 };
 
-export default function PastOrders() {
+ function PastOrders(props) {
   const classes = useStyles();
   const restaurants = foodData();
+  const [myOrders, setMyOrders] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const fetchAllOrders = async () => {
+    const res = await axios.get("http://localhost:5000/order/getuserorder", {
+      headers: headers,
+    })
+    return res.data;
+  };
+
+
+  useEffect(() => {
+    (async () => {
+      const result = await fetchAllOrders();
+      console.log('my orders', result);
+      setMyOrders(result);
+    })();
+  }, []);
+
+
+  const handleOrderSummary = (id) => {
+    console.log(id);
+    props.history.push("/ordersummary/" + id);
+  };
+
+  const handleDate = (date) => {
+    const newDate = new Date(date);
+
+    return newDate.toDateString();
+  };
+
+
+  const handleTime = (date) => {
+    const newDate = new Date(date);
+    return newDate.toTimeString();
+  };
+
+
+
+
+
   // const length = restaurants.length;
   // console.log(length);
   // let limit = 2;
@@ -168,35 +213,47 @@ export default function PastOrders() {
               <Typography className={classes.pastordertext}>
                 Past Orders
               </Typography>
-              {restaurants.map(rest => (
-                <Paper className={classes.paper1}>
+              {myOrders?.map(order => (
+                <Paper className={classes.paper1} key={order._id}>
                   <div className={classes.pastorders}>
                     <div className={classes.pastImage}>
-                      <img className={classes.image} src={rest.imageUrl} />
+                      <img className={classes.image} src={order?.restaurantDetails?.restaurantImages} />
                     </div>
                     <div className={classes.orderdetails}>
                       <Typography
-                        variant="h5"
-                        color="textsecondary"
-                        style={{ fontWeight: "200" }}
                       >
-                        {rest.title}
+                       <b> Order Id:  </b>  #{order._id}
                       </Typography>
-                      <Typography>Mahadev Nagar</Typography>
+
+                      <Typography>  <b>{order?.restaurantDetails?.restaurantName}</b></Typography>
                       <Typography>
-                        Order Time Sat, Sun Jan 26, 10:43 AM
+                        <b>Order Date:</b>
+                        <strong>
+                              {" "}
+                              {handleDate(order.orderDateAndTime)}
+                            </strong>
+                      </Typography>
+                     
+                      <Typography>
+                      <b>Order Time:</b>
+                            <strong>
+                              {" "}
+                              {handleTime(order.orderDateAndTime)}
+                            </strong>
                       </Typography>
                       <div className={classes.price}>
                         <hr className={classes.hrcolor} />
                         <Typography>
                           Total Paid: <Icon icon={currencyInr} />
-                          {rest.price}
+                          {order.totalAmount}
                         </Typography>
                         <div className={classes.detailsBtn}>
 
-                        <Link style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }} to={`/order-summary/`}>
-                        <Button className={classes.detailsBtn}>Order Details</Button>
-                         </Link>
+                        
+                          <Button
+                             onClick={() => handleOrderSummary(order._id)}
+                            className={classes.detailsBtn}>Order Details</Button>
+                        
                        
                         </div>
                       </div>
@@ -212,3 +269,4 @@ export default function PastOrders() {
     </div>
   );
 }
+export default withRouter(PastOrders);
