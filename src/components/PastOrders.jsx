@@ -134,13 +134,24 @@ const handleId = rest => {
     })
     return res.data;
   };
-
+   const fetchPastorders = async () => {
+     const resp = await axios.get("http://localhost:5000/delivery/getdeliveryexecutivepastorders", {
+      headers: headers,
+     })
+     return resp.data;
+}
 
   useEffect(() => {
     (async () => {
       const result = await fetchAllOrders();
+      const resp = await fetchPastorders();
       console.log('my orders', result);
-      setMyOrders(result);
+      console.log('past orders delivery', resp);
+      if (myOrders.role == "NU") {
+        setMyOrders(result);
+      } else {
+        setMyOrders(resp);
+      }
     })();
   }, []);
 

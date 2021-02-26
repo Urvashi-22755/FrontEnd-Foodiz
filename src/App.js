@@ -19,7 +19,7 @@ import AcceptedOrders from "./pages/AcceptedOrders";
 import PositionedSnackbar from "./components/snackbar";
 import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from "./routes/route";
 import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignUp from './components/Signup'
 
 function App() {
   return (
@@ -35,12 +35,12 @@ function App() {
         ></Route>
         <Route path="/allrestaurants" exact component={AllRestaurants}></Route>
 
-        <UserRoute
+        <AuthRoute
           path="/ordersummary/:orderId"
           exact
           component={OrderSummaryPage}
-        ></UserRoute>
-        <UserRoute path="/profile" exact component={ProfileSection}></UserRoute>
+        ></AuthRoute>
+        <AuthRoute path="/profile" exact component={ProfileSection}></AuthRoute>
         <UserRoute path="/myorders" exact component={MyOrders}></UserRoute>
         <UserRoute path="/cart" exact component={Cart}></UserRoute>
 
@@ -54,6 +54,12 @@ function App() {
           exact
           component={AcceptedOrders}
         ></DeliveryExecutiveRoute>
+{/* 
+        <DeliveryExecutiveRoute
+          path="/profile/:"
+          exact
+          component={ProfileSection}
+        ></DeliveryExecutiveRoute> */}
       </Switch>
 
       <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
