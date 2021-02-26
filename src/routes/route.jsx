@@ -3,6 +3,8 @@ import { Route, Redirect } from "react-router-dom";
 
 const currentUser = localStorage.getItem("token");
 const role = localStorage.getItem("role");
+
+
 export const AuthRoute = ({ component: Component, ...rest }) => {
     //   const { authenticated } = useSelector((state) => state.auth);
     const currentUser = localStorage.getItem("token");

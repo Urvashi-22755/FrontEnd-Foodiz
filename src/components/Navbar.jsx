@@ -13,14 +13,14 @@ import { Container } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: "white",
+    backgroundColor: "#171a29",
     height:'70px'
   },
   menuButton: {
     marginRight: theme.spacing(2)
   },
   title: {
-    color: "rgb(23, 26, 41)",
+    color: "white",
     flexGrow: 1
   }
 }));
@@ -42,7 +42,7 @@ export default function NavAppBar() {
               </Link>
             </Typography>
             <Link
-              style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }}
+              style={{ textDecoration: "none", color: "white" }}
               to={`/login/`}
             >
               <Button color="inherit">
@@ -50,24 +50,11 @@ export default function NavAppBar() {
               </Button>
             </Link>
 
-            <Link style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }} to={`/deliverypage/`}>
+            <Link style={{ textDecoration: "none", color: "white" }} to={`/deliverypage/`}>
               <Button color="inherit">Delivery</Button>
             </Link>
-            {/*  <Link
-              style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }}
-              to={`/login/`}
-            >
-              <Button color="inherit"><PersonOutlineOutlinedIcon />SignUp</Button>
-            </Link> */}
-            {/*  <Link
-              style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }}
-              to={`/profile/`}
-            >
-              {" "}
-              <Button color="inherit">Profile</Button>
-            </Link> */}
             <Link
-              style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }}
+              style={{ textDecoration: "none", color: "white" }}
               to={`/cart/`}
             >
               <Button color="inherit">

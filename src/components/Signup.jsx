@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 import {
   Typography,
   Paper,
-  Link,
   Grid,
   Button,
   Box,
@@ -25,6 +24,7 @@ import axios from "axios";
 import { grid } from "@material-ui/system";
 import NavAppBar from "./Navbar";
 import FooterGrid from "./Footer";
+import { Redirect } from "react-router-dom";
 /* import * as Yup from "yup"; */
 
 const CustomRadio = withStyles({
@@ -69,6 +69,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "40%",
     marginRight: "auto",
   },
+  foodie:{
+    marginTop: "2%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  SignIn:{
+    cursor:'pointer'
+  }
 }));
 
 export default function SignUp() {
@@ -506,6 +514,13 @@ export default function SignUp() {
                   >
                     Sign Up
                   </Button>
+                  <p className={classes.foodie}>
+                   
+                    Already a Foodie?{" "}
+                    <Link to="/login" className={classes.SignIn}>
+                      Sign In.
+                    </Link>
+                  </p>
                 </form>
               </div>
             </Paper>

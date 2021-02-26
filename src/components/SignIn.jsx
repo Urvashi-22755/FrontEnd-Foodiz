@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   Avatar,
   Button,
@@ -55,6 +57,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "2%",
   },
+  foodie:{
+    marginTop: "2%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  forgetpassword:{
+    cursor:'pointer'
+  }
 }));
 
 const avatarStyle = { backgroundColor: "black", fontsize: "large" };
@@ -206,6 +216,13 @@ export default function SignIn(props) {
                     >
                       Sign In
                     </Button>
+                    <p className={classes.foodie}>
+                   
+                  Forgot Password?  
+                   <Link to="/forgotpassword" className={classes.forgetpassword}>
+                    { "   " } Change Password.
+                   </Link>
+                 </p>
                   </form>
                 </Box>
               </div>

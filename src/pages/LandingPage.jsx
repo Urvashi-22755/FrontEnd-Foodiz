@@ -186,26 +186,6 @@ export default function LandingPage(props) {
 
   const restaurants = foodData();
 
-  //Open and CLose Dialgoue Forms
-  /*  const handleClickSignUpOpen = () => {
-  //  openSignUp ? setOpenSignUp(false) : setOpenSignUp(true);
-    setOpenSignUp(true);
-  };
-
-  const handleClickSignUpClose = () => {
-    setOpenSignUp(false);
-  };
-
-  //Open and CLose Dialgoue Forms
-  const handleClickLoginOpen = () => {
-    openSignIn ? setOpenSignIn(false) : setOpenSignIn(true);
-  };
-
-  const handleClickLoginClose = () => {
-    setOpenSignIn(false);
-  };
- */
-
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
@@ -223,7 +203,7 @@ export default function LandingPage(props) {
                     <Button
                       className={
                         classes.signUpText
-                      } /* onClick={handleClickSignUpOpen} */
+                      }
                     >
                       <PersonIcon /> Signup
                     </Button>
@@ -232,13 +212,13 @@ export default function LandingPage(props) {
                   <Link style={{ textDecoration: "none" }} to="/login">
                     <Button
                       className={classes.signUText}
-                      // onClick={handleClickLoginOpen}
+                    
                     >
                       <ExitToAppIcon /> Login
                     </Button>
                   </Link>
                 </div>
-                {/* <div>  Login</div>  */}
+             
               </div>
               <div className={classes.quote}>
                 <Typography variant="h1">FOODIZ</Typography>

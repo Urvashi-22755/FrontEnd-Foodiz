@@ -18,16 +18,18 @@ import MyOrders from "./pages/MyOrders";
 import AcceptedOrders from "./pages/AcceptedOrders";
 import PositionedSnackbar from "./components/snackbar";
 import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from "./routes/route";
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
+import ForgotPassword from './components/ForgotPassword';
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/signup" exact component={SignUp}></Route>
-        <Route path="/login" exact component={SignIn}></Route>
-        <Route path="/" exact component={LandingPage}></Route>
+        <Route path="/forgotpassword" exact component={ForgotPassword} />
+        <Route path="/login" exact component={SignIn} />
+        <Route path="/signup" exact component={SignUp} />
+        <Route path="/" exact component={LandingPage} />
         <Route
           path="/restaurant/:restaurantId"
           exact

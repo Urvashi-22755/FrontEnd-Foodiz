@@ -2,7 +2,7 @@ import React, {
   useState,
 } from "react"; /* 
  import { useDispatch, useSelector } from "react-redux"; */
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 //m-ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -105,7 +105,10 @@ export default function ItemCard(props) {
     console.log('addtocart data response',res);
     console.log('FOod Id, Rest ID, User Id', foodName, restaurantId);
     
-    // userId ? setSnackBar(true) : setSnackBar(false) ;
+
+    setSnackBar(true)
+
+    /*  token ? setSnackBar(true) : <Redirect to='/login' /> ; */
     //dispatch(addToCart(itemData));
   };
 

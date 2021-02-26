@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     // border: "2px solid white",
-    borderRadius: "16px",
+    borderRadius: "5px",
     maxwidth: "100%",
     /*  "&$selected": {
           backgroundColor: "white !important"
@@ -246,7 +246,7 @@ export default function AllRestaurants() {
                           </Typography>
                           <Typography>
                             <p className={classes.rating}>
-                              <StarRateIcon />{rest.rating_avg}
+                              <StarRateIcon />{parseFloat(rest.rating_avg).toFixed(1)}
                             </p>
                           </Typography>
                         </CardContent>
