@@ -1,4 +1,5 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { withRouter} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -77,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     height: 200
   },
   pastImage: {
-    borderRadius: "20px",
+    borderRadius: "10px",
     border: "2px solid white",
     width: "40%",
     margin: "2%"
@@ -89,10 +90,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: "white !important"
     } */
   },
-  price: {
-    // paddingTop: '10px',
-    // paddingLeft: '10px'
-  },
+ 
   pastordertext: {
     color: "#2c446e",
     fontSize: "30px",
@@ -119,7 +117,7 @@ const handleId = rest => {
   console.log(rest);
 };
 
-export default function PastOrders(props) {
+ function PastOrders(props) {
   const classes = useStyles();
   const restaurants = foodData();
   const [myOrders, setMyOrders] = useState([]);
@@ -152,10 +150,17 @@ export default function PastOrders(props) {
     props.history.push("/ordersummary/" + id);
   };
 
+  const handleDate = (date) => {
+    const newDate = new Date(date);
+
+    return newDate.toDateString();
+  };
 
 
-
-
+  const handleTime = (date) => {
+    const newDate = new Date(date);
+    return newDate.toTimeString();
+  };
 
 
 
@@ -209,28 +214,38 @@ export default function PastOrders(props) {
                 Past Orders
               </Typography>
               {myOrders?.map(order => (
-                <Paper className={classes.paper1} key = {order._id}>
+                <Paper className={classes.paper1} key={order._id}>
                   <div className={classes.pastorders}>
                     <div className={classes.pastImage}>
-                      <img className={classes.image} src={order.imageUrl} />
+                      <img className={classes.image} src={order?.restaurantDetails?.restaurantImages} />
                     </div>
                     <div className={classes.orderdetails}>
                       <Typography
-                        variant="h5"
-                        color="textsecondary"
-                        style={{ fontWeight: "200" }}
                       >
-                        {order.title}
+                       <b> Order Id:  </b>  #{order._id}
                       </Typography>
-                      <Typography>Mahadev Nagar</Typography>
+
+                      <Typography>  <b>{order?.restaurantDetails?.restaurantName}</b></Typography>
                       <Typography>
-                        Order Time Sat, Sun Jan 26, 10:43 AM
+                        <b>Order Date:</b>
+                        <strong>
+                              {" "}
+                              {handleDate(order.orderDateAndTime)}
+                            </strong>
+                      </Typography>
+                     
+                      <Typography>
+                      <b>Order Time:</b>
+                            <strong>
+                              {" "}
+                              {handleTime(order.orderDateAndTime)}
+                            </strong>
                       </Typography>
                       <div className={classes.price}>
                         <hr className={classes.hrcolor} />
                         <Typography>
                           Total Paid: <Icon icon={currencyInr} />
-                          {order.price}
+                          {order.totalAmount}
                         </Typography>
                         <div className={classes.detailsBtn}>
 
@@ -254,3 +269,4 @@ export default function PastOrders(props) {
     </div>
   );
 }
+export default withRouter(PastOrders);

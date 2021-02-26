@@ -18,6 +18,8 @@ import MyOrders from './pages/MyOrders';
 import AcceptedOrders from './pages/AcceptedOrders';
 import PositionedSnackbar from './components/snackbar'
 import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from './routes/route'
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
 
 function App() {
   return (
@@ -42,7 +44,8 @@ function App() {
       {/* ROUTES  */}
 
       <Switch>
-
+           <Route path='/signup' exact component={SignUp}></Route> 
+          <Route path='/login' exact component={SignIn}></Route> 
           <Route path='/' exact component={LandingPage}></Route>
           <Route path='/restaurant/:restaurantId' exact component={RestaurantContainer}></Route>
           <Route path='/allrestaurants' exact component={AllRestaurants}></Route>

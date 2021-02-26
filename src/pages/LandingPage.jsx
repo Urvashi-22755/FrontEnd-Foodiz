@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,8 +24,8 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Dialog, DialogContent } from "@material-ui/core";
-import SignUp from '../components/SignUp';
-import SignIn from '../components/SignIn';
+import SignUp from "../components/SignUp";
+import SignIn from "../components/SignIn";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -140,8 +140,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "16px",
     maxwidth: "100%",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)",transition:'0.4s',transitionTimingFunction: 'ease-in-out'  },
-    
+    "&:hover": {
+      transform: "translate3D(0,-7px,0) scale(1.05)",
+      transition: "0.4s",
+      transitionTimingFunction: "ease-in-out",
+    },
   },
   restcontainer: {
     marginTop: "5%",
@@ -167,7 +170,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-
 }));
 
 const handleId = (rest) => {
@@ -180,7 +182,7 @@ export default function LandingPage() {
   const [openSignUp, setOpenSignUp] = useState(false); //State to open Dialgoues Sign UP!
   const [openSignIn, setOpenSignIn] = useState(false); //State to open Dialgoues Login!
 
-  const authenticated = localStorage.getItem('role');
+  const authenticated = localStorage.getItem("role");
 
   const restaurants = foodData();
 
@@ -193,16 +195,14 @@ export default function LandingPage() {
     setOpenSignUp(false);
   };
 
-   //Open and CLose Dialgoue Forms
-   const handleClickLoginOpen = () => {
+  //Open and CLose Dialgoue Forms
+  const handleClickLoginOpen = () => {
     openSignIn ? setOpenSignIn(false) : setOpenSignIn(true);
   };
 
   const handleClickLoginClose = () => {
     setOpenSignIn(false);
   };
-
-  
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -217,12 +217,24 @@ export default function LandingPage() {
               <div className={classes.logintext}>
                 <img src="" />
                 <div className={classes.spaceText}>
-                  <p className={classes.signUpText} onClick={ handleClickSignUpOpen}>
-                    <PersonIcon /> Signup
-                  </p>
-                  <p className={classes.signUpText} onClick={handleClickLoginOpen}>
-                    <ExitToAppIcon /> Login
-                  </p>
+                  <Link style={{ textDecoration: "none" }} to="/signup">
+                    <Button
+                      className={
+                        classes.signUpText
+                      } /* onClick={handleClickSignUpOpen} */
+                    >
+                      <PersonIcon /> Signup
+                    </Button>
+                  </Link>
+
+                  <Link style={{ textDecoration: "none" }} to="/login">
+                    <Button
+                      className={classes.signUText}
+                      // onClick={handleClickLoginOpen}
+                    >
+                      <ExitToAppIcon /> Login
+                    </Button>
+                  </Link>
                 </div>
                 {/* <div>  Login</div>  */}
               </div>
@@ -235,7 +247,7 @@ export default function LandingPage() {
         </Grid>
 
         {/* Dialouge For Register/ SignUp form */}
- 
+
         <Dialog
           open={openSignUp}
           TransitionComponent={Transition}
@@ -249,9 +261,9 @@ export default function LandingPage() {
           </DialogContent>
         </Dialog>
 
-         {/* Dialouge For Login/Sign In form */}
+        {/* Dialouge For Login/Sign In form */}
 
-         <Dialog
+        <Dialog
           open={openSignIn}
           TransitionComponent={Transition}
           keepMounted
@@ -260,7 +272,7 @@ export default function LandingPage() {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogContent>
-           <SignIn />
+            <SignIn />
           </DialogContent>
         </Dialog>
 
@@ -335,8 +347,6 @@ export default function LandingPage() {
                   </CardActionArea>
                 </Card>
               </Grid>
-
-
 
               <Grid item xs={12} sm={6} md={6} lg={4}>
                 <Card className={classes.card}>
