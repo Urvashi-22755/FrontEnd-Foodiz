@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -20,6 +20,7 @@ import currencyInr from "@iconify-icons/mdi/currency-inr";
 import { Icon, InlineIcon } from "@iconify/react";
 import _ from "lodash";
 import Button from '@material-ui/core/Button';
+import axios from "axios";
 const useStyles = makeStyles(theme => ({
   root: {
     //   margin: '2%',
@@ -118,11 +119,48 @@ const handleId = rest => {
   console.log(rest);
 };
 
-export default function PastOrders() {
+export default function PastOrders(props) {
   const classes = useStyles();
   const restaurants = foodData();
-  const [myOrders, setMyOrder] = useState([]);
-  
+  const [myOrders, setMyOrders] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const fetchAllOrders = async () => {
+    const res = await axios.get("http://localhost:5000/order/getuserorder", {
+      headers: headers,
+    })
+    return res.data;
+  };
+
+
+  useEffect(() => {
+    (async () => {
+      const result = await fetchAllOrders();
+      console.log('my orders', result);
+      setMyOrders(result);
+    })();
+  }, []);
+
+
+  const handleOrderSummary = (id) => {
+    console.log(id);
+    props.history.push("/ordersummary/" + id);
+  };
+
+
+
+
+
+
+
+
+
+
   // const length = restaurants.length;
   // console.log(length);
   // let limit = 2;
@@ -170,11 +208,11 @@ export default function PastOrders() {
               <Typography className={classes.pastordertext}>
                 Past Orders
               </Typography>
-              {restaurants.map(rest => (
-                <Paper className={classes.paper1}>
+              {myOrders?.map(order => (
+                <Paper className={classes.paper1} key = {order._id}>
                   <div className={classes.pastorders}>
                     <div className={classes.pastImage}>
-                      <img className={classes.image} src={rest.imageUrl} />
+                      <img className={classes.image} src={order.imageUrl} />
                     </div>
                     <div className={classes.orderdetails}>
                       <Typography
@@ -182,7 +220,7 @@ export default function PastOrders() {
                         color="textsecondary"
                         style={{ fontWeight: "200" }}
                       >
-                        {rest.title}
+                        {order.title}
                       </Typography>
                       <Typography>Mahadev Nagar</Typography>
                       <Typography>
@@ -192,13 +230,15 @@ export default function PastOrders() {
                         <hr className={classes.hrcolor} />
                         <Typography>
                           Total Paid: <Icon icon={currencyInr} />
-                          {rest.price}
+                          {order.price}
                         </Typography>
                         <div className={classes.detailsBtn}>
 
-                        <Link style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }} to={`/order-summary/`}>
-                        <Button className={classes.detailsBtn}>Order Details</Button>
-                         </Link>
+                        
+                          <Button
+                             onClick={() => handleOrderSummary(order._id)}
+                            className={classes.detailsBtn}>Order Details</Button>
+                        
                        
                         </div>
                       </div>
