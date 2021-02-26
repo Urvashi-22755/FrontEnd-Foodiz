@@ -16,6 +16,8 @@ import DeliveryLandingPage from './pages/DeliveryLandingPage'
 
 import SelectDropdown from './components/select';
 import MyOrders from './pages/MyOrders';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
 function App() {
   return (
     <div className="App">
@@ -37,6 +39,8 @@ function App() {
       {/* <DrawerExample></DrawerExample> */}
       
       {/* ROUTES  */}
+      <Route path='/signup' exact component={SignUp}></Route> 
+      <Route path='/login' exact component={SignIn}></Route> 
       <Route path='/allrestaurants/:restaurantId' exact component={RestaurantContainer}></Route>
       <Route path='/allrestaurants' exact component={AllRestaurants}></Route> 
       <Route path='/order-summary/:orderId' exact component={OrderSummaryPage}></Route> 

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,8 +24,8 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Dialog, DialogContent } from "@material-ui/core";
-import SignUp from '../components/SignUp';
-import SignIn from '../components/SignIn';
+import SignUp from "../components/SignUp";
+import SignIn from "../components/SignIn";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -166,26 +166,26 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-
 }));
 
 const handleId = (rest) => {
   console.log(rest);
 };
 
-export default function LandingPage() {
+export default function LandingPage(props) {
   const classes = useStyles();
 
-  const [openSignUp, setOpenSignUp] = useState(false); //State to open Dialgoues Sign UP!
-  const [openSignIn, setOpenSignIn] = useState(false); //State to open Dialgoues Login!
+  /*  const [openSignUp, setOpenSignUp] = useState(false); //State to open Dialgoues Sign UP!
+  const [openSignIn, setOpenSignIn] = useState(false); //State to open Dialgoues Login! */
 
-  const authenticated = localStorage.getItem('role');
+  const authenticated = localStorage.getItem("role");
 
   const restaurants = foodData();
 
   //Open and CLose Dialgoue Forms
-  const handleClickSignUpOpen = () => {
-    openSignUp ? setOpenSignUp(false) : setOpenSignUp(true);
+  /*  const handleClickSignUpOpen = () => {
+  //  openSignUp ? setOpenSignUp(false) : setOpenSignUp(true);
+    setOpenSignUp(true);
   };
 
   const handleClickSignUpClose = () => {
@@ -200,8 +200,9 @@ export default function LandingPage() {
   const handleClickLoginClose = () => {
     setOpenSignIn(false);
   };
+ */
 
-  
+  const openSignUp = () => {};
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -216,12 +217,24 @@ export default function LandingPage() {
               <div className={classes.logintext}>
                 <img src="" />
                 <div className={classes.spaceText}>
-                  <p className={classes.signUpText} onClick={ handleClickSignUpOpen}>
-                    <PersonIcon /> Signup
-                  </p>
-                  <p className={classes.signUpText} onClick={handleClickLoginOpen}>
-                    <ExitToAppIcon /> Login
-                  </p>
+                  <Link style={{ textDecoration: "none" }} to="/signup">
+                    <Button
+                      className={
+                        classes.signUpText
+                      } /* onClick={handleClickSignUpOpen} */
+                    >
+                      <PersonIcon /> Signup
+                    </Button>
+                  </Link>
+
+                  <Link style={{ textDecoration: "none" }} to="/login">
+                    <Button
+                      className={classes.signUText}
+                      // onClick={handleClickLoginOpen}
+                    >
+                      <ExitToAppIcon /> Login
+                    </Button>
+                  </Link>
                 </div>
                 {/* <div>  Login</div>  */}
               </div>
@@ -232,47 +245,6 @@ export default function LandingPage() {
             </div>
           </Grid>
         </Grid>
-
-        {/* Dialouge For Register/ SignUp form */}
- 
-        <Dialog
-          open={openSignUp}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClickSignUpClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogContent>
-            <SignUp />
-          </DialogContent>
-        </Dialog>
-
-         {/* Dialouge For Login/Sign In form */}
-
-         <Dialog
-          open={openSignIn}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClickLoginClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogContent>
-           <SignIn />
-          </DialogContent>
-        </Dialog>
-
-        {/* <Box className={classes.hero}>
-        
-          <Box className={classes.image}>
-         
-          <div className={classes.foodtext}>
-              
-            </div>
-    
-          </Box>
-        </Box> */}
 
         <Container maxWidth="lg" className={classes.foodsContainer}>
           <Grid

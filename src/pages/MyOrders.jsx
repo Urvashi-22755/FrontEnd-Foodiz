@@ -16,9 +16,6 @@ const useStyles = makeStyles((theme) => ({
     //margin: "2%",
     // backgroundColor:'#e4e3ff'
   },
-  container: {
-    //  border: "1px solid rgb(23,26,41)",
-  },
   paper: {
     padding: theme.spacing(4),
     width: "100%",
@@ -64,9 +61,12 @@ function MyOrders(props) {
   };
 
   const fetchOrdersData = async () => {
-    const res = await axios.get("http://localhost:5000/order/getUserTrackOrder", {
-      headers: headers,
-    });
+    const res = await axios.get(
+      "http://localhost:5000/order/getUserTrackOrder",
+      {
+        headers: headers,
+      }
+    );
 
     return res.data;
   };
@@ -98,7 +98,6 @@ function MyOrders(props) {
       <div className={classes.root}>
         <NavAppBar />
 
-        
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item container lg={12} xs={12} md={12} sm={12} spacing={2}>
@@ -120,7 +119,7 @@ function MyOrders(props) {
                               ></img>
                             </div>
                           </Grid>
-                          
+
                           <Grid item lg={8} md={8} sm={8} xs={8}>
                             <b>
                               <p className={classes.restaurantTitle}>
@@ -157,8 +156,9 @@ function MyOrders(props) {
                             </strong>
                           </p>
                           <p></p>
-                        {/*   <p><b>Order Status:</b> <strong>{order.orderStatus }</strong></p> */}
-                          <b>Total Amount:</b><strong> Rs {order.totalAmount}</strong>
+                          {/*   <p><b>Order Status:</b> <strong>{order.orderStatus }</strong></p> */}
+                          <b>Total Amount:</b>
+                          <strong> Rs {order.totalAmount}</strong>
                         </Grid>
                         <hr />
 
