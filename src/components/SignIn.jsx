@@ -43,12 +43,9 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     backgroundColor: "#171a29",
     marginTop: "12%",
-<<<<<<< HEAD
-=======
     "&:hover": {
       backgroundColor:"#171a29"
     }
->>>>>>> b7c0cfb6fa59a723a826a181eac30c3f512f394e
   },
   paper: {
     height: "auto",
@@ -180,16 +177,6 @@ export default function SignIn(props) {
                       className={classes.textField}
                       onChange={changeEmail}
                       fullWidth
-<<<<<<< HEAD
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AccountCircle />
-                          </InputAdornment>
-                        ),
-                      }}
-=======
->>>>>>> b7c0cfb6fa59a723a826a181eac30c3f512f394e
                     />
                     {errors ? (
                       <div className={classes.errorMessage}>{errors.email}</div>

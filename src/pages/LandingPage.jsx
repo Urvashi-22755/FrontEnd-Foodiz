@@ -248,47 +248,6 @@ export default function LandingPage(props) {
           </Grid>
         </Grid>
 
-        {/* Dialouge For Register/ SignUp form */}
-
-        <Dialog
-          open={openSignUp}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClickSignUpClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogContent>
-            <SignUp />
-          </DialogContent>
-        </Dialog>
-
-        {/* Dialouge For Login/Sign In form */}
-
-        <Dialog
-          open={openSignIn}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClickLoginClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogContent>
-            <SignIn />
-          </DialogContent>
-        </Dialog>
-
-        {/* <Box className={classes.hero}>
-        
-          <Box className={classes.image}>
-         
-          <div className={classes.foodtext}>
-              
-            </div>
-    
-          </Box>
-        </Box> */}
-
         <Container maxWidth="lg" className={classes.foodsContainer}>
           <Grid
             item
