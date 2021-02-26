@@ -18,9 +18,12 @@ import SelectDropdown from './components/select';
 import MyOrders from './pages/MyOrders';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+
+import DemoRating from './components/demoRating';
 function App() {
   return (
     <div className="App">
+      {/* <DemoRating /> */}
 
       {/* ANKITA */}
 
