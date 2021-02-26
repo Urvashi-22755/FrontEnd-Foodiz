@@ -20,7 +20,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
+import { Link } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -62,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     backgroundColor: "white",
     height: "auto",
-    borderRadius: "20px",
+    borderRadius: "10px",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
   },
   orderDetails: {
@@ -71,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
     fontWeight: 600,
     height: "auto",
-    borderRadius: "15px",
+    borderRadius: "10px",
     backgroundColor: "white",
   },
   orderdiv: {
@@ -138,8 +142,33 @@ const useStyles = makeStyles((theme) => ({
 export default function DeliveryPage() {
   const classes = useStyles();
   //const restaurants = foodData();
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const [snackstate, setsnackState] = useState({
+    open: false,
+    message: "order accepted",
+  });
+
+  const { open, message } = snackstate;
+
+  const handleClick = (message) => {
+    console.log("in handle click");
+    console.log(message);
+    setsnackState({ open: true, message: message });
+  };
+
+  const handleClose = () => {
+    setsnackState({ ...snackstate, open: false });
+  };
+
   const [orders, setOrders] = useState([]);
+
   const [acceptedOrder, setAcceptedOrder] = useState({});
+
   const getPlacedOrderForDeliveryExecutive = async () => {
     const res = await axios.get(
       "http://localhost:5000/order/getplacedorderfordeliveryexecutive"
@@ -148,13 +177,15 @@ export default function DeliveryPage() {
     return res.data;
   };
 
-  const getOrderDetailAcceptedByDeliveryExecutive = async () => {
+  /*  const getOrderDetailAcceptedByDeliveryExecutive = async () => {
+    console.log("In order deatils by delivery;")
+
     const res = await axios.get(
       "http://localhost:5000/delivery/getorderdetailacceptedbydeliveryexecutive"
     );
     console.log("order detail accepted by delivery executive :", res);
     return res.data;
-  };
+  }; */
 
   useEffect(() => {
     (async function () {
@@ -162,14 +193,13 @@ export default function DeliveryPage() {
       console.log("use effect res1", res);
       setOrders(res);
     })();
-    (async function () {
+
+    /*  (async function () {
       const res = await getOrderDetailAcceptedByDeliveryExecutive();
       console.log("use effect res2", res);
       setAcceptedOrder(res);
-    })();
+    })(); */
   }, []);
-  // const orders = OrderData();
-  console.log(orders);
 
   //empty array
   const [orderarray, setorderArray] = useState([]);
@@ -182,75 +212,55 @@ export default function DeliveryPage() {
     return { name, calories, fat, carbs, protein };
   }
 
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
-
   const handleOrders = async (orderId) => {
-    console.log(orderId);
+    console.log("orderId in handle order" + orderId);
     const res = await axios.post(
       "http://localhost:5000/delivery/addDeliveryExecutive",
-      { orderId: orderId }
-      // , {
-      // headers: headers,
-      // }
+      { orderId: orderId },
+      {
+        headers: headers,
+      }
     );
-    console.log("add delivery Executive",res.data);
-    // console.log(orders);
-    // setorderArray((arr) => [...arr, order]);
-
-    // const index = orders.indexOf(order);
-    // console.log(index);
-    // console.log(orders[index]._id);
-    // console.log(order._id);
-
-    // if (orders[index]._id === order._id) {
-    //   //setbuttonText('Accepted');
-    //   console.log("matched");
-    // }
-
-    // acceptedOrders.push(order);
+    console.log("add delivery Executive", res.data);
+    handleClick(res.data.message);
+    // console.log(  res.data.message)
   };
-  const [state, setState] = useState("None");
-  const [optstate, setOtp] = useState();
+  // const [state, setState] = useState("None");
+  // const [optstate, setOtp] = useState();
 
-  const handleotp = (event) => {
-    const otp = event.target.value;
-    setOtp(otp);
-    console.log(otp);
-  }
-  const handleChange = (event) => {
-    const name = event.target.value;
-    setState(name);
-  };
+  // const handleotp = (event) => {
+  //   const otp = event.target.value;
+  //   setOtp(otp);
+  //   console.log(otp);
+  // }
+  // const handleChange = (event) => {
+  //   const name = event.target.value;
+  //   setState(name);
+  // };
 
-  const handleStatus =async () => {
-    console.log("In confirm", state);
-    if (state == "Completed") {
-      const res = await axios.post(
-        "http://localhost:5000/delivery/changeorderstatus",
-        { "orderId": acceptedOrder._id,"orderStatus":state,"orderOtp":parseInt(optstate)}
-        // , {
-        // headers: headers,
-        // }
-        );
-        console.log("handle status", res);
-    } else {
-      const res = await axios.post(
-        "http://localhost:5000/delivery/changeorderstatus",
-        { "orderId": acceptedOrder._id,"orderStatus":state}
-        // , {
-        // headers: headers,
-        // }
-        );
-        console.log("handle status", res);
-    }
-    
-  };
+  // const handleStatus =async () => {
+  //   console.log("In confirm", state);
+  //   if (state == "Completed") {
+  //     const res = await axios.post(
+  //       "http://localhost:5000/delivery/changeorderstatus",
+  //       { "orderId": acceptedOrder._id,"orderStatus":state,"orderOtp":parseInt(optstate)}
+  //       // , {
+  //       // headers: headers,
+  //       // }
+  //       );
+  //       console.log("handle status", res);
+  //   } else {
+  //     const res = await axios.post(
+  //       "http://localhost:5000/delivery/changeorderstatus",
+  //       { "orderId": acceptedOrder._id,"orderStatus":state}
+  //       // , {
+  //       // headers: headers,
+  //       // }
+  //       );
+  //       console.log("handle status", res);
+  //   }
+
+  // };
 
   return (
     <React.Fragment>
@@ -261,12 +271,14 @@ export default function DeliveryPage() {
           <Grid container spacing={1}>
             <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
               <Grid item xs={12} sm={6} md={4} lg={4}>
-                <img
-                  src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/cef389b486cb4827e6ba007f26ebddab.svg"
-                  className={classes.imagesize}
-                />
+                <Link to={`/acceptedOrders`}>
+                  <img
+                    src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/cef389b486cb4827e6ba007f26ebddab.svg"
+                    className={classes.imagesize}
+                  />
+                </Link>
                 <div className={classes.imageText}>
-                  <b>Order Received</b>
+                  <b>Accepted Orders</b>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -294,11 +306,11 @@ export default function DeliveryPage() {
         <Container maxWidth="lg">
           <Grid container spacing={3}>
             <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
-              <Grid item xs={12} sm={12} md={12} lg={5}>
+              <Grid item xs={12} sm={12} md={12} lg={6}>
                 {orders.map((order) => (
                   <Paper className={classes.paper}>
                     <div className={classes.orderDetails}>
-                      <Grid item container xs={6} sm={6} md={6} lg={12}>
+                      <Grid item container xs={6} sm={6} md={6} lg={6}>
                         <Grid
                           item
                           xs={12}
@@ -358,164 +370,28 @@ export default function DeliveryPage() {
                             Accept
                           </Button>
                         </div>
+
+                        <Snackbar
+                          open={snackstate.open}
+                          onClose={handleClose}
+                          message={snackstate.message}
+                        >
+                          <Alert
+                            severity="error"
+                            onClose={handleClose}
+                            style={{
+                              backgroundColor: "#bd0404",
+                              color: "white",
+                              width: "350px",
+                            }}
+                          >
+                            {snackstate.message}
+                          </Alert>
+                        </Snackbar>
                       </Grid>
                     </div>
                   </Paper>
                 ))}
-              </Grid>
-
-              <Grid item xs={12} sm={12} md={12} lg={7}>
-                <Grid item xs={12} sm={6} md={6} lg={12}>
-                  <div className={classes.orderDetailsDisplay}>
-                    <Typography
-                      variant="h4"
-                      style={{ textAlign: "center", marginBottom: "5%" }}
-                    >
-                      Order Details
-                    </Typography>
-                    <Grid item container xs={12} sm={6} md={6} lg={12}>
-                      <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <div> Order Id: </div>
-                        <div> Restaurant Name:</div>
-                        <div> PickUp Address: </div>
-                        <div> Drop address: </div>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <div>
-                          {" "}
-                          <b>#{acceptedOrder._id}</b>{" "}
-                        </div>
-                        <div>
-                          {" "}
-                          <b>{ acceptedOrder?.restaurantDetails?.restaurantName}</b>
-                        </div>
-                        <div>
-                          {" "}
-                          <b>{
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.streetAddress + ','+
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.landmark + ','+
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.area + ','+
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.city + ','+
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.state + ','+
-                            acceptedOrder?.restaurantDetails?.restaurantLocation?.country
-                          }</b>
-                        </div>
-                        <div>
-                          
-                          <b>{
-                            acceptedOrder?.orderLocation?.streetAddress + ','+
-                            acceptedOrder?.orderLocation?.landmark + ','+
-                            acceptedOrder?.orderLocation?.area + ','+
-                            acceptedOrder?.orderLocation?.city + ','+
-                            acceptedOrder?.orderLocation?.state + ','+
-                            acceptedOrder?.orderLocation?.country
-                          }</b>
-                        </div>
-                      </Grid>
-                    </Grid>
-
-                    <Grid item container lg={12} md={12} sm={12} xs={12}>
-                      <TableContainer className={classes.tablecontainer}>
-                        <Table
-                          className={classes.table}
-                          aria-label="simple table"
-                        >
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <b>Food Item</b>
-                              </TableCell>
-                              <TableCell align="right">
-                                <b>Quantity</b>
-                              </TableCell>
-
-                              <TableCell align="right">
-                                <b>Price / item</b>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                          {acceptedOrder?.foodList?.map((food) => (
-                                <TableRow key={food._id}>
-                                  <TableCell component="th" scope="row">
-                                    {food?.foodItem?.foodName}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                  {food?.quantity}
-                                  </TableCell>
-                                  <TableCell
-                                    component="th"
-                                    align="right"
-                                    scope="row"
-                                  >
-                                    {food?.foodItem?.foodPrice*food?.quantity}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-
-                      <Grid
-                        container
-                        justify="flex-end"
-                        style={{ marginTop: "20px" }}
-                      >
-                        <Typography variant="h6">
-                          Total Amount : { acceptedOrder.totalAmount}
-                        </Typography>
-                      </Grid>
-
-                      <Grid item container xs={12} sm={6} md={6} lg={12}>
-                        <Grid item xs={12} sm={6} md={6} lg={4}>
-                          <div className={classes.statusSelect}>
-                            <FormControl
-                              variant="outlined"
-                              className={classes.formControl}
-                            >
-                              <InputLabel htmlFor="age-native-simple">
-                                Status
-                              </InputLabel>
-                              <Select
-                                native
-                                value={state}
-                                onChange={handleChange}
-                                label="Status"
-                                className={classes.formselect}
-                              >
-                                <option aria-label="None" value="" />
-                                <option value="Completed">Completed</option>
-                                {/* <option value={20}>In Process</option> */}
-                                <option value="Out For Delivery">
-                                  Out for Delivery
-                                </option>
-                              </Select>
-                            
-                            </FormControl>
-                          
-                          </div>
-                         
-                        </Grid>
-                        {state == "Completed" ?  <Grid item xs={12} sm={6} md={6} lg={4}>
-                         <TextField  onChange={handleotp} style={{marginTop: '12%'}} id="standard-basic" name="otp" label="Standard" /> 
-                          </Grid> : null}
-                       
-                        <Grid item container xs={12} sm={6} md={6} lg={4} justify="flex-end">
-                      
-                          <div>
-                         
-                            <Button
-                              className={classes.confirmBtn}
-                              onClick={handleStatus}
-                            >
-                              Confirm
-                            </Button>
-                          </div>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </div>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>

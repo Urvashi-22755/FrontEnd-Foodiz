@@ -61,13 +61,9 @@ function MyOrders(props) {
   };
 
   const fetchOrdersData = async () => {
-    const res = await axios.get(
-      "http://localhost:5000/order/getUserTrackOrder",
-      {
-        headers: headers,
-      }
-    );
-
+    const res = await axios.get("http://localhost:5000/order/getusertrackorder", {
+      headers: headers,
+    });
     return res.data;
   };
 
@@ -81,7 +77,7 @@ function MyOrders(props) {
   /* redirect to order Summary */
   const handleOrderSummary = (id) => {
     console.log(id);
-    props.history.push("/order-summary/" + id);
+    props.history.push("/ordersummary/" + id);
   };
   const handleDate = (date) => {
     const newDate = new Date(date);
