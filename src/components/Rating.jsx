@@ -9,10 +9,7 @@ import { Form } from "@material-ui/core/FormControl";
 
 export default function StarRating(props) {
   const [value, setValue] = React.useState({rating:0});
-
-
   const { handleSubmitOfRating, onClose } = props;
-
   const handleChange = (event) => {
     const key = event.target.name;
     const value = event.target.value;
@@ -28,7 +25,7 @@ export default function StarRating(props) {
     onClose();
   };
 
-  console.log("Ankita value:", value);
+ // console.log("Ankita value:", value);
   return (
     <div>
       <Box align="center"component="fieldset" mb={3} borderColor="transparent">

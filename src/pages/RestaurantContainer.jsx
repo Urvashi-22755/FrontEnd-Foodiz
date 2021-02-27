@@ -156,6 +156,14 @@ const RestaurantContainer = (props) => {
   const [open, setOpen] = useState(false);
   const [ratings,setRatings] = useState({});
 
+  const token = localStorage.getItem("token");  
+
+  const headers = {
+     //"Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+
 
   /* const getRestaurant = async () => {
     console.log(props.match.params.restaurantId);
@@ -175,12 +183,9 @@ const RestaurantContainer = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  console.log("hello above effect");
   useEffect(() => {
     (async function () {
       const res = await getRestaurantById(props.match.params.restaurantId);
-      console.log("method response", res);
       setRestaurant(res);
       setItems(res.menuDetails);
     })();
@@ -212,10 +217,11 @@ const RestaurantContainer = (props) => {
     } else setItems(data); */
   };
 
+
   //filter based on veg-only..
   const handleChange = (event) => {
     
-    console.log("value:", event.target.value);
+  //  console.log("value:", event.target.value);
     // if (vegChecked === true) {
     //   setvegChecked(false);
     //   setItems(data);
@@ -231,19 +237,48 @@ const RestaurantContainer = (props) => {
     // }
   };
 
+const saveRatings = async () => {
+
+  const restaurantRatings = {
+    restaurantId:props.match.params.restaurantId,
+    rating:ratings.rating,
+    ratingReview:ratings.review
+  }
+  console.log("ratings.rating",ratings.rating);
+  console.log("ratings.review",ratings.review);
+
+  console.log(restaurantRatings);
+  // try{
+  //   console.log('in tryu')
+  //   const response =  await axios.post(
+  //     "http://localhost:5000/rate/addratingtorestaurant",restaurantRatings
+  //     ,
+  //     {
+  //       headers: headers,
+  //     }
+  //   );
+  //   console.log("RATINVG AXIOS RESPONSE",response)
+  //   return response;
+  // }catch(err){
+  //   console.log("RATING ER",err)
+  // }
+
+ 
+  
+}
+
   const handleSubmitOfRating = (ratingData,event) => {
     event.preventDefault();
+    console.log("ratingData",ratingData);
     setRatings(ratingData);
-    console.log("rating data in parent container statess",ratings);
-
-    console.log('resdt id', restaurantData._id)
-
+    console.log("after ratingS",ratings);
+    const res = saveRatings();   //axios call to save ratings
   }
 
   return (
     <>
       <NavAppBar></NavAppBar>
-     
+    
       <Container>
         <Grid container className={classes.orderbox}>
           <Grid
@@ -282,6 +317,7 @@ const RestaurantContainer = (props) => {
                   component="body2"
                   className={classes.typographyDetails}
                 >
+              {/* {ratings.review} {ratings.rating} */}
                   {
                     <div>
                      
