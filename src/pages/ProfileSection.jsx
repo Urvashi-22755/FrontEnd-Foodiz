@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     marginTop: "6%",
     paddingTop: "30%",
+    width: 'auto',
     backgroundColor: "#2c446e",
     height: "90vh",
   },
@@ -71,10 +72,10 @@ export default function ProfileSection() {
       <NavAppBar />
       <Container>
         <Grid container spacing={3}>
-          <Grid item xs={12} lg={12} md={12}>
+          <Grid item xs={12} sm={12} lg={12} md={12}>
             <Paper className={classes.paper}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={4} lg={4} md={4}>
+                <Grid item xs={12} sm={12} lg={4} md={4}>
                   <Tabs
                     orientation="vertical"
                     variant="scrollable"
@@ -104,7 +105,7 @@ export default function ProfileSection() {
                     />
                   </Tabs>
                 </Grid>
-                <Grid item sm={8} xs={12} lg={8} md={8}>
+                <Grid item sm={12} xs={12} lg={8} md={8}>
                   {selectedTab === 0 && <MyProfile />}
                   {selectedTab === 1 && <PastOrders />}
                 </Grid>

@@ -57,9 +57,9 @@ const useStyles = makeStyles(theme => ({
   },
 
   image: {
-    borderRadius: "20px",
+    borderRadius: "15px",
     width: "100%",
-    height: "120px"
+    height: "160px"
   },
   cardtitle: {
     fontWeight: 400,
@@ -72,7 +72,8 @@ const useStyles = makeStyles(theme => ({
   orderdetails: {
     color: "#2c446e",
     fontWeight: "100",
-    width: "65%"
+    width: "65%",
+    marginTop: '5%'
   },
   media: {
     height: 200
@@ -172,10 +173,6 @@ const handleId = rest => {
     const newDate = new Date(date);
     return newDate.toTimeString();
   };
-
-
-
-
 
   // const length = restaurants.length;
   // console.log(length);
