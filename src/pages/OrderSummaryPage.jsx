@@ -15,6 +15,7 @@ import OrderSummary from "../components/OrderSummary";
 import CustomizedTimeline from "./../components/CustomizedTimeline";
 import axios from "axios";
 import OrderData from "./../data/OrdersData";
+import DeliveryExecutiveDetails from "./../components/DeliveryExecutiveDetail";
 // import Container from '@material-ui/core/Container';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,14 +41,15 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "2px solid #171A29",
   },
   onlyOrderSummaryDisplay: {
-    marginTop: '10%',
-    width: '60%'
-  }
+    marginTop: "10%",
+    width: "60%",
+  },
 }));
 
 const OrderSummaryPage = (props) => {
   const classes = useStyles();
   const [orderData, setOrderData] = useState({});
+  const [deliveryManDetails, setdeliveryManDetails] = useState([]);
   //order Id
   const orderId = props.match.params.orderId;
 
@@ -63,7 +65,7 @@ const OrderSummaryPage = (props) => {
       `http://localhost:5000/order/getorderdetailbyorderid/${orderId}`,
       { headers: headers }
     );
-    console.log(res);
+    console.log("Order Summary Page", res);
     return res.data;
   };
 
@@ -72,6 +74,14 @@ const OrderSummaryPage = (props) => {
     (async () => {
       const res = await FetchOrderByID();
       setOrderData(res.orderData);
+
+      if (res.deliveryExecutiveData) {
+        setdeliveryManDetails(res.deliveryExecutiveData);
+        console.log("DELIVER MANNNNNNNN", res.deliveryExecutiveData);
+      } else {
+        console.log("in else eee");
+      }
+
       console.log("response order sumary", res.orderData);
     })();
   }, []);
@@ -88,17 +98,33 @@ const OrderSummaryPage = (props) => {
           <Container>
             <Grid container spacing={2}>
               {orderData.orderStatus === "Completed" ||
-                  orderData.orderStatus === "Cancelled" ? (
-                    <Container className={classes.onlyOrderSummaryDisplay}>
-                    <Grid container  >
-                      <Grid item container lg={12} md={12} sm={12} xs={12} >
-                        <OrderSummary orderData={orderData} />
-                            </Grid>
-                      </Grid>
-                      </Container>
+              orderData.orderStatus === "Cancelled" ? (
+                <Container className={classes.onlyOrderSummaryDisplay}>
+                  <Grid container>
+                    <Grid item container lg={12} md={12} sm={12} xs={12}>
+                      <OrderSummary orderData={orderData} />
+                      {deliveryManDetails != [] ? (
+                        <DeliveryExecutiveDetails
+                          page="completedOrder"
+                          detail={deliveryManDetails}
+                        />
+                      ) : null}
+                      {/*  */}
+                    </Grid>
+                  </Grid>
+                </Container>
               ) : (
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <OrderSummary orderData={orderData} />
+
+                  {deliveryManDetails != [] &&
+                  (orderData?.orderStatus != "Placed") ? (
+                    <DeliveryExecutiveDetails
+                      page="currentOrder"
+                      detail={deliveryManDetails}
+                    />
+                  ) : null}
+                 
                 </Grid>
               )}
 
@@ -109,7 +135,7 @@ const OrderSummaryPage = (props) => {
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <Typography variant="h4" color="Primary">
                       Track your Order Here!
-                    </Typography>{" "}
+                    </Typography>
                     <CustomizedTimeline status={orderData?.orderStatus} />
                   </Grid>
                 </>
