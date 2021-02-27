@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     // border: "1px solid #171a29",
     color: "#171a29",
-    height: "90vh",
+    height: "auto",
     width: "",
     backgroundColor: "#ffffff",
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
@@ -58,11 +58,13 @@ const useStyles = makeStyles((theme) => ({
     color: "#37718e",
   },
   detailedText: {
-    padding: "1%",
+    marginTop: '5%',
+    fontFamily: 'font-family: Noto Sans HK, sans-serif'
   },
   fields: {
-    fontSize: "20px",
-    color: "grey",
+    fontSize: "18px",
+    lineHeight: '2.5rem',
+    color: "#37718e",
   },
   editicon: {
     display: "flex",
@@ -193,22 +195,27 @@ export default function MyProfile() {
 
   return (
     <div className={classes.root}>
-      <Container>
+    <Container>
+    <Paper className={classes.paper}>
         <Grid container spacing={3}>
-          <Grid item sm={12} xs={12} lg={12} md={4}>
-            <Paper className={classes.paper}>
-              <div className={classes.editicon}>
+        
+          <Grid item sm={12} xs={12} lg={12} md={12}>
+           
+            <div className={classes.editicon}>
                 {isAvatarSmallDevices && (
                   <Avatar
                     alt="Remy Sharp"
-                    variant="MuiAvatar-rounded"
+                    variant="circular"
                     className={classes.avatarImage}
                     src="https://i.kinja-img.com/gawker-media/image/upload/t_original/ijsi5fzb1nbkbhxa2gc1.png"
                   />
                 )}
 
                 <EditIcon className={classes.edit} onClick={handleClickOpen} />
-              </div>
+              </div> 
+             
+          </Grid>
+             
               <Dialog
                 open={open}
                 onClose={handleClose}
@@ -326,122 +333,99 @@ export default function MyProfile() {
                   </Button>
                 </DialogActions>
               </Dialog>
-              {/* <Container spacin={3}>
-              <Grid container spacing={3}>
-                <Grid item container sm={12} xs={12} lg={6} md={6}>
-                    Name
-                </Grid>
-                  fff
-                </Grid>
-                </Container> */}
-              <div className={classes.details}>
-                <div className={classes.detailedText}>
 
 
 
-                  <div>Name</div>
-                  <div className={classes.fields}>
-                    {userdetails?.firstName} {userdetails?.lastName}
+
+           
+            <Grid item  sm={6} xs={6} lg={6} md={6} className={classes.detailedText}>
+               
+                  <div>
+                        <div className={classes.fields}>Name</div>
+                        <div className={classes.fields}>Email Id</div>
+                        <div className={classes.fields}>Mobile Number</div>
+
+                        {userdetails?.role == "DE" ? 
+                        <>
+                        <div className={classes.fields}>Vehicle Number</div>
+                        <div className={classes.fields}>Street Address</div>
+                        <div className={classes.fields}>LandMark</div>
+                        <div className={classes.fields}>Area</div>
+                        <div className={classes.fields}>City</div>
+                        <div className={classes.fields}>State</div>
+                        <div className={classes.fields}>Country</div>
+                        <div className={classes.fields}>Zip</div>
+
+                        </> : null
+                        
+                        }
                   </div>
-                </div>
+                 
+                  
+            </Grid>
 
-                <div className={classes.detailedText}>
-                  <div>Email Id</div>
-                  <div className={classes.fields}>{userdetails?.email}</div>
-                </div>
 
-                <div className={classes.detailedText}>
-                  <div>Mobile Number</div>
-                  <div className={classes.fields}>
-                    {userdetails?.mobileNumber}
-                  </div>
-                </div>
 
-                {userdetails?.role == "DE" ? (
-                  <>
-                    <div className={classes.detailedText}>
-                      <div>Vehicle Number</div>
-                      <div className={classes.fields}>
-                        {userdetails?.deliveryExecutive?.vehicleNumber}
-                      </div>
-                    </div>
+            <Grid item  sm={6} xs={6} lg={6} md={6} className={classes.detailedText}>
+               
+                  <div>
+                   
+                      <div className={classes.fields}> {userdetails?.firstName} {userdetails?.lastName}  </div>
+                      <div className={classes.fields}>{userdetails?.email}</div>               
+                      <div className={classes.fields}> {userdetails?.mobileNumber}</div>
 
-                    <div className={classes.detailedText}>
-                      <div>Street Address</div>
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.streetAddress
-                        }
-                      </div>
-                    </div>
+                      {userdetails?.role == "DE" ? 
+                      
+                      (
 
-                    <div className={classes.detailedText}>
-                      <div>LandMark</div>
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.landmark
-                        }
-                      </div>
-                    </div>
-
-                    <div className={classes.detailedText}>
-                      <div>Area</div>
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.area
-                        }
-                      </div>
-                    </div>
-
-                    <div className={classes.detailedText}>
-                      <div>City</div>
+                        < >
+                      <div className={classes.fields}>  {userdetails?.deliveryExecutive?.vehicleNumber} </div>
+                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.streetAddress} </div>
+                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.landmark} </div>
+                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.area}</div>
                       <div className={classes.fields}>
                         {
                           userdetails?.deliveryExecutive
                             ?.deliveryExecutiveLocation?.city
                         }
                       </div>
-                    </div>
-
-                    <div className={classes.detailedText}>
-                      <div>State</div>
                       <div className={classes.fields}>
                         {
                           userdetails?.deliveryExecutive
                             ?.deliveryExecutiveLocation?.state
                         }
                       </div>
-                    </div>
 
-                    <div className={classes.detailedText}>
-                      <div>Country</div>
                       <div className={classes.fields}>
                         {
                           userdetails?.deliveryExecutive
                             ?.deliveryExecutiveLocation?.country
                         }
                       </div>
-                    </div>
 
-                    <div className={classes.detailedText}>
-                      <div>Zip</div>
                       <div className={classes.fields}>
                         {
                           userdetails?.deliveryExecutive
                             ?.deliveryExecutiveLocation?.zip
                         }
                       </div>
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </Paper>
-          </Grid>
+                      </>         
+                      )          
+
+                    : null   }
+                     
+
+
+
+                  </div>
+                 
+              </Grid>
+                
+               
+             
         </Grid>
-      </Container>
+        </Paper>
+        </Container>
     </div>
   );
 }

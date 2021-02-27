@@ -21,12 +21,14 @@ import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from "./routes/route";
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import ForgotPassword from './components/ForgotPassword';
+import SimpleRating  from './components/Rating';
+
 
 
 function App() {
   return (
     <div className="App">
-      <Switch>
+       <Switch>
         <Route path="/forgotpassword" exact component={ForgotPassword} />
         <Route path="/login" exact component={SignIn} />
         <Route path="/signup" exact component={SignUp} />
@@ -63,9 +65,10 @@ function App() {
           exact
           component={ProfileSection}
         ></DeliveryExecutiveRoute> */}
-      </Switch>
+     </Switch> 
 
       <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
+      <Route path="/simplerating" exact component={SimpleRating}></Route>
     </div>
   );
 }

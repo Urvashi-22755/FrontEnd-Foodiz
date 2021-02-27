@@ -17,7 +17,7 @@ import CardActions from "@material-ui/core/CardActions";
 // import "materialize-css/dist/css/materialize.min.css";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import SearchBar from "material-ui-search-bar";
-import FullWidthTabs from '../components/ratings';
+
 import axios from "axios";
 
 

@@ -7,6 +7,9 @@ import {
   Checkbox,
   Paper,
   FormControlLabel,
+  Button,
+  TextField,
+  Chip,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import SearchBar from "../components/SearchBar";
@@ -19,11 +22,19 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import RestaurantInfoCarausal from "./../components/RestaurantInfoCarausal";
 import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+
 import axios from "axios";
 /* caraausaal data */
 import images from "../data/RestCarausalData";
 
 import { getRestaurantById } from "../services/axiosData";
+import SimpleRating from "../components/Rating";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -116,6 +127,23 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 10px 20px rgba(0,0,0,0.10), 0 10px 10px rgba(0,0,0,0.22)",
     padding: "5px",
   },
+  editHeading:{
+    textAlign:"center",
+    
+  },
+  addRating:{
+    fontWeight:'bold',
+    fontSize:"20px",
+    color:"#171a29"
+  },
+  ratingDialog:{
+    padding:"20px"
+  },
+  addRatingBtn:{
+    color:"#171a29",
+    fontWeight:'bold',
+    cursor:"pointer"
+  }
 }));
 
 const RestaurantContainer = (props) => {
@@ -125,6 +153,9 @@ const RestaurantContainer = (props) => {
   const allVeg = items.every((item) => item.type === "veg");
   const data = foodData();
   const [restaurantData, setRestaurant] = useState({});
+  const [open, setOpen] = useState(false);
+  const [ratings,setRatings] = useState({});
+
 
   /* const getRestaurant = async () => {
     console.log(props.match.params.restaurantId);
@@ -135,29 +166,30 @@ const RestaurantContainer = (props) => {
     setRestaurant(res.data);
     setItems(res.data.menuDetails);
   } */
-  console.log('hello above effect');
-  useEffect(() => {
 
+  //rating modal open
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  console.log("hello above effect");
+  useEffect(() => {
     (async function () {
       const res = await getRestaurantById(props.match.params.restaurantId);
-      console.log('method response', res)
+      console.log("method response", res);
       setRestaurant(res);
       setItems(res.menuDetails);
     })();
 
-  
-   /*  console.log('rest data', restaurantData)
-    console.log("rest data images", restaurantData.restaurantImages);
-    console.log('food items', items);
-     */
-  },[]);
-  
-  // console.log(items);
+  }, []);
+
 
   //filter based on  search
   const handleSearch = (value) => {
-
-    
     let filteredItems = items?.filter((search) => {
       return (
         search.foodDescription.toLowerCase().includes(value) ||
@@ -165,7 +197,7 @@ const RestaurantContainer = (props) => {
       );
     });
     setItems(filteredItems);
-  /*   if (vegChecked === true && value !== "") {
+    /*   if (vegChecked === true && value !== "") {
       let filteredItemsVeg = items.filter((search) => {
         return (
           (search.type === "veg" &&
@@ -182,26 +214,36 @@ const RestaurantContainer = (props) => {
 
   //filter based on veg-only..
   const handleChange = (event) => {
-    if (vegChecked === true) {
-      setvegChecked(false);
-      setItems(data);
-    } else {
-      setvegChecked(true);
+    
+    console.log("value:", event.target.value);
+    // if (vegChecked === true) {
+    //   setvegChecked(false);
+    //   setItems(data);
+    // } else {
+    //   setvegChecked(true);
 
-      let filter = data.filter((d) => d.type === event.target.value);
-      // console.log("veg data", filter);
-      // console.log(event.target.value);
-      setItems(filter);
+    //   let filter = data.filter((d) => d.type === event.target.value);
+    //   // console.log("veg data", filter);
+    //   // console.log(event.target.value);
+    //   setItems(filter);
 
-      //console.log("filter [0] - ", filter);
-    }
+    //   //console.log("filter [0] - ", filter);
+    // }
   };
 
-  // console.log(foodData());
+  const handleSubmitOfRating = (ratingData,event) => {
+    event.preventDefault();
+    setRatings(ratingData);
+    console.log("rating data in parent container statess",ratings);
+
+    console.log('resdt id', restaurantData._id)
+
+  }
+
   return (
     <>
       <NavAppBar></NavAppBar>
-
+     
       <Container>
         <Grid container className={classes.orderbox}>
           <Grid
@@ -236,33 +278,56 @@ const RestaurantContainer = (props) => {
                 </Typography>
                 <Typography
                   variant="body2"
-                  style={{color:'#171A29'}}
+                  style={{ color: "#171A29" }}
                   component="body2"
                   className={classes.typographyDetails}
                 >
-                {  <div>{restaurantData?.restaurantCategory?.join(",  ")?? "No Categories defined"}</div>}
+                  {
+                    <div>
+                     
+                     
+
+                        {restaurantData?.restaurantCategory?.map((cat,index) => {
+                            return (
+                              
+                                cat ? <><Chip variant="outlined" size="small" label={cat} /> </>:  "No Categories defined"
+                              
+                              
+                            )
+
+                        })}
+                    </div>
+                  }
                 </Typography>
 
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
-                  style={{color:'#171A29'}}
+                  style={{ color: "#171A29" }}
                 >
+                    
+
+
                   {restaurantData.restaurantDescription}
                 </Typography>
                 <br />
                 <Typography
                   variant="body2"
                   className={classes.typographyDetails}
-                  style={{color:'#171A29'}}
+                  style={{ color: "#171A29" }}
                 >
                   {/* <b>Address</b>: */}
-                  {restaurantData?.restaurantLocation?.streetAddress + ","
-                    + restaurantData?.restaurantLocation?.area + ","
-                    + restaurantData?.restaurantLocation?.landmark + ","
-                    + restaurantData?.restaurantLocation?.city + ","
-                    + restaurantData?.restaurantLocation?.state + ","
-                  +restaurantData?.restaurantLocation?.country}
+                  {restaurantData?.restaurantLocation?.streetAddress +
+                    "," +
+                    restaurantData?.restaurantLocation?.area +
+                    "," +
+                    restaurantData?.restaurantLocation?.landmark +
+                    "," +
+                    restaurantData?.restaurantLocation?.city +
+                    "," +
+                    restaurantData?.restaurantLocation?.state +
+                    "," +
+                    restaurantData?.restaurantLocation?.country}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -276,7 +341,8 @@ const RestaurantContainer = (props) => {
                   className={classes.typographyDetails}
                   color="#171A29"
                 >
-                  Dine-In Timing: {restaurantData?.workingHours?.start} AM to {restaurantData?.workingHours?.end} PM
+                  Dine-In Timing: {restaurantData?.workingHours?.start} AM to{" "}
+                  {restaurantData?.workingHours?.end} PM
                 </Typography>
                 <Box
                   display="flex"
@@ -285,24 +351,42 @@ const RestaurantContainer = (props) => {
                 >
                   <div className={classes.restDetailRatingDiv}>
                     <p className={classes.rating}>
-                      <StarRateIcon /> {restaurantData.rating_avg}
+                      <StarRateIcon /> {parseFloat(restaurantData.rating_avg).toFixed(1)}
                     </p>
                   </div>
-                  
+
                   <div className={classes.restDetailRatingDiv}>
-                    <b>Rs. { restaurantData.restaurantCostForTwo}</b>
+                    <b>Rs. {restaurantData.restaurantCostForTwo}</b>
                     <br />
                     Costs for Two
                   </div>
+                  <div className={classes.restDetailRatingDiv}> <p onClick={handleClickOpen} className={classes.addRatingBtn}>Add Rating</p></div>
+                 
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="form-dialog-title"
+                   
+                  >
+                    <DialogTitle className={classes.editHeading}>
+                     <p  className={classes.addRating}>Add Rating</p> 
+                    </DialogTitle>
+                  
+                    <DialogContent  className={classes.ratingDialog}>
+                    <SimpleRating handleSubmitOfRating={handleSubmitOfRating}    onClose={handleClose}/> {console.log('Value of stars',ratings)}
+                    </DialogContent>
+                  
+                  </Dialog>
                 </Box>
               </div>
             </Grid>
-
             {/* ImageSEction */}
             <Grid item xs={12} sm={12} md={7} lg={6}>
               <Box className={classes.imgContainer}>
                 {/*Rest caaarausala for images */}
-                 <RestaurantInfoCarausal images={restaurantData?.restaurantImages} /> 
+                <RestaurantInfoCarausal
+                  images={restaurantData?.restaurantImages}
+                />
               </Box>
             </Grid>
           </Grid>
@@ -399,7 +483,10 @@ const RestaurantContainer = (props) => {
         md={12}
         //style={{ marginTop: 20, marginLeft: "20", paddingLeft: 10 }}
       >
-        <RestaurantItems items={items} restaurantId={props.match.params.restaurantId}/>
+        <RestaurantItems
+          items={items}
+          restaurantId={props.match.params.restaurantId}
+        />
       </Grid>
       <FooterGrid />
     </>
