@@ -7,26 +7,55 @@ import IconButton from "@material-ui/core/IconButton";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
-import { Container } from "@material-ui/core";
+import { Link, Redirect } from "react-router-dom";
+import { Container, Box } from "@material-ui/core";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { decodeToken } from "../services/authUser";
+import { logout } from "./../services/authUser";
+import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "#171a29",
-    height:'70px'
+    height: "70px",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
     color: "white",
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
+  navLink: {
+    textDecoration: "none",
+    color: "white",
+  },
+  navbarLinks: {
+    marginRight: "2vw",
+    fontSize:"16px",
+    padding:"10px",
+    "&:hover": {
+      color: "#f5d6a4",
+    },
+  },
 }));
 
 export default function NavAppBar() {
   const classes = useStyles();
+
+  const token = localStorage.getItem("token");
+  let authenticated = "";
+  if (token) {
+    authenticated = decodeToken(token);
+    console.log("NAVBAR JSX", authenticated.role);
+  } else {
+    <Redirect to="/"></Redirect>;
+  }
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <React.Fragment>
       <AppBar className={classes.root}>
@@ -41,23 +70,90 @@ export default function NavAppBar() {
                 />
               </Link>
             </Typography>
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to={`/login/`}
-            >
-              <Button color="inherit">
-                <PersonOutlineOutlinedIcon /> Sign In
-              </Button>
-            </Link>
 
-            <Link style={{ textDecoration: "none", color: "white" }} to={`/deliverypage/`}>
+            {/* Sign  in & sign out btn */}
+
+            {authenticated ? (
+              <Box display="flex" flexDirection="flex-end">
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to={`/profile`}
+                >
+                  <div className={classes.navbarLinks}>User Name </div>
+                </Link>
+
+                {/* ROLE == NU */}
+                {authenticated.role === "NU" ? (
+                  /* orders */
+                  <>
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={`/myorders`}
+                    >
+                      <div className={classes.navbarLinks}><ListAltOutlinedIcon style={{marginRight:"5px"}}/>Orders</div>
+                    </Link>
+
+                    {/* cart page */}
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={`/cart`}
+                    >
+                      <div className={classes.navbarLinks}><ShoppingCartOutlinedIcon style={{marginRight:"5px"}}/>Cart</div>
+                    </Link>
+                  </>
+                ) : null}
+
+                {/* ROLE == DE */}
+
+                 {authenticated.role === "DE" ? (
+                  /* orders */
+                  <>
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={`/deliverypage`}
+                    >
+                      <div className={classes.navbarLinks}><ListAltOutlinedIcon style={{marginRight:"5px"}}/>Your Orders</div>
+                    </Link>
+
+                   
+                  </>
+                ) : null}
+
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to={`/`}
+                >
+                  <div
+                    className={classes.navbarLinks}
+                    color="inherit"
+                    onClick={handleLogout}
+                  >
+                    <ExitToAppIcon style={{ marginRight: "5px" }} />
+                    Sign Out
+                  </div>
+                </Link>
+              </Box>
+            ) : (
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={`/login/`}
+              >
+                <div className={classes.navbarLinks}>
+                  <PersonOutlineOutlinedIcon /> Sign In
+                </div>
+              </Link>
+            )}
+
+            {/* <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/deliverypage/`}
+            >
               <Button color="inherit">Delivery</Button>
-            </Link>
+            </Link> */}
 
             {/* <Link style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }} to={`/profile`}>
               <Button color="inherit">Profile</Button>
             </Link> */}
-
 
             {/*  <Link
               style={{ textDecoration: "none", color: "rgb(23, 26, 41)" }}
@@ -72,7 +168,7 @@ export default function NavAppBar() {
               {" "}
               <Button color="inherit">Profile</Button>
             </Link> */}
-            <Link
+            {/*  <Link
               style={{ textDecoration: "none", color: "white" }}
               to={`/cart/`}
             >
@@ -80,7 +176,7 @@ export default function NavAppBar() {
                 <ShoppingCartOutlinedIcon />
                 Cart
               </Button>
-            </Link>
+            </Link> */}
           </Toolbar>
         </Container>
       </AppBar>

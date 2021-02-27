@@ -18,9 +18,10 @@ import MyOrders from "./pages/MyOrders";
 import AcceptedOrders from "./pages/AcceptedOrders";
 import PositionedSnackbar from "./components/snackbar";
 import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from "./routes/route";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
+import SignIn from './components/SignIn'
+import SignUp from './components/SignUp'
 import ForgotPassword from './components/ForgotPassword';
+
 
 function App() {
   return (

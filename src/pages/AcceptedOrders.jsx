@@ -50,10 +50,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
   },
   imageText: {
+    marginTop:"2%",
     fontSize: "2rem",
-    color: "white",
+    color: "#171a29",
     // float: 'left',
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(0.75)" },
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(0.75)",transition:"ease-out 0.7s" },
     cursor: "pointer",
   },
   paper: {
@@ -86,8 +87,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     height: "auto",
     backgroundColor: "white",
-    borderRadius: "25px",
-    boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+    borderRadius: "5px",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
   },
 
   acceptButton: {
@@ -117,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   deliveryImageDiv: {
-    backgroundColor: "#171a29",
+    backgroundColor: "",
     textAlign: "center",
     width: "100%",
     height: "50vh",
@@ -126,8 +127,8 @@ const useStyles = makeStyles((theme) => ({
   imagesize: {
     marginTop: "15%",
     width: "85%",
-    borderRadius: "10px",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
+    borderRadius: "5px",
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" ,transition:"0.7s"},
     cursor: "pointer",
   },
 
@@ -223,7 +224,7 @@ export default function AcceptedOrders() {
                   className={classes.imagesize}
                 />
                 <div className={classes.imageText}>
-                  <b>Accepted Orders</b>
+                  <strong>Accepted Orders</strong>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -232,7 +233,7 @@ export default function AcceptedOrders() {
                   className={classes.imagesize}
                 />
                 <div className={classes.imageText}>
-                  <b>Your restaurants Delivered</b>
+                  <strong>Your restaurants Delivered</strong>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -241,7 +242,7 @@ export default function AcceptedOrders() {
                   className={classes.imagesize}
                 />
                 <div className={classes.imageText}>
-                  <b>Deliver with Foodiz</b>
+                  <strong>Deliver with Foodiz</strong>
                 </div>
               </Grid>
             </Grid>

@@ -53,10 +53,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
   },
   imageText: {
+    marginTop:"2%",
     fontSize: "2rem",
-    color: "white",
+    color: "#171a29",
     // float: 'left',
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(0.75)" },
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(0.75)",transition:"ease-out 0.7s" },
     cursor: "pointer",
   },
   paper: {
@@ -75,11 +76,14 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
     fontWeight: 600,
     height: "auto",
-    borderRadius: "10px",
+    borderRadius: "5px",
     backgroundColor: "white",
   },
   orderdiv: {
     marginTop: "10px",
+  },
+  orderdivDetail: {
+    marginTop: "15px",
   },
 
   orderDetailsDisplay: {
@@ -89,8 +93,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     height: "auto",
     backgroundColor: "white",
-    borderRadius: "25px",
-    boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+    borderRadius: "5px",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
   },
 
   acceptButton: {
@@ -120,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   deliveryImageDiv: {
-    backgroundColor: "#171a29",
+    backgroundColor: "white",
     textAlign: "center",
     width: "100%",
     height: "50vh",
@@ -129,8 +133,8 @@ const useStyles = makeStyles((theme) => ({
   imagesize: {
     marginTop: "15%",
     width: "85%",
-    borderRadius: "10px",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
+    borderRadius: "5px",
+    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" ,transition:"0.7s"},
     cursor: "pointer",
   },
 
@@ -305,9 +309,10 @@ export default function DeliveryPage() {
 
         <Container maxWidth="lg">
           <Grid container spacing={3}>
-            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
+            <Grid item container xs={12} sm={12} md={12} lg={6} spacing={3}>
+              
                 {orders.map((order) => (
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                   <Paper className={classes.paper}>
                     <div className={classes.orderDetails}>
                       <Grid item container xs={6} sm={6} md={6} lg={6}>
@@ -334,42 +339,44 @@ export default function DeliveryPage() {
                           </div>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6} lg={6}>
-                          <div className={classes.orderdiv}>
+                          <div className={classes.orderdivDetail}>
                             {" "}
                             <b>#{order._id}</b>{" "}
                           </div>
-                          <div className={classes.orderdiv}>
+                          <div className={classes.orderdivDetail}>
                             {" "}
                             <b>{order.restaurantDetails.restaurantName}</b>
                           </div>
-                          <div className={classes.orderdiv}>
+                          <div className={classes.orderdivDetail}>
                             {" "}
                             <b>
                               {order.orderLocation.streetAddress},
                               {order.orderLocation.landmark
                                 ? order.orderLocation.landmark + ","
                                 : ""}
-                              {order.orderLocation.area},
+                              {order.orderLocation.area}, 
                               {order.orderLocation.city},
                               {order.orderLocation.state}
                             </b>
                           </div>
-                          <div className={classes.orderdiv}>
+                          <div className={classes.orderdivDetail}>
                             {" "}
-                            {/* <b>{order.restaurantDetails.restaurantLocation.streetAddress}</b> */}
+                            <b>{order.restaurantDetails.restaurantLocation.streetAddress}</b>
                           </div>
                         </Grid>
-
-                        <div className={classes.acptbtnDiv}>
+                       
+                         {/*  <div className={classes.acptbtnDiv}> */}
+                          <Grid item container justify="flex-end" lg={12}>
                           <Button
                             onClick={() => handleOrders(order._id)}
                             className={classes.acceptButton}
                             variant="contained"
                             color="secondary"
                           >
-                            Accept
+                                Accept
                           </Button>
-                        </div>
+                          </Grid>
+                       {/*  </div> */}
 
                         <Snackbar
                           open={snackstate.open}
@@ -390,9 +397,10 @@ export default function DeliveryPage() {
                         </Snackbar>
                       </Grid>
                     </div>
-                  </Paper>
+                    </Paper>
+                    </Grid>
                 ))}
-              </Grid>
+             
             </Grid>
           </Grid>
         </Container>

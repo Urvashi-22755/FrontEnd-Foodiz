@@ -25,8 +25,8 @@ import NavAppBar from "./Navbar";
 import Mirage from "@material-ui/core/colors";
 import FooterGrid from "./Footer";
 import InputAdornment from "@material-ui/core/InputAdornment";
-
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { authUser } from './../services/authUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#171a29",
     marginTop: "12%",
     "&:hover": {
-      backgroundColor:"#171a29"
-    }
+      backgroundColor: "#171a29",
+    },
   },
   paper: {
     height: "auto",
@@ -57,14 +57,18 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "2%",
   },
-  foodie:{
+  foodie: {
     marginTop: "2%",
     marginLeft: "auto",
     marginRight: "auto",
   },
-  forgetpassword:{
-    cursor:'pointer'
-  }
+  forgetpassword: {
+    cursor: "pointer",
+    marginLeft: "2px",
+  },
+  wantToregister: {
+    float: "right",
+  },
 }));
 
 const avatarStyle = { backgroundColor: "black", fontsize: "large" };
@@ -137,7 +141,10 @@ export default function SignIn(props) {
   const loginUser = (userData) => {
     //Posting Data to the Server.
 
-    axios
+  
+    const response = authUser(userData,props);
+    console.log('Login Response', response)
+    /* axios
       .post("http://localhost:5000/user/authenticate", userData) //User Id and User ROle in TOken
       .then((res) => {
         console.log("Login res", res);
@@ -156,7 +163,7 @@ export default function SignIn(props) {
         } else {
           props.history.push("/profile");
         }
-      });
+      }); */
   };
 
   return (
@@ -216,13 +223,23 @@ export default function SignIn(props) {
                     >
                       Sign In
                     </Button>
-                    <p className={classes.foodie}>
-                   
-                  Forgot Password?  
-                   <Link to="/forgotpassword" className={classes.forgetpassword}>
-                    { "   " } Change Password.
-                   </Link>
-                 </p>
+                    <Grid item justify="space-between">
+                      <p className={classes.foodie}>
+                        Forgot Password?
+                        <Link
+                          to="/forgotpassword"
+                          className={classes.forgetpassword}
+                        >
+                          {"   "} Change Password.
+                        </Link>
+                        <div className={classes.wantToregister}>
+                          Want to register?
+                          <Link to="/signup" className={classes.forgetpassword}>
+                            Sign Up
+                          </Link>
+                        </div>
+                      </p>
+                    </Grid>
                   </form>
                 </Box>
               </div>

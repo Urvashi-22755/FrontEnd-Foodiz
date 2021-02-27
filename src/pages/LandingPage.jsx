@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -24,9 +24,11 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Dialog, DialogContent } from "@material-ui/core";
-import SignUp from "../components/Signup"
-import SignIn from "../components/SignIn"
+import SignUp from "../components/SignUp";
+import SignIn from "../components/SignIn";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { decodeToken } from "../services/authUser";
+import { logout } from "./../services/authUser";
 
 const theme = createMuiTheme({
   typography: {
@@ -37,6 +39,10 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  body: {
+    margin: 0,
+    padding: 0,
   },
   // rating:{
   //   marginTop: '5%',
@@ -108,13 +114,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     marginTop: "200px",
-    marginRight: "500px",
+    marginRight: "30%",
   },
   logintext: {
     float: "right",
     marginTop: 0,
     fontSize: "20px",
-    padding: "20px",
+    //padding: "20px",
   },
   spaceText: {
     display: "flex",
@@ -170,6 +176,17 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  loggedInUser: {
+    marginRight: "20px",
+  },
+  navbarLinks: {
+    fontSize: '20px',
+    marginTop:"5%",
+    marginRight: "1vw",
+    "&:hover": {
+      color: "#171A29",
+    },
+  },
 }));
 
 const handleId = (rest) => {
@@ -179,16 +196,18 @@ const handleId = (rest) => {
 export default function LandingPage(props) {
   const classes = useStyles();
 
-  /*  const [openSignUp, setOpenSignUp] = useState(false); //State to open Dialgoues Sign UP!
-  const [openSignIn, setOpenSignIn] = useState(false); //State to open Dialgoues Login! */
+  const token = localStorage.getItem("token");
+  let authenticated = "";
+  if (token) {
+    authenticated = decodeToken(token);
+  } else {
+    <Redirect to="/"></Redirect>;
+  }
 
-  const authenticated = localStorage.getItem("role");
-
+  const handleLogout = () => {
+    logout();
+  };
   const restaurants = foodData();
-
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -197,28 +216,50 @@ export default function LandingPage(props) {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <div className={classes.SignupLogin}>
               <div className={classes.logintext}>
-                <img src="" />
                 <div className={classes.spaceText}>
-                  <Link style={{ textDecoration: "none" }} to="/signup">
-                    <Button
-                      className={
-                        classes.signUpText
-                      }
-                    >
-                      <PersonIcon /> Signup
-                    </Button>
-                  </Link>
+                  {authenticated ? (
+                    <>
+                      {/* username */}
+                      <Link
+                        style={{ textDecoration: "none", color: "black" }}
+                        to={`/profile`}
+                      >
+                        <div className={classes.navbarLinks}>Person</div>
+                      </Link>
 
-                  <Link style={{ textDecoration: "none" }} to="/login">
+            
+
+                      {/* logout */}
+                      <Link
+                        style={{ textDecoration: "none", color: "black" }}
+                        to={`/`}
+                      >
+                        <div color="inherit" className={classes.navbarLinks} onClick={handleLogout}>
+                          <ExitToAppIcon style={{ marginRight: "5px" }} />
+                          Sign Out
+                        </div>
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      style={{ textDecoration: "none", color: "black" }}
+                      to="/login"
+                    >
+                      <Button className={classes.signUpText}>
+                        <PersonIcon /> SignIn
+                      </Button>
+                    </Link>
+                  )}
+
+                  {/*  <Link style={{ textDecoration: "none" }} to="/login">
                     <Button
                       className={classes.signUText}
                     
                     >
                       <ExitToAppIcon /> Login
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
-             
               </div>
               <div className={classes.quote}>
                 <Typography variant="h1">FOODIZ</Typography>
