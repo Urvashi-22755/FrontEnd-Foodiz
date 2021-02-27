@@ -104,7 +104,7 @@ function MyOrders(props) {
                 return (
                   <Grid item lg={6} md={6} sm={12} xs={12} key={order._id}>
                     <Paper className={classes.paper} id="1234">
-                      <Grid container spacing={2}>
+                      <Grid>
                         {/* Title */}
                         <Grid item container direction="row" lg={12}>
                           <Grid item lg={2} md={2} sm={2} xs={2}>
@@ -132,7 +132,7 @@ function MyOrders(props) {
                         <hr />
 
                         {/* Content */}
-                        <Grid item lg={12}>
+                        <Grid item lg={12}  md={12} sm={12} xs={12}>
                           <p>
                             <b>Order Id :</b>
                             <strong> #{order._id}</strong>
@@ -140,14 +140,14 @@ function MyOrders(props) {
                           <p>
                             <b>Order Date:</b>
                             <strong>
-                              {" "}
+                           
                               {handleDate(order.orderDateAndTime)}
                             </strong>
                           </p>
                           <p>
                             <b>Order Time:</b>
                             <strong>
-                              {" "}
+                          
                               {handleTime(order.orderDateAndTime)}
                             </strong>
                           </p>
