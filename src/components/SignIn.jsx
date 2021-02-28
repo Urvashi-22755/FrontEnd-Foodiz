@@ -14,13 +14,14 @@ import PersonIcon from "@material-ui/icons/Person";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import axios from "axios";
-import { Formik, Field } from "formik";
+import jwt_decode from "jwt-decode";
+
 import * as Yup from "yup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { useState } from "react";
 import { Dialog, DialogContent } from "@material-ui/core";
-import jwt_decode from "jwt-decode";
+
 import NavAppBar from "./Navbar";
 import Mirage from "@material-ui/core/colors";
 import FooterGrid from "./Footer";

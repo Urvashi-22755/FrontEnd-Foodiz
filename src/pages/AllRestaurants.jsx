@@ -5,8 +5,8 @@ import foodData from "../data/Restaurants";
 import { Link }  from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { fade, Grid, Card } from "@material-ui/core";
-// import Box from "@material-ui/core/Box";
+import { fade, Grid, Card ,FormControl,InputLabel,Select} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 // import Avatar from "@material-ui/core/Avatar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +14,6 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-// import "materialize-css/dist/css/materialize.min.css";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import SearchBar from "material-ui-search-bar";
 
@@ -126,8 +125,10 @@ import { axios } from 'axios';
   },
   searchbar: {
     marginTop: "5%",
-    marginBottom: '5%',
-    height: "6vh",
+    // marginBottom: '5%',
+    height: "7vh",
+    width: '100%',
+    
     backgroundColor: "#ffffff",
     "&:hover": {
       backgroundColor: "#ffffff",
@@ -156,6 +157,15 @@ import { axios } from 'axios';
     width: "60px",
     backgroundColor: "#48c479",
     color: "white"
+  }
+  ,
+
+  searchAlign:{
+    display: 'flex',
+    flexDirection: 'row',
+    // justifyContent: '',
+    marginLeft: '5%'
+    
   }
 }));
 
@@ -186,11 +196,40 @@ export default function AllRestaurants() {
         <Typography className={classes.cardtitle} variant="h4">
           RESTAURANTS
         </Typography>
-        <SearchBar
+
+      <Box className={classes.searchAlign}>
+      <div className={classes.statusSelect}>
+                          <FormControl
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel htmlFor="age-native-simple">
+                              Select City
+                            </InputLabel>
+                            <Select
+                              native
+                              // value={state}
+                              // onChange={handleChange}
+                              label="Status"
+                              className={classes.formselect}
+                            >
+                              <option aria-label="None" value="" />
+                              <option value="Completed">Gandhinagar</option>
+                              {/* <option value={20}>In Process</option> */}
+                              <option value="Out For Delivery">
+                                Ahmedabad
+                              </option>
+                            </Select>
+                          </FormControl>
+                              
+                        </div>
+    <div>
+    <SearchBar
           className={classes.searchbar}
           placeholder="Search for Restaurants or dishes.."
         />
-
+    </div>
+      </Box>
 
 
 {/* <FullWidthTabs></FullWidthTabs> */}
