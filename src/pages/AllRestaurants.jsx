@@ -1,11 +1,19 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
-import { Link }  from "react-router-dom";
+import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { fade, Grid, Card ,FormControl,InputLabel,Select} from "@material-ui/core";
+import {
+  fade,
+  Grid,
+  Card,
+  FormControl,
+  InputLabel,
+  InputBase,
+  Select,
+} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 // import Avatar from "@material-ui/core/Avatar";
@@ -18,7 +26,6 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import SearchBar from "material-ui-search-bar";
 
 import axios from "axios";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,10 +117,15 @@ const useStyles = makeStyles((theme) => ({
     /*  "&$selected": {
           backgroundColor: "white !important"
 import { axios } from 'axios';
+import { InputBase } from '@material-ui/core/InputBase';
+import { InputBase } from '@material-ui/core/InputBase';
 
         } */
-        boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" ,transition:"0.7s"},
+    boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+    "&:hover": {
+      transform: "translate3D(0,-7px,0) scale(1.05)",
+      transition: "0.7s",
+    },
   },
 
   restcontainer: {
@@ -127,8 +139,8 @@ import { axios } from 'axios';
     marginTop: "5%",
     // marginBottom: '5%',
     height: "7vh",
-    width: '100%',
-    
+    width: "auto",
+
     backgroundColor: "#ffffff",
     "&:hover": {
       backgroundColor: "#ffffff",
@@ -156,37 +168,75 @@ import { axios } from 'axios';
     marginTop: "5%",
     width: "60px",
     backgroundColor: "#48c479",
-    color: "white"
-  }
-  ,
-
-  searchAlign:{
-    display: 'flex',
-    flexDirection: 'row',
+    color: "white",
+  },
+  searchAlign: {
+    display: "flex",
+    flexDirection: "row",
     // justifyContent: '',
-    marginLeft: '5%'
-    
-  }
+    marginLeft: "5%",
+  },
+  statusSelect: {
+    marginTop: "2%",
+    marginRight: "2%",
+    float: "left",
+  },
 }));
 
 const handleId = (rest) => {
-  console.log('Rest Id',rest);
+  console.log("Rest Id", rest);
 };
 
 export default function AllRestaurants() {
   const classes = useStyles();
   // const restaurants = foodData();
-
+  const [city, setCity] = useState("");
+  const [search, setSearch] = useState("");
   const [restaurants, setRestaurants] = useState([]);
-  
-  useEffect(()=>{
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const handleCityChange = async (event) => {
+    console.log(event.target.value);
+    setCity(event.target.value);
+    const data = await getSearchedRestaurants(city, search);
+    setRestaurants(data);
+  };
+  const handleSearchChange = async (event) => {
+    console.log(event);
+    setSearch(event);
+    const data = await getSearchedRestaurants(city, search);
+    setRestaurants(data);
+  };
+
+  const getSearchedRestaurants = async (city, search) => {
+    console.log("city and rest", city, search);
+    const resp = await axios.get(
+      "http://localhost:5000/restaurant/searchrestaurants",
+      { params: 
+        { city: city, search: search } 
+      },
+      {
+        headers: headers,
+      }
+    );
+    return resp.data;
+  };
+
+  useEffect(() => {
     (async function () {
-        console.log("sdfsdf");
-        const res = await axios.get('http://localhost:5000/restaurant/getrestaurants');
-        console.log(res);
-        setRestaurants(res.data)
-      })();
-  },[])
+      console.log("sdfsdf");
+      const res = await axios.get(
+        "http://localhost:5000/restaurant/getrestaurants"
+      );
+      console.log(res);
+      setRestaurants(res.data);
+    })();
+  }, []);
 
   return (
     <React.Fragment>
@@ -197,42 +247,34 @@ export default function AllRestaurants() {
           RESTAURANTS
         </Typography>
 
-      <Box className={classes.searchAlign}>
-      <div className={classes.statusSelect}>
-                          <FormControl
-                            variant="outlined"
-                            className={classes.formControl}
-                          >
-                            <InputLabel htmlFor="age-native-simple">
-                              Select City
-                            </InputLabel>
-                            <Select
-                              native
-                              // value={state}
-                              // onChange={handleChange}
-                              label="Status"
-                              className={classes.formselect}
-                            >
-                              <option aria-label="None" value="" />
-                              <option value="Completed">Gandhinagar</option>
-                              {/* <option value={20}>In Process</option> */}
-                              <option value="Out For Delivery">
-                                Ahmedabad
-                              </option>
-                            </Select>
-                          </FormControl>
-                              
-                        </div>
-    <div>
-    <SearchBar
-          className={classes.searchbar}
-          placeholder="Search for Restaurants or dishes.."
-        />
-    </div>
-      </Box>
+        <Box className={classes.searchAlign}>
+          <div className={classes.statusSelect}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel htmlFor="age-native-simple">Select City</InputLabel>
+              <Select
+                native
+                value={city}
+                onChange={handleCityChange}
+                label="Status"
+                className={classes.formselect}
+              >
+                <option aria-label="None" value="" />
+                <option value="Gandhinagar">Gandhinagar</option>
+                {/* <option value={20}>In Process</option> */}
+                <option value="Abad">Abad</option>
+              </Select>
+            </FormControl>
+          </div>
+          <div>
+            <SearchBar
+              className={classes.searchbar}
+              placeholder="Search for Restaurants or dishes.."
+              onChange={handleSearchChange}
+            />
+          </div>
+        </Box>
 
-
-{/* <FullWidthTabs></FullWidthTabs> */}
+        {/* <FullWidthTabs></FullWidthTabs> */}
 
         <Grid
           item
@@ -242,9 +284,9 @@ export default function AllRestaurants() {
           className={classes.restcontainer}
         >
           <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6}>
-            {restaurants.map((rest) => (
+            {restaurants?.map((rest) => (
               <Grid item xs={12} sm={6} md={6} lg={4} key={rest._id}>
-                <div className={classes.cardborder} >
+                <div className={classes.cardborder}>
                   <Link
                     style={{ textDecoration: "none" }}
                     to={`restaurant/${rest._id}`}
@@ -259,33 +301,40 @@ export default function AllRestaurants() {
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="h2">
-                          {rest.restaurantName}
+                            {rest.restaurantName}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            {rest.restaurantCategory.join(",")}
                           </Typography>
                           <Typography
+                            gutterBottom
                             variant="body2"
+                            component="p"
                             color="textSecondary"
-                            
                           >
-                             { rest.restaurantCategory.join(',')}
-                          </Typography>
-                          <Typography gutterBottom variant="body2" component="p" color="textSecondary">
-                          {rest.restaurantDescription}
+                            {rest.restaurantDescription}
                           </Typography>
                           <Typography
                             variant="body2"
                             color="textSecondary"
                             component="h3"
                           >
-                            {rest?.restaurantLocation?.streetAddress + ","
-                    + rest?.restaurantLocation?.area + " ,"
-                    + rest?.restaurantLocation?.landmark + " ,"
-                    + rest?.restaurantLocation?.city + " ,"
-                    + rest?.restaurantLocation?.state + " ,"
-                  +rest?.restaurantLocation?.country}
+                            {rest?.restaurantLocation?.streetAddress +
+                              "," +
+                              rest?.restaurantLocation?.area +
+                              " ," +
+                              rest?.restaurantLocation?.landmark +
+                              " ," +
+                              rest?.restaurantLocation?.city +
+                              " ," +
+                              rest?.restaurantLocation?.state +
+                              " ," +
+                              rest?.restaurantLocation?.country}
                           </Typography>
                           <Typography>
                             <p className={classes.rating}>
-                              <StarRateIcon />{parseFloat(rest.rating_avg).toFixed(1)}
+                              <StarRateIcon />
+                              {parseFloat(rest.rating_avg).toFixed(1)}
                             </p>
                           </Typography>
                         </CardContent>
@@ -298,9 +347,6 @@ export default function AllRestaurants() {
               </Grid>
             ))}
           </Grid>
-
-
-          
         </Grid>
       </Container>
 

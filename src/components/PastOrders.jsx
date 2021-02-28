@@ -174,44 +174,7 @@ const handleId = rest => {
     return newDate.toTimeString();
   };
 
-  // const length = restaurants.length;
-  // console.log(length);
-  // let limit = 2;
-
-  // const [showMore, setShowMore] = useState(true);
-  // console.log("rest", restaurants);
   
-  // const [list, setList] = useState(
-  //   _(restaurants)
-  //     .slice(0)
-  //     .take(limit)
-  //     .value()
-  // );
-
-  // const [index, setIndex] = useState(limit);
-  // console.log(index);
-
-  // const loadMore = () => {
-  //   const newIndex = index + limit;
-    
-  //   console.log("index", index);
-  //   console.log("new indedx", newIndex);
-  //   const newShowMore = newIndex <= length - 1;
-  //   console.log("new show more", newShowMore);
-  //   const newList = _.concat(
-  //     list,
-  //     _(restaurants)
-  //       .slice(limit,newIndex)
-  //       .take(limit)
-  //       .value()
-  //   );
-  //   console.log("new list", newList);
-  //   setIndex(newIndex);
-  //   setList(newList);
-  //   setShowMore(newShowMore);
-  // };
-
-  // console.log(list);
   return (
     <div className={classes.root}>
       <Container>
@@ -270,7 +233,6 @@ const handleId = rest => {
                 </Paper>
               ))}
             </Paper>
-            {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
           </Grid>
         </Grid>
       </Container>
