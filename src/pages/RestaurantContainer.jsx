@@ -148,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
 const RestaurantContainer = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
-  const [vegChecked, setvegChecked] = useState(false);
+  const [vegChecked, ] = useState(false);
   const allVeg = items.every((item) => item.type === "veg");
   const [restaurantData, setRestaurant] = useState({});
   const [open, setOpen] = useState(false);
@@ -167,12 +167,9 @@ const RestaurantContainer = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  console.log("hello above effect");
   useEffect(() => {
     (async function () {
       const res = await getRestaurantById(props.match.params.restaurantId);
-      console.log("method response", res);
       setRestaurant(res);
       setItems(res.menuDetails);
     })();
@@ -202,9 +199,11 @@ const RestaurantContainer = (props) => {
     } else setItems(data); */
   };
 
+
   //filter based on veg-only..
   const handleChange = (event) => {
-    console.log("value:", event.target.value);
+    
+  //  console.log("value:", event.target.value);
     // if (vegChecked === true) {
     //   setvegChecked(false);
     //   setItems(data);
@@ -238,7 +237,6 @@ const RestaurantContainer = (props) => {
   return (
     <>
       <NavAppBar></NavAppBar>
-
       <Container>
         <Grid container className={classes.orderbox}>
           <Grid
@@ -277,6 +275,7 @@ const RestaurantContainer = (props) => {
                   component="body2"
                   className={classes.typographyDetails}
                 >
+              {/* {ratings.review} {ratings.rating} */}
                   {
                     <div>
                       {restaurantData?.restaurantCategory?.map((cat, index) => {

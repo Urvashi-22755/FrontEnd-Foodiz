@@ -21,6 +21,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
+import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,11 +51,14 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
   },
   imageText: {
-    marginTop:"2%",
+    marginTop: "2%",
     fontSize: "2rem",
     color: "#171a29",
     // float: 'left',
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(0.75)",transition:"ease-out 0.7s" },
+    "&:hover": {
+      transform: "translate3D(0,-7px,0) scale(0.75)",
+      transition: "ease-out 0.7s",
+    },
     cursor: "pointer",
   },
   paper: {
@@ -103,10 +107,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "8%",
     float: "right",
   },
-  statusSelect: {
-    marginTop: "10%",
-    float: "left",
-  },
+
   confirmBtn: {
     marginTop: "15%",
     width: "150px",
@@ -128,7 +129,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15%",
     width: "85%",
     borderRadius: "5px",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" ,transition:"0.7s"},
+    "&:hover": {
+      transform: "translate3D(0,-7px,0) scale(1.05)",
+      transition: "0.7s",
+    },
     cursor: "pointer",
   },
 
@@ -144,7 +148,10 @@ export default function AcceptedOrders() {
   const getOrderDetailAcceptedByDeliveryExecutive = async () => {
     console.log("In order deatils by delivery;");
     const res = await axios.get(
-      "http://localhost:5000/delivery/getorderdetailacceptedbydeliveryexecutive"
+      "http://localhost:5000/delivery/getorderdetailacceptedbydeliveryexecutive",
+      {
+        headers: headers,
+      }
     );
     console.log("order detail accepted by delivery executive :", res);
     return res.data;
@@ -157,18 +164,13 @@ export default function AcceptedOrders() {
       setAcceptedOrder(res);
     })();
   }, []);
-  // const orders = OrderData();
-  // console.log(orders);
 
-  //empty array
-  const [orderarray, setorderArray] = useState([]);
+  const token = localStorage.getItem("token");
 
-  //setting the text of a button
- 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
+  const headers = {
+    //"Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
 
   const [state, setState] = useState("None");
   const [optstate, setOtp] = useState();
@@ -192,19 +194,19 @@ export default function AcceptedOrders() {
           orderId: acceptedOrder._id,
           orderStatus: state,
           orderOtp: parseInt(optstate),
+        },
+        {
+          headers: headers,
         }
-        // , {
-        // headers: headers,
-        // }
       );
       console.log("handle status", res);
     } else {
       const res = await axios.post(
         "http://localhost:5000/delivery/changeorderstatus",
-        { orderId: acceptedOrder._id, orderStatus: state }
-        // , {
-        // headers: headers,
-        // }
+        { orderId: acceptedOrder._id, orderStatus: state },
+        {
+          headers: headers,
+        }
       );
       console.log("handle status", res);
     }
@@ -249,191 +251,211 @@ export default function AcceptedOrders() {
           </Grid>
         </div>
 
-        <Container maxWidth="lg">
-          <Grid container spacing={3}>
-            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                <div className={classes.orderDetailsDisplay}>
-                  <Typography
-                    variant="h4"
-                    style={{ textAlign: "center", marginBottom: "5%" }}
-                  >
-                    Order Details
-                  </Typography>
-                  <Grid item container xs={12} sm={6} md={6} lg={12}>
-                    <Grid item xs={12} sm={6} md={6} lg={6}>
-                      <div> Order Id: </div>
-                      <div> Restaurant Name:</div>
-                      <div> PickUp Address: </div>
-                      <div> Drop address: </div>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={6}>
-                      <div>
-                        {" "}
-                        <b>#{acceptedOrder._id}</b>{" "}
-                      </div>
-                      <div>
-                        {" "}
-                        <b>
-                          {acceptedOrder?.restaurantDetails?.restaurantName}
-                        </b>
-                      </div>
-                      <div>
-                        {" "}
-                        <b>
-                          {acceptedOrder?.restaurantDetails?.restaurantLocation
-                            ?.streetAddress +
-                            "," +
-                            acceptedOrder?.restaurantDetails?.restaurantLocation
-                              ?.landmark +
-                            "," +
-                            acceptedOrder?.restaurantDetails?.restaurantLocation
-                              ?.area +
-                            "," +
-                            acceptedOrder?.restaurantDetails?.restaurantLocation
-                              ?.city +
-                            "," +
-                            acceptedOrder?.restaurantDetails?.restaurantLocation
-                              ?.state +
-                            "," +
-                            acceptedOrder?.restaurantDetails?.restaurantLocation
-                              ?.country}
-                        </b>
-                      </div>
-                      <div>
-                        <b>
-                          {acceptedOrder?.orderLocation?.streetAddress +
-                            "," +
-                            acceptedOrder?.orderLocation?.landmark +
-                            "," +
-                            acceptedOrder?.orderLocation?.area +
-                            "," +
-                            acceptedOrder?.orderLocation?.city +
-                            "," +
-                            acceptedOrder?.orderLocation?.state +
-                            "," +
-                            acceptedOrder?.orderLocation?.country}
-                        </b>
-                      </div>
-                    </Grid>
-                  </Grid>
-
-                  <Grid item container lg={12} md={12} sm={12} xs={12}>
-                    <TableContainer className={classes.tablecontainer}>
-                      <Table
-                        className={classes.table}
-                        aria-label="simple table"
-                      >
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>
-                              <b>Food Item</b>
-                            </TableCell>
-                            <TableCell align="right">
-                              <b>Quantity</b>
-                            </TableCell>
-
-                            <TableCell align="right">
-                              <b>Price / item</b>
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {acceptedOrder?.foodList?.map((food) => (
-                            <TableRow key={food._id}>
-                              <TableCell component="th" scope="row">
-                                {food?.foodItem?.foodName}
-                              </TableCell>
-                              <TableCell align="right">
-                                {food?.quantity}
-                              </TableCell>
-                              <TableCell
-                                component="th"
-                                align="right"
-                                scope="row"
-                              >
-                                {food?.foodItem?.foodPrice * food?.quantity}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-
-                    <Grid
-                      container
-                      justify="flex-end"
-                      style={{ marginTop: "20px" }}
+        {(acceptedOrder.message==undefined) ? (
+          <Container maxWidth="lg">
+            <Grid container spacing={3}>
+              <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                  <div className={classes.orderDetailsDisplay}>
+                    <Typography
+                      variant="h4"
+                      style={{ textAlign: "center", marginBottom: "5%" }}
                     >
-                      <Typography variant="h6">
-                        Total Amount : {acceptedOrder.totalAmount}
-                      </Typography>
-                    </Grid>
+                      Order Details
+                    </Typography>
 
                     <Grid item container xs={12} sm={6} md={6} lg={12}>
-                      <Grid item xs={12} sm={6} md={6} lg={4}>
-                        <div className={classes.statusSelect}>
-                          <FormControl
-                            variant="outlined"
-                            className={classes.formControl}
-                          >
-                            <InputLabel htmlFor="age-native-simple">
-                              Status
-                            </InputLabel>
-                            <Select
-                              native
-                              value={state}
-                              onChange={handleChange}
-                              label="Status"
-                              className={classes.formselect}
-                            >
-                              <option aria-label="None" value="" />
-                              <option value="Completed">Completed</option>
-                              {/* <option value={20}>In Process</option> */}
-                              <option value="Out For Delivery">
-                                Out for Delivery
-                              </option>
-                            </Select>
-                          </FormControl>
-                        </div>
+                      <Grid item xs={12} sm={6} md={6} lg={6}>
+                        <div> Order Id: </div>
+                        <div> Restaurant Name:</div>
+                        <div> PickUp Address: </div>
+                        <div> Drop address: </div>
                       </Grid>
-                      {state == "Completed" ? (
-                        <Grid item xs={12} sm={6} md={6} lg={4}>
-                          <TextField
-                            onChange={handleotp}
-                            style={{ marginTop: "12%" }}
-                            id="standard-basic"
-                            name="otp"
-                            label="Standard"
-                          />
-                        </Grid>
-                      ) : null}
-
-                      <Grid
-                        item
-                        container
-                        xs={12}
-                        sm={6}
-                        md={6}
-                        lg={4}
-                        justify="flex-end"
-                      >
+                      <Grid item xs={12} sm={6} md={6} lg={6}>
                         <div>
-                          <Button
-                            className={classes.confirmBtn}
-                            onClick={handleStatus}
-                          >
-                            Confirm
-                          </Button>
+                          {" "}
+                          <b>#{acceptedOrder._id}</b>{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          <b>
+                            {acceptedOrder?.restaurantDetails?.restaurantName}
+                          </b>
+                        </div>
+                        <div>
+                          {" "}
+                          <b>
+                            {acceptedOrder?.restaurantDetails
+                              ?.restaurantLocation?.streetAddress +
+                              "," +
+                              acceptedOrder?.restaurantDetails
+                                ?.restaurantLocation?.landmark +
+                              "," +
+                              acceptedOrder?.restaurantDetails
+                                ?.restaurantLocation?.area +
+                              "," +
+                              acceptedOrder?.restaurantDetails
+                                ?.restaurantLocation?.city +
+                              "," +
+                              acceptedOrder?.restaurantDetails
+                                ?.restaurantLocation?.state +
+                              "," +
+                              acceptedOrder?.restaurantDetails
+                                ?.restaurantLocation?.country}
+                          </b>
+                        </div>
+                        <div>
+                          <b>
+                            {acceptedOrder?.orderLocation?.streetAddress +
+                              "," +
+                              acceptedOrder?.orderLocation?.landmark +
+                              "," +
+                              acceptedOrder?.orderLocation?.area +
+                              "," +
+                              acceptedOrder?.orderLocation?.city +
+                              "," +
+                              acceptedOrder?.orderLocation?.state +
+                              "," +
+                              acceptedOrder?.orderLocation?.country}
+                          </b>
                         </div>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </div>
+
+                    <Grid item container lg={12} md={12} sm={12} xs={12}>
+                      <TableContainer className={classes.tablecontainer}>
+                        <Table
+                          className={classes.table}
+                          aria-label="simple table"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <b>Food Item</b>
+                              </TableCell>
+                              <TableCell align="right">
+                                <b>Quantity</b>
+                              </TableCell>
+
+                              <TableCell align="right">
+                                <b>Price / item</b>
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {acceptedOrder?.foodList?.map((food) => (
+                              <TableRow key={food._id}>
+                                <TableCell component="th" scope="row">
+                                  {food?.foodItem?.foodName}
+                                </TableCell>
+                                <TableCell align="right">
+                                  {food?.quantity}
+                                </TableCell>
+                                <TableCell
+                                  component="th"
+                                  align="right"
+                                  scope="row"
+                                >
+                                  {food?.foodItem?.foodPrice * food?.quantity}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+
+                      <Grid
+                        container
+                        justify="flex-end"
+                        style={{ marginTop: "20px" }}
+                      >
+                        <Typography variant="h6">
+                          Total Amount : {acceptedOrder.totalAmount}
+                        </Typography>
+                      </Grid>
+
+                      <Grid item container xs={12} sm={6} md={6} lg={12}>
+                        <Grid item xs={12} sm={6} md={6} lg={4}>
+                          <div className={classes.statusSelect}>
+                            <FormControl
+                              variant="outlined"
+                              className={classes.formControl}
+                            >
+                              <InputLabel htmlFor="age-native-simple">
+                                Status
+                              </InputLabel>
+                              <Select
+                                native
+                                value={state}
+                                onChange={handleChange}
+                                label="Status"
+                                className={classes.formselect}
+                              >
+                                <option aria-label="None" value="" />
+                                <option value="Completed">Completed</option>
+                                {/* <option value={20}>In Process</option> */}
+                                <option value="Out For Delivery">
+                                  Out for Delivery
+                                </option>
+                              </Select>
+                            </FormControl>
+                          </div>
+                        </Grid>
+                        {state == "Completed" ? (
+                          <Grid item xs={12} sm={6} md={6} lg={4}>
+                            <TextField
+                              onChange={handleotp}
+                              style={{ marginTop: "12%" }}
+                              id="standard-basic"
+                              name="otp"
+                              label="Standard"
+                            />
+                          </Grid>
+                        ) : null}
+
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={4}
+                          justify="flex-end"
+                        >
+                          <div>
+                            <Button
+                              className={classes.confirmBtn}
+                              onClick={handleStatus}
+                            >
+                              Confirm
+                            </Button>
+                          </div>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        ) : (
+          <>
+            <Container spacing={3} className={classes.noOrderImage}>
+              <Grid
+                container
+                spacing={3}
+                direction="column"
+                alignItems="center"
+                justify="center"
+              >
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                  <NoPlacedOrdersDelivery />
+                  <h3>No Accepted Orders!</h3>
+                </Grid>
+              </Grid>
+            </Container>
+          </>
+        )}
       </div>
 
       <FooterGrid></FooterGrid>
