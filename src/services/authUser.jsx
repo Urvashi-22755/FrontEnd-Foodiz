@@ -31,8 +31,6 @@ export function authUser(userData, props) {
 export function decodeToken(token) {
     var token = localStorage.getItem("token",token);
     let decodedToken = jwt_decode(token);
-    console.log(decodedToken);
-    console.log("User decode d role", decodedToken.role);
     localStorage.setItem("role", decodedToken.role);
     localStorage.setItem("userId", decodedToken.userId);
 

@@ -12,7 +12,9 @@ import {
   Chip,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import SearchBar from "../components/SearchBar";
+// import SearchBar from "../components/SearchBar";
+import SearchBar from "material-ui-search-bar";
+
 import RestaurantItems from "../components/RestaurantItems";
 import foodData from "../data/FoodData";
 import NavAppBar from "../components/Navbar";
@@ -113,6 +115,8 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
   },
   checkBoxStyle: {
+    // marginRight: '30px',
+
     float: "right",
   },
   rating: {
@@ -123,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
   },
   vegSection: {
     width: "auto",
-    height: "40px",
+    // height: "40px",
     boxShadow: "0 10px 20px rgba(0,0,0,0.10), 0 10px 10px rgba(0,0,0,0.22)",
     padding: "5px",
   },
@@ -143,16 +147,18 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     cursor: "pointer",
   },
+  ecoOutlinedIcon: {
+    marginLeft: "0",
+  },
 }));
 
 const RestaurantContainer = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
-  const [vegChecked, ] = useState(false);
-  const allVeg = items.every((item) => item.type === "veg");
+  const [vegChecked, setVegChecked] = useState(false);
+  // const allVeg = items.filter((item) => item.foodType === "Veg");
   const [restaurantData, setRestaurant] = useState({});
   const [open, setOpen] = useState(false);
-
   const token = localStorage.getItem("token");
   const headers = {
     //'Content-Type': 'application/json',
@@ -176,14 +182,19 @@ const RestaurantContainer = (props) => {
   }, []);
 
   //filter based on  search
-  const handleSearch = (value) => {
-    let filteredItems = items?.filter((search) => {
-      return (
-        search.foodDescription.toLowerCase().includes(value) ||
-        search.foodName.toLowerCase().includes(value)
-      );
-    });
-    setItems(filteredItems);
+  const handleSearchChange = (value) => {
+    if (value == "") {
+      setItems(restaurantData.menuDetails);
+    } else {
+      let filteredItems = restaurantData.menuDetails?.filter((search) => {
+        return (
+          search.foodDescription.toLowerCase().includes(value.toLowerCase()) ||
+          search.foodName.toLowerCase().includes(value.toLowerCase())
+        );
+      });
+      setItems(filteredItems);
+    }
+    const handleSearch = (value) => {};
     /*   if (vegChecked === true && value !== "") {
       let filteredItemsVeg = items.filter((search) => {
         return (
@@ -199,24 +210,16 @@ const RestaurantContainer = (props) => {
     } else setItems(data); */
   };
 
-
   //filter based on veg-only..
-  const handleChange = (event) => {
-    
-  //  console.log("value:", event.target.value);
-    // if (vegChecked === true) {
-    //   setvegChecked(false);
-    //   setItems(data);
-    // } else {
-    //   setvegChecked(true);
-
-    //   let filter = data.filter((d) => d.type === event.target.value);
-    //   // console.log("veg data", filter);
-    //   // console.log(event.target.value);
-    //   setItems(filter);
-
-    //   //console.log("filter [0] - ", filter);
-    // }
+  const handleVegCheckChange = (event) => {
+    setVegChecked(!vegChecked);
+    if (vegChecked != true) {
+      const filterItem = items.filter((item) => item.foodType == "Veg");
+      console.log("in if", filterItem);
+      setItems(filterItem);
+    } else {
+      setItems(restaurantData.menuDetails);
+    }
   };
 
   const handleSubmitOfRating = async (ratingData, event) => {
@@ -275,7 +278,7 @@ const RestaurantContainer = (props) => {
                   component="body2"
                   className={classes.typographyDetails}
                 >
-              {/* {ratings.review} {ratings.rating} */}
+                  {/* {ratings.review} {ratings.rating} */}
                   {
                     <div>
                       {restaurantData?.restaurantCategory?.map((cat, index) => {
@@ -400,7 +403,11 @@ const RestaurantContainer = (props) => {
             md={3}
             style={{ marginTop: 20, marginLeft: "80", paddingLeft: 10 }}
           >
-            <SearchBar page="items" handleSearch={handleSearch} />
+            <SearchBar
+              className={classes.searchbar}
+              placeholder="Search for food"
+              onChange={handleSearchChange}
+            />
           </Grid>
           <Grid
             item
@@ -441,34 +448,22 @@ const RestaurantContainer = (props) => {
             }}
           >
             <div className={classes.checkBoxStyle}>
-              {console.log(
-                "veg irem check",
-                items.every((item) => item.type === "veg")
-              )}
-              {allVeg ? (
-                <Paper className={classes.vegSection}>
-                  <EcoOutlinedIcon
-                    classes={classes.ecoOutlinedIcon}
-                    style={{ color: "green", transform: "scaleX(-1)" }}
-                  />{" "}
-                  <EcoIcon style={{ marginLeft: "-13px", color: "green" }} />
-                  <b>Pure Veg</b>{" "}
-                </Paper>
-              ) : null}
-              {/*  {!allVeg ? ( */}
-              <Paper className="classes.vegSection">
+              <Paper className={classes.vegSection}>
                 <FormControlLabel
                   control={
                     <GreenCheckbox
                       checked={vegChecked}
-                      value="veg"
-                      onChange={handleChange}
+                      onChange={handleVegCheckChange}
                     />
                   }
-                  label="Veg Only"
                 />
+                <EcoOutlinedIcon
+                  classes={classes.ecoOutlinedIcon}
+                  style={{ color: "green", transform: "scaleX(-1)" }}
+                />
+                <EcoIcon style={{ marginLeft: "-13px", color: "green" }} />
+                <b>Pure Veg</b>
               </Paper>
-              {/*   ) : null} */}
             </div>
           </Grid>
         </Grid>

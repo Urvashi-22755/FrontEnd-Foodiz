@@ -16,7 +16,7 @@ import DrawerExample from "../components/DrawerForm";
 import FooterGrid from "../components/Footer";
 import NavAppBar from "../components/Navbar";
 import axios from "axios";
-
+import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -135,8 +135,6 @@ export default function Cart(props) {
   const [address, setAddress] = useState(null);
   const [restaurant, setRestaurant] = useState({});
 
-  const data = foodData();
-
   const token = localStorage.getItem("token");
 
   const headers = {
@@ -188,17 +186,20 @@ export default function Cart(props) {
   };
 
   //Place order method
-  const handlePlaceOrder = async(address) => {
+  const handlePlaceOrder = async (address) => {
     // console.log("order for items", items);
     console.log("delivery address", address);
     console.log("before");
-    const res = await axios.post("http://localhost:5000/order/postorder", { "orderLocation": address },{
-      headers: headers,
-    });
+    const res = await axios.post(
+      "http://localhost:5000/order/postorder",
+      { orderLocation: address },
+      {
+        headers: headers,
+      }
+    );
     console.log("after");
-    console.log("order data : ", res); 
+    console.log("order data : ", res);
     props.history.push("/myorders");
-
   };
 
   //increment data
@@ -263,142 +264,167 @@ export default function Cart(props) {
   return (
     <div className={classes.root}>
       <NavAppBar />
-      <Container maxWidth="lg">
-        <Grid container spacing={2}>
-          <Grid item xs={8} lg={8}>
-            <Paper className={classes.paper}>
-              {/* first card */}
-
-              {items?.map((item) => {
-                return (
-                  <>
-                    <Card className={classes.cardstyle} variant="outlined">
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {item.foodItem.foodName}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="textSecondary"
-                            noWrap
-                          >
-                            {item.foodItem.foodDescription}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            Rs. {item.foodItem.foodPrice}
-                          </Typography>
-                        </CardContent>
-
-                        <Box display="flex" flexDirection="row">
-                          <Button
-                            className={classes.addTocart}
-                            variant="contained"
-                            onClick={() => {
-                              removeItem(item);
-                            }}
-                          >
-                            Remove Item
-                          </Button>
-
-                          <div className={classes.displayCounters}>
-                            <div
-                              className={classes.counter}
-                              onClick={() => handleDecrement(item)}
-                            >
-                              -
-                            </div>
-
-                            <div className={classes.quantity}>
-                              <b>{item.quantity}</b>
-                            </div>
-                            <div
-                              className={classes.counter}
-                              onClick={() => handleIncrement(item)}
-                            >
-                              +
-                            </div>
-                          </div>
-                        </Box>
-                      </div>
-
-                      <CardMedia
-                        justify="flex-end"
-                        className={classes.cover}
-                        image={item.foodItem.foodImage}
-                        title="Item order"
-                      />
-                    </Card>
-                  </>
-                );
-              })??'cart empty'}
-
-              <b>
-                <hr />
-                <Box display="flex" direction="row-reverse">
-                  <Typography variant="h5">
-                    <b>Total Price:{totalprice} </b>
-                  </Typography>
-                </Box>
-              </b>
-            </Paper>
-          </Grid>
-          {/* Add Address section */}
-          <Grid item xs={4}>
-            <Paper className={classes.paperAddress}>
-              <Box
-                className={classes.addressContainer}
-                component="div"
-                display="flex"
-                flexDirection="column"
-              >
-                <Box className={classes.locationIconContainer} component="div">
-                  <LocationOnIcon
-                    className={classes.locationIcon}
-                  ></LocationOnIcon>
-
-                  {address ? (
+      {items?.length > 0 ? (
+        <Container maxWidth="lg">
+          <Grid container spacing={2}>
+            <Grid item xs={8} lg={8}>
+              <Paper className={classes.paper}>
+                {/* first card */}
+                {items?.map((item) => {
+                  return (
                     <>
-                      <div className={classes.addressDisplay}>
-                        <HomeIcon /> {address.streetAddress},{address.landmark},
-                        {address.area} , {address.city}, {address.zip},
-                        {address.state}, {address.country}.
-                      </div>
-                      <hr /> <p>Total Amount: {totalprice}</p>
+                      <Card className={classes.cardstyle} variant="outlined">
+                        <div className={classes.details}>
+                          <CardContent className={classes.content}>
+                            <Typography component="h5" variant="h5">
+                              {item.foodItem.foodName}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                              noWrap
+                            >
+                              {item.foodItem.foodDescription}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                            >
+                              Rs. {item.foodItem.foodPrice}
+                            </Typography>
+                          </CardContent>
+
+                          <Box display="flex" flexDirection="row">
+                            <Button
+                              className={classes.addTocart}
+                              variant="contained"
+                              onClick={() => {
+                                removeItem(item);
+                              }}
+                            >
+                              Remove Item
+                            </Button>
+
+                            <div className={classes.displayCounters}>
+                              <div
+                                className={classes.counter}
+                                onClick={() => handleDecrement(item)}
+                              >
+                                -
+                              </div>
+
+                              <div className={classes.quantity}>
+                                <b>{item.quantity}</b>
+                              </div>
+                              <div
+                                className={classes.counter}
+                                onClick={() => handleIncrement(item)}
+                              >
+                                +
+                              </div>
+                            </div>
+                          </Box>
+                        </div>
+
+                        <CardMedia
+                          justify="flex-end"
+                          className={classes.cover}
+                          image={item.foodItem.foodImage}
+                          title="Item order"
+                        />
+                      </Card>
                     </>
-                  ) : null}
-                </Box>
+                  );
+                })}
+                )
+                <b>
+                  <hr />
+                  <Box display="flex" direction="row-reverse">
+                    <Typography variant="h5">
+                      <b>Total Price:{totalprice} </b>
+                    </Typography>
+                  </Box>
+                </b>
+              </Paper>
+            </Grid>
+            {/* Add Address section */}
+            <Grid item xs={4}>
+              <Paper className={classes.paperAddress}>
                 <Box
-                  className={classes.addAddressButtonContainer}
+                  className={classes.addressContainer}
                   component="div"
+                  display="flex"
+                  flexDirection="column"
                 >
-                  {!address ? (
-                    <Button
-                      className={classes.addAddressButton}
-                      variant="outlined"
-                      onClick={() => {
-                        // nextStep();
-                        handleDrawer();
-                      }}
-                    >
-                      Proceed to checkout
-                    </Button>
-                  ) : (
-                    <Button
-                      className={classes.addAddressButton}
-                      variant="outlined"
-                      onClick={() => handlePlaceOrder(address)}
-                    >
-                      Place Order
-                    </Button>
-                  )}
-                  {drawer === true ? drawerTag : null}
+                  <Box
+                    className={classes.locationIconContainer}
+                    component="div"
+                  >
+                    <LocationOnIcon
+                      className={classes.locationIcon}
+                    ></LocationOnIcon>
+
+                    {address ? (
+                      <>
+                        <div className={classes.addressDisplay}>
+                          <HomeIcon /> {address.streetAddress},
+                          {address.landmark},{address.area} , {address.city},{" "}
+                          {address.zip},{address.state}, {address.country}.
+                        </div>
+                        <hr /> <p>Total Amount: {totalprice}</p>
+                      </>
+                    ) : null}
+                  </Box>
+                  <Box
+                    className={classes.addAddressButtonContainer}
+                    component="div"
+                  >
+                    {!address ? (
+                      <Button
+                        className={classes.addAddressButton}
+                        variant="outlined"
+                        onClick={() => {
+                          // nextStep();
+                          handleDrawer();
+                        }}
+                      >
+                        Proceed to checkout
+                      </Button>
+                    ) : (
+                      <Button
+                        className={classes.addAddressButton}
+                        variant="outlined"
+                        onClick={() => handlePlaceOrder(address)}
+                      >
+                        Place Order
+                      </Button>
+                    )}
+                    {drawer === true ? drawerTag : null}
+                  </Box>
                 </Box>
-              </Box>
-            </Paper>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      ) : (
+        <>
+        <Container spacing={3} className={classes.noOrderImage}>
+          <Grid
+            container
+            spacing={3}
+            direction="column"
+            alignItems="center"
+            justify="center"
+          >
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <NoPlacedOrdersDelivery />
+              <h3>Empty Cart!!</h3>
+            </Grid>
+          </Grid>
+        </Container>
+      </>
+      )}
+
       <FooterGrid />
     </div>
   );

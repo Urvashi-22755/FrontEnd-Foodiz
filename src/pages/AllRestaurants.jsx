@@ -4,7 +4,7 @@ import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles,withStyles} from "@material-ui/core/styles";
 import {
   fade,
   Grid,
@@ -12,7 +12,10 @@ import {
   FormControl,
   InputLabel,
   InputBase,
+  Checkbox,
   Select,
+  Paper,
+  FormControlLabel
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -24,9 +27,20 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import SearchBar from "material-ui-search-bar";
-
+import EcoIcon from "@material-ui/icons/Eco";
+import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import axios from "axios";
 
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: "#171a29",
+    "&$checked": {
+      color: "#171a29",
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -194,12 +208,22 @@ export default function AllRestaurants() {
   const [search, setSearch] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const token = localStorage.getItem("token");
-
+  const [vegChecked, setVegChecked] = useState(false);
+  const [globalRestaurant,setGlobalRestaurant]=useState([]);
   const headers = {
     // "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
-
+  const handleVegCheckChange = (event) => {
+    setVegChecked(!vegChecked);
+    if (vegChecked != true) {
+      const restaurantFilter = restaurants.filter((restaurant) => restaurant.restaurantType == "Veg");
+      console.log("in if", restaurantFilter);
+      setRestaurants(restaurantFilter);
+    } else {
+      setRestaurants(globalRestaurant);
+    }
+  };
   const handleCityChange = async (event) => {
     console.log(event.target.value);
     setCity(event.target.value);
@@ -214,17 +238,22 @@ export default function AllRestaurants() {
   };
 
   const getSearchedRestaurants = async (city, search) => {
-    console.log("city and rest", city, search);
-    const resp = await axios.get(
-      "http://localhost:5000/restaurant/searchrestaurants",
-      { params: 
-        { city: city, search: search } 
-      },
-      {
-        headers: headers,
-      }
-    );
-    return resp.data;
+    if(search==""){
+      console.log("if search")
+      return globalRestaurant;
+    }else{
+
+      const resp = await axios.get(
+        "http://localhost:5000/restaurant/searchrestaurants",
+        { params: 
+          { city: city, search: search } 
+        },
+        {
+          headers: headers,
+        }
+      );
+      return resp.data;
+    }
   };
 
   useEffect(() => {
@@ -234,6 +263,7 @@ export default function AllRestaurants() {
         "http://localhost:5000/restaurant/getrestaurants"
       );
       console.log(res);
+      setGlobalRestaurant(res.data);
       setRestaurants(res.data);
     })();
   }, []);
@@ -271,6 +301,24 @@ export default function AllRestaurants() {
               placeholder="Search for Restaurants or dishes.."
               onChange={handleSearchChange}
             />
+            <div className={classes.checkBoxStyle}>
+              <Paper className={classes.vegSection}>
+                <FormControlLabel
+                  control={
+                    <GreenCheckbox
+                      checked={vegChecked}
+                      onChange={handleVegCheckChange}
+                    />
+                  }
+                />
+                <EcoOutlinedIcon
+                  classes={classes.ecoOutlinedIcon}
+                  style={{ color: "green", transform: "scaleX(-1)" }}
+                />
+                <EcoIcon style={{ marginLeft: "-13px", color: "green" }} />
+                <b>Pure Veg</b>
+              </Paper>
+            </div>
           </div>
         </Box>
 
@@ -313,6 +361,14 @@ export default function AllRestaurants() {
                             color="textSecondary"
                           >
                             {rest.restaurantDescription}
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            component="p"
+                            color="textSecondary"
+                          >
+                            {rest.restaurantType}
                           </Typography>
                           <Typography
                             variant="body2"

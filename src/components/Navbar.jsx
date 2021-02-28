@@ -106,7 +106,7 @@ export default function NavAppBar() {
 
     /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
   }
-  if (authenticated) { setInterval(fetchCartData, 500); }
+  // if (authenticated) { setInterval(fetchCartData, 500); }
 
   const handleLogout = () => {
     logout();
