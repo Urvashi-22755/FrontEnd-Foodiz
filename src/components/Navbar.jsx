@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -6,13 +6,27 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Box } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { decodeToken } from "../services/authUser";
 import { logout } from "./../services/authUser";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
+import { fetchUserDeatails } from "./../services/UserService";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import Badge from "@material-ui/core/Badge";
+import jwt_decode from "jwt-decode";
+import { fetchUserCartDeatails } from "../services/CartService";
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    right: 3,
+    top: 15,
+    border: `2px solid #171a29`,
+    padding: "0 4px",
+  },
+}))(Badge);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,25 +56,58 @@ const useStyles = makeStyles((theme) => ({
       color: "#f5d6a4",
     },
     iconSection: {
-      padding: "20px",
-      width: "60px",
-      height: "60px",
+      //padding: "20px",
+     // width: "60px",
+    //  height: "60px",
       marginBottom: "20%",
     },
+  },
+  navbarLinkCard: {
+    marginLeft: "10px",
   },
 }));
 
 export default function NavAppBar() {
   const classes = useStyles();
+  const [userName, setuserName] = useState();
+  const [cartLength, setcartLength] = useState(0);
 
   const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   let authenticated = "";
+
   if (token) {
     authenticated = decodeToken(token);
-    console.log("NAVBAR JSX", authenticated.role);
   } else {
     <Redirect to="/"></Redirect>;
   }
+
+  /* User Name Data!! */
+  async function fetchUserData() {
+    let userDetail = await fetchUserDeatails(headers);
+    setuserName(userDetail.firstName);
+  }
+  fetchUserData();
+
+  /* Cart Data Detail!! */
+  async function fetchCartData() {
+    let cartDetail = {};
+    cartDetail = await fetchUserCartDeatails(headers);
+    if (cartDetail.cartFoodList) {
+      setcartLength(cartDetail.cartFoodList.length);
+    } else {
+      setcartLength(0);
+    }
+
+    /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
+  }
+  if (authenticated) { setInterval(fetchCartData, 500); }
+
   const handleLogout = () => {
     logout();
   };
@@ -76,8 +123,9 @@ export default function NavAppBar() {
                   <img
                     width="50"
                     height="50"
-                    src="https://img.pngio.com/sandwich-bread-food-free-vector-graphic-on-pixabay-food-animated-png-781_720.png"
+                    src={process.env.PUBLIC_URL + 'images/LOGO_PROJECT.png'}
                   />
+                 
                 </Link>
               </div>
             </Typography>
@@ -95,7 +143,12 @@ export default function NavAppBar() {
                   style={{ textDecoration: "none", color: "white" }}
                   to={`/profile`}
                 >
-                  <div className={classes.navbarLinks}>User Name </div>
+                  <div className={classes.navbarLinks}>
+                    <AccountCircleOutlinedIcon
+                      style={{ marginRight: "2px", marginBottom: "3px" }}
+                    />{" "}
+                    {userName}
+                  </div>
                 </Link>
 
                 {/* ROLE == NU */}
@@ -118,10 +171,12 @@ export default function NavAppBar() {
                       to={`/cart`}
                     >
                       <div className={classes.navbarLinks}>
-                        <ShoppingCartOutlinedIcon
-                          style={{ marginRight: "5px" }}
-                        />
-                        Cart
+                        <StyledBadge badgeContent={(cartLength > 0) ? cartLength : 0} color="secondary" showZero>
+                          <ShoppingCartOutlinedIcon
+                            style={{ marginRight: "5px" }}
+                          />
+                        </StyledBadge>
+                        <span className={classes.navbarLinkCard}>Cart</span>
                       </div>
                     </Link>
                   </>
@@ -138,7 +193,7 @@ export default function NavAppBar() {
                     >
                       <div className={classes.navbarLinks}>
                         <ListAltOutlinedIcon style={{ marginRight: "5px" }} />
-                        Your Orders
+                        Placed Orders
                       </div>
                     </Link>
                   </>

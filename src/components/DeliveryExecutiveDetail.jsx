@@ -13,6 +13,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
 
 /* styles */
 const useStyles = makeStyles((theme) => ({
@@ -55,26 +56,31 @@ const useStyles = makeStyles((theme) => ({
   deliveryManDetails: {
     marginTop: "5%",
     textAlign: "left",
-    },
-    editHeading:{
-        textAlign:"center",
-        
-    },
-    addRating:{
-        fontWeight:'bold',
-        fontSize:"20px",
-        color:"#171a29"
-      },
-      ratingDialog:{
-        padding:"20px"
-      },
+  },
+  editHeading: {
+    textAlign: "center",
+  },
+  addRating: {
+    fontWeight: "bold",
+    fontSize: "20px",
+    color: "#171a29",
+  },
+  ratingDialog: {
+    padding: "20px",
+  },
 }));
 
 function DeliveryExecutiveDetails(props) {
   const classes = useStyles();
-  const { page, detail } = props;
+  const { page, detail, status } = props;
   const [open, setOpen] = useState(false);
   const [ratings, setRatings] = useState({});
+
+  const token = localStorage.getItem("token");
+  const headers = {
+    //'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
 
   //rating modal open
   const handleClickOpen = () => {
@@ -83,6 +89,24 @@ function DeliveryExecutiveDetails(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSubmitOfRating = async (ratingData, event) => {
+    event.preventDefault();
+    console.log("rating data in parent container statess");
+    const res = await axios.post(
+      "http://localhost:5000/rate/addratingtodeliveryexecutive",
+      {
+        deliveryExecutiveId: detail._id,
+        rating: ratingData.rating,
+        ratingReview: ratingData.review,
+      },
+      {
+        headers: headers,
+      }
+    );
+    console.log(res);
+    console.log("rating data in parent container statess", ratingData);
   };
 
   return (
@@ -159,9 +183,9 @@ function DeliveryExecutiveDetails(props) {
                       sm={12}
                       xs={12}
                     >
-                      {page === "completedOrder " ? (
+                      {page === "completedOrder " || status === "Completed" ? (
                         <Button
-                          //onClick={() => handleOrderSummary(order._id)}
+                          onClick={handleClickOpen}
                           className={classes.acceptButton}
                           variant="contained"
                           color="secondary"
@@ -169,17 +193,6 @@ function DeliveryExecutiveDetails(props) {
                           Rate
                         </Button>
                       ) : null}
-
-                      {/* REMOVE THIS LATERRRR */}
-
-                      <Button
-                        onClick={handleClickOpen}
-                        className={classes.acceptButton}
-                        variant="contained"
-                        color="secondary"
-                      >
-                        Rate
-                      </Button>
                     </Grid>
                   </Grid>
                 </Paper>
@@ -197,7 +210,7 @@ function DeliveryExecutiveDetails(props) {
 
                   <DialogContent className={classes.ratingDialog}>
                     <SimpleRating
-                    //  handleSubmitOfRating={handleSubmitOfRating}
+                      handleSubmitOfRating={handleSubmitOfRating}
                       onClose={handleClose}
                     />{" "}
                     {console.log("Value of stars", ratings)}

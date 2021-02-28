@@ -127,23 +127,22 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 10px 20px rgba(0,0,0,0.10), 0 10px 10px rgba(0,0,0,0.22)",
     padding: "5px",
   },
-  editHeading:{
-    textAlign:"center",
-    
+  editHeading: {
+    textAlign: "center",
   },
-  addRating:{
-    fontWeight:'bold',
-    fontSize:"20px",
-    color:"#171a29"
+  addRating: {
+    fontWeight: "bold",
+    fontSize: "20px",
+    color: "#171a29",
   },
-  ratingDialog:{
-    padding:"20px"
+  ratingDialog: {
+    padding: "20px",
   },
-  addRatingBtn:{
-    color:"#171a29",
-    fontWeight:'bold',
-    cursor:"pointer"
-  }
+  addRatingBtn: {
+    color: "#171a29",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
 }));
 
 const RestaurantContainer = (props) => {
@@ -151,21 +150,14 @@ const RestaurantContainer = (props) => {
   const [items, setItems] = useState([]);
   const [vegChecked, setvegChecked] = useState(false);
   const allVeg = items.every((item) => item.type === "veg");
-  const data = foodData();
   const [restaurantData, setRestaurant] = useState({});
   const [open, setOpen] = useState(false);
-  const [ratings,setRatings] = useState({});
 
-
-  /* const getRestaurant = async () => {
-    console.log(props.match.params.restaurantId);
-    const res = await axios(
-      "http://localhost:5000/restaurant/getrestaurantbyid/" +
-        props.match.params.restaurantId
-    );
-    setRestaurant(res.data);
-    setItems(res.data.menuDetails);
-  } */
+  const token = localStorage.getItem("token");
+  const headers = {
+    //'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
 
   //rating modal open
   const handleClickOpen = () => {
@@ -184,9 +176,7 @@ const RestaurantContainer = (props) => {
       setRestaurant(res);
       setItems(res.menuDetails);
     })();
-
   }, []);
-
 
   //filter based on  search
   const handleSearch = (value) => {
@@ -214,7 +204,6 @@ const RestaurantContainer = (props) => {
 
   //filter based on veg-only..
   const handleChange = (event) => {
-    
     console.log("value:", event.target.value);
     // if (vegChecked === true) {
     //   setvegChecked(false);
@@ -231,19 +220,25 @@ const RestaurantContainer = (props) => {
     // }
   };
 
-  const handleSubmitOfRating = (ratingData,event) => {
+  const handleSubmitOfRating = async (ratingData, event) => {
     event.preventDefault();
-    setRatings(ratingData);
-    console.log("rating data in parent container statess",ratings);
-
-    console.log('resdt id', restaurantData._id)
-
-  }
+    const res = await axios.post(
+      "http://localhost:5000/rate/addratingtorestaurant",
+      {
+        restaurantId: props.match.params.restaurantId,
+        rating: ratingData.rating,
+        ratingReview: ratingData.review,
+      },
+      {
+        headers: headers,
+      }
+    );
+  };
 
   return (
     <>
       <NavAppBar></NavAppBar>
-     
+
       <Container>
         <Grid container className={classes.orderbox}>
           <Grid
@@ -284,18 +279,15 @@ const RestaurantContainer = (props) => {
                 >
                   {
                     <div>
-                     
-                     
-
-                        {restaurantData?.restaurantCategory?.map((cat,index) => {
-                            return (
-                              
-                                cat ? <><Chip variant="outlined" size="small" label={cat} /> </>:  "No Categories defined"
-                              
-                              
-                            )
-
-                        })}
+                      {restaurantData?.restaurantCategory?.map((cat, index) => {
+                        return cat ? (
+                          <>
+                            <Chip variant="outlined" size="small" label={cat} />{" "}
+                          </>
+                        ) : (
+                          "No Categories defined"
+                        );
+                      })}
                     </div>
                   }
                 </Typography>
@@ -305,9 +297,6 @@ const RestaurantContainer = (props) => {
                   className={classes.typographyDetails}
                   style={{ color: "#171A29" }}
                 >
-                    
-
-
                   {restaurantData.restaurantDescription}
                 </Typography>
                 <br />
@@ -351,7 +340,8 @@ const RestaurantContainer = (props) => {
                 >
                   <div className={classes.restDetailRatingDiv}>
                     <p className={classes.rating}>
-                      <StarRateIcon /> {parseFloat(restaurantData.rating_avg).toFixed(1)}
+                      <StarRateIcon />{" "}
+                      {parseFloat(restaurantData.rating_avg).toFixed(1)}
                     </p>
                   </div>
 
@@ -360,22 +350,31 @@ const RestaurantContainer = (props) => {
                     <br />
                     Costs for Two
                   </div>
-                  <div className={classes.restDetailRatingDiv}> <p onClick={handleClickOpen} className={classes.addRatingBtn}>Add Rating</p></div>
-                 
+                  <div className={classes.restDetailRatingDiv}>
+                    {" "}
+                    <p
+                      onClick={handleClickOpen}
+                      className={classes.addRatingBtn}
+                    >
+                      Add Rating
+                    </p>
+                  </div>
+
                   <Dialog
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="form-dialog-title"
-                   
                   >
                     <DialogTitle className={classes.editHeading}>
-                     <p  className={classes.addRating}>Add Rating</p> 
+                      <p className={classes.addRating}>Add Rating</p>
                     </DialogTitle>
-                  
-                    <DialogContent  className={classes.ratingDialog}>
-                    <SimpleRating handleSubmitOfRating={handleSubmitOfRating}    onClose={handleClose}/> {console.log('Value of stars',ratings)}
+
+                    <DialogContent className={classes.ratingDialog}>
+                      <SimpleRating
+                        handleSubmitOfRating={handleSubmitOfRating}
+                        onClose={handleClose}
+                      />{" "}
                     </DialogContent>
-                  
                   </Dialog>
                 </Box>
               </div>
@@ -484,6 +483,7 @@ const RestaurantContainer = (props) => {
         //style={{ marginTop: 20, marginLeft: "20", paddingLeft: 10 }}
       >
         <RestaurantItems
+          customProps={props}
           items={items}
           restaurantId={props.match.params.restaurantId}
         />

@@ -14,20 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Box } from "@material-ui/core";
-import  axios  from 'axios';
-
-// Icons
-/* import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-
-//custom-hook
-import useForm from "../hooks/forms";
-
-import MyButton from "../util/MyButton";
-import { deleteItem, editItem } from "../redux/actions/dataActions";
-import ItemDialog from "../components/ItemDialog"; */
-/* import { addToCart } from "../redux/actions/dataActions"; */
-
+import axios from "axios";
+import { decodeToken } from "../services/authUser";
+import { fetchUserCartDeatails } from "../services/CartService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,32 +73,53 @@ function Alert(props) {
 
 export default function ItemCard(props) {
   const classes = useStyles();
-  const { restaurantId,foodName,foodCategory, foodDescription, foodImage,foodType,foodPrice, _id ,avgRating} = props;
-//  console.log('rest id in cart.jsx', restaurantId)
-
-  const token = localStorage.getItem('token');
-  const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
-  }
-  const data = {
-    "foodId": _id, "restaurantId": restaurantId
-  }
+  const {
+    restaurantId,
+    foodName,
+    foodCategory,
+    foodDescription,
+    foodImage,
+    foodType,
+    foodPrice,
+    _id,
+    avgRating,
+    customProps
+  } = props;
   const [openSnackBar, setSnackBar] = useState(false); //open close snack bar
+  //  console.log('rest id in cart.jsx', restaurantId)
 
-  const handleCart =  async(_id) => {
-    console.log("ajkhsd");
-    const res = await axios.post('http://localhost:5000/cart/addtocart',
-    data,
-      { headers: headers });
-    console.log('addtocart data response',res);
-    console.log('FOod Id, Rest ID, User Id', foodName, restaurantId);
-    
+  const token = localStorage.getItem("token");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const data = {
+    foodId: _id,
+    restaurantId: restaurantId,
+  };
+  let authenticated = "";
 
-    setSnackBar(true)
+  if (token) {
+    authenticated = decodeToken(token);
+  }
 
-    /*  token ? setSnackBar(true) : <Redirect to='/login' /> ; */
-    //dispatch(addToCart(itemData));
+  const handleCart = async (_id) => {
+    if (authenticated) {
+      const res = await axios.post(
+        "http://localhost:5000/cart/addtocart",
+        data,
+        {
+          headers: headers,
+        }
+      );
+      console.log("addtocart data response", res);
+      console.log("FOod Id, Rest ID, User Id", foodName, restaurantId);
+      setSnackBar(true);
+    } else {
+      customProps.history.replace("/login");
+     
+    }
+    console.log("PROPS",props)
   };
 
   const handleCloseSnackBar = (event, reason) => {
@@ -118,11 +128,6 @@ export default function ItemCard(props) {
       return;
     }
     setSnackBar(false);
-  };
-
-  const handleSnackBar = () => {
-    /*   if (addCartSuccess || addCartSuccess == null) */
-    //setSnackBar({ open: true });
   };
 
   return (
@@ -134,7 +139,7 @@ export default function ItemCard(props) {
               {foodName}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              { foodCategory.join(',')}
+              {foodCategory.join(",")}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary" noWrap>
               {foodDescription}
@@ -143,10 +148,10 @@ export default function ItemCard(props) {
               Rs.{foodPrice}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              { avgRating}
+              {avgRating}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              { foodType}
+              {foodType}
             </Typography>
           </CardContent>
 
@@ -156,22 +161,10 @@ export default function ItemCard(props) {
             variant="contained"
             onClick={() => {
               handleCart(_id);
-              handleSnackBar({ vertical: "bottom", horizontal: "right" });
             }}
           >
             Add to Cart
           </Button>
-
-          {/*  <div className={classes.displayCounters}>
-              <Button className={classes.counter} onClick={handleIncrement}>
-                +
-              </Button>
-              <Button>{quantity}</Button>
-              <Button className={classes.counter} onClick={handleDecrement}>
-                -
-              </Button>
-            </div> */}
-          {/*    </Box> */}
         </div>
         <CardMedia
           justify="flex-end"
@@ -189,7 +182,7 @@ export default function ItemCard(props) {
         >
           <Alert
             onClose={handleCloseSnackBar}
-            style={{ backgroundColor: "#157a21", width:'250px' }}
+            style={{ backgroundColor: "#157a21", width: "250px" }}
           >
             Item added to cart!
           </Alert>

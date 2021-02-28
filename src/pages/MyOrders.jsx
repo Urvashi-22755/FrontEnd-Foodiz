@@ -71,6 +71,7 @@ function MyOrders(props) {
     (async () => {
       const result = await fetchOrdersData();
       setOrders(result);
+      console.log('ORDER DATA', result)
     })();
   }, []);
 
@@ -97,10 +98,8 @@ function MyOrders(props) {
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item container lg={12} xs={12} md={12} sm={12} spacing={2}>
-              {orders?.map((order) => {
-                {
-                  /* this paper is to be mapped!! */
-                }
+
+              {(orders.length > 0)?(orders?.map((order) => {
                 return (
                   <Grid item lg={6} md={6} sm={12} xs={12} key={order._id}>
                     <Paper className={classes.paper} id="1234">
@@ -173,7 +172,12 @@ function MyOrders(props) {
                     </Paper>
                   </Grid>
                 );
-              }) ?? "order empty"}
+              }))
+              : 
+
+                <h1>No ORders Yet</h1>
+              }
+              
             </Grid>
 
             {/* Second Part */}

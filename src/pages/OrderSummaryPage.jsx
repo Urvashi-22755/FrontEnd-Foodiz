@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "2px solid #171A29",
   },
   onlyOrderSummaryDisplay: {
-    marginTop: "10%",
+    marginTop: "2%",
     width: "60%",
   },
 }));
@@ -107,9 +107,9 @@ const OrderSummaryPage = (props) => {
                         <DeliveryExecutiveDetails
                           page="completedOrder"
                           detail={deliveryManDetails}
+                          status={orderData.orderStatus}
                         />
                       ) : null}
-                      {/*  */}
                     </Grid>
                   </Grid>
                 </Container>
@@ -118,13 +118,13 @@ const OrderSummaryPage = (props) => {
                   <OrderSummary orderData={orderData} />
 
                   {deliveryManDetails != [] &&
-                  (orderData?.orderStatus != "Placed") ? (
+                  orderData?.orderStatus != "Placed" ? (
                     <DeliveryExecutiveDetails
                       page="currentOrder"
                       detail={deliveryManDetails}
+                      status={orderData.orderStatus}
                     />
                   ) : null}
-                 
                 </Grid>
               )}
 

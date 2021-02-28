@@ -29,6 +29,8 @@ import SignIn from "../components/SignIn";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { decodeToken } from "../services/authUser";
 import { logout } from "./../services/authUser";
+import { fetchUserDeatails } from "./../services/UserService";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 
 const theme = createMuiTheme({
   typography: {
@@ -180,8 +182,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "20px",
   },
   navbarLinks: {
-    fontSize: '20px',
-    marginTop:"5%",
+    fontSize: "20px",
+    marginTop: "5%",
     marginRight: "1vw",
     "&:hover": {
       color: "#171A29",
@@ -195,8 +197,14 @@ const handleId = (rest) => {
 
 export default function LandingPage(props) {
   const classes = useStyles();
-
+  const [userName, setuserName] = useState();
   const token = localStorage.getItem("token");
+
+  const headers = {
+    // "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   let authenticated = "";
   if (token) {
     authenticated = decodeToken(token);
@@ -208,6 +216,14 @@ export default function LandingPage(props) {
     logout();
   };
   const restaurants = foodData();
+
+  let finalres;
+  async function fetchUserData() {
+    let userDetail = await fetchUserDeatails(headers);
+    setuserName(userDetail.firstName);
+    return finalres;
+  }
+  fetchUserData();
 
   return (
     <ThemeProvider theme={theme}>
@@ -224,17 +240,24 @@ export default function LandingPage(props) {
                         style={{ textDecoration: "none", color: "black" }}
                         to={`/profile`}
                       >
-                        <div className={classes.navbarLinks}>Person</div>
+                        <div className={classes.navbarLinks}>
+                          <AccountCircleOutlinedIcon
+                            style={{ marginBottom: "3px" }}
+                          />
+                          {userName}
+                        </div>
                       </Link>
-
-            
 
                       {/* logout */}
                       <Link
                         style={{ textDecoration: "none", color: "black" }}
                         to={`/`}
                       >
-                        <div color="inherit" className={classes.navbarLinks} onClick={handleLogout}>
+                        <div
+                          color="inherit"
+                          className={classes.navbarLinks}
+                          onClick={handleLogout}
+                        >
                           <ExitToAppIcon style={{ marginRight: "5px" }} />
                           Sign Out
                         </div>

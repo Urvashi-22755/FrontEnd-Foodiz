@@ -136,7 +136,7 @@ const handleId = rest => {
     return res.data;
   };
    const fetchPastorders = async () => {
-     const resp = await axios.get("http://localhost:5000/delivery/getdeliveryexecutivepastorders", {
+     const resp = await axios.get("http://localhost:5000/order/getUserOrder", {
       headers: headers,
      })
      return resp.data;
