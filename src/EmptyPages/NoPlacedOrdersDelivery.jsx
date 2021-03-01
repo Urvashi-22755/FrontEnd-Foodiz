@@ -50,13 +50,13 @@ export default function NoPlacedOrdersDelivery() {
   return (
     <React.Fragment>
    
-   <Grid container spacing={3} >
-      <Grid item xs={12} sm={12} md={12} lg={12}>
+   {/* <Grid container >
+      <Grid item container xs={12} sm={12} md={12} lg={12}> */}
       <img src="https://cdn.dribbble.com/users/204955/screenshots/4930541/emptycart.png"
       
         width="300" height="300" alt="no placed order"/>
-      </Grid>
-      </Grid>
+     {/*  </Grid>
+      </Grid> */}
     </React.Fragment>
   );
 }

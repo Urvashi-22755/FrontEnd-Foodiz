@@ -15,10 +15,14 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
 import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
+import jwt_decode from "jwt-decode";
+import { decodeToken }  from "../services/authUser";
+ 
+
 const useStyles = makeStyles((theme) => ({
   root: {
-     marginTop: '3%',
-  //  padding: "2%",
+    marginTop: "3%",
+    //  padding: "2%",
     height: "auto",
     backgroundColor: "#d8dee8",
     flexGrow: 1,
@@ -36,13 +40,13 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     marginTop: "6%",
     paddingTop: "30%",
-    width: 'auto',
+    width: "auto",
     backgroundColor: "#2c446e",
     height: "90vh",
   },
   tabtext: {
     fontSize: "20px",
-    color:'#d8dee8',
+    color: "#d8dee8",
     textAlign: "left",
   },
   labelContainer: {
@@ -62,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileSection() {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = React.useState(0);
-
+  var token = localStorage.getItem("token");
+  const decodedToken = decodeToken(token);
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -93,18 +98,30 @@ export default function ProfileSection() {
                       icon={<PersonIcon />}
                       label="Profile"
                     />
-
-                    <Tab
-                      className={classes.tabtext}
-                      classes={{
-                        wrapper: classes.iconLabelWrapper,
-                        labelContainer: classes.labelContainer,
-                      }}
-                      icon={<ShoppingBasketIcon />}
-                      label="Past Orders"
-                    />
+                    {decodedToken.role == "DE" ? (
+                      <Tab
+                        className={classes.tabtext}
+                        classes={{
+                          wrapper: classes.iconLabelWrapper,
+                          labelContainer: classes.labelContainer,
+                        }}
+                        icon={<ShoppingBasketIcon />}
+                        label="Completed Orders"
+                      />
+                    ) : (
+                      <Tab
+                        className={classes.tabtext}
+                        classes={{
+                          wrapper: classes.iconLabelWrapper,
+                          labelContainer: classes.labelContainer,
+                        }}
+                        icon={<ShoppingBasketIcon />}
+                        label="Past Orders"
+                      />
+                    )}
                   </Tabs>
                 </Grid>
+
                 <Grid item sm={12} xs={12} lg={8} md={8}>
                   {selectedTab === 0 && <MyProfile />}
                   {selectedTab === 1 && <PastOrders />}
@@ -118,3 +135,4 @@ export default function ProfileSection() {
     </div>
   );
 }
+
