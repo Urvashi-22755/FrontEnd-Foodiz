@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#171a29",
   },
   checkBoxStyle: {
-    // marginRight: '30px',
+    marginRight: "30px",
 
     float: "right",
   },
@@ -129,7 +129,6 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
     // height: "40px",
     boxShadow: "0 10px 20px rgba(0,0,0,0.10), 0 10px 10px rgba(0,0,0,0.22)",
-    padding: "5px",
   },
   editHeading: {
     textAlign: "center",
@@ -149,6 +148,10 @@ const useStyles = makeStyles((theme) => ({
   },
   ecoOutlinedIcon: {
     marginLeft: "0",
+  },
+  vegText: {
+    paddingLeft: "12%",
+    marginRight:"-10px"
   },
 }));
 
@@ -195,19 +198,6 @@ const RestaurantContainer = (props) => {
       setItems(filteredItems);
     }
     const handleSearch = (value) => {};
-    /*   if (vegChecked === true && value !== "") {
-      let filteredItemsVeg = items.filter((search) => {
-        return (
-          (search.type === "veg" &&
-            search.description.toLowerCase().includes(value)) ||
-          search.title.toLowerCase().includes(value)
-        );
-      });
-    //  console.log("filteredItemsVeg", filteredItemsVeg);
-      setItems(filteredItemsVeg);
-    } else if (value !== "") {
-      setItems(filteredItems);
-    } else setItems(data); */
   };
 
   //filter based on veg-only..
@@ -449,20 +439,23 @@ const RestaurantContainer = (props) => {
           >
             <div className={classes.checkBoxStyle}>
               <Paper className={classes.vegSection}>
-                <FormControlLabel
-                  control={
-                    <GreenCheckbox
-                      checked={vegChecked}
-                      onChange={handleVegCheckChange}
-                    />
-                  }
-                />
+                <span className={classes.vegText}>
+                
+                  <FormControlLabel
+                    control={
+                      <GreenCheckbox
+                        checked={vegChecked}
+                        onChange={handleVegCheckChange}
+                      />
+                    }
+                  />
+                </span>
                 <EcoOutlinedIcon
                   classes={classes.ecoOutlinedIcon}
                   style={{ color: "green", transform: "scaleX(-1)" }}
                 />
                 <EcoIcon style={{ marginLeft: "-13px", color: "green" }} />
-                <b>Pure Veg</b>
+                <b>Pure Veg</b>{" "}
               </Paper>
             </div>
           </Grid>

@@ -88,15 +88,14 @@ export default function NavAppBar() {
   }
 
   /* User Name Data!! */
- /*  async function fetchUserData() {
+  async function fetchUserData() {
     let userDetail = await fetchUserDeatails(headers);
     setuserName(userDetail.firstName);
-    console.log("USER DETAIL==============", userDetail.firstName);
   }
 
   if (authenticated) {
-    setInterval(fetchUserData, 500);
-  } */
+    setInterval(fetchUserData, 1000);
+  }
 
   /* Cart Data Detail!! */
   async function fetchCartData() {
@@ -110,7 +109,7 @@ export default function NavAppBar() {
 
     /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
   }
-/*   if (authenticated) {
+  /*   if (authenticated) {
     setInterval(fetchCartData, 500);
   }
  */

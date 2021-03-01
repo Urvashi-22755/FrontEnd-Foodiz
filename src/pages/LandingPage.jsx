@@ -316,11 +316,7 @@ export default function LandingPage(props) {
                           Order Food Online
                         </Typography>
 
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
+                        <Typography variant="body2" color="textSecondary">
                           Stay at home and order to your doorstep
                         </Typography>
                       </CardContent>
@@ -341,11 +337,7 @@ export default function LandingPage(props) {
                       <Typography gutterBottom variant="h5" component="h2">
                         Grab some amazing food
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      >
+                      <Typography variant="body2" color="textSecondary">
                         Enjoy limitless dining privileges
                       </Typography>
                     </CardContent>
@@ -365,11 +357,7 @@ export default function LandingPage(props) {
                       <Typography gutterBottom variant="h5" component="h2">
                         Grab some amazing food
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      >
+                      <Typography variant="body2" color="textSecondary">
                         Enjoy limitless dining privileges
                       </Typography>
                     </CardContent>

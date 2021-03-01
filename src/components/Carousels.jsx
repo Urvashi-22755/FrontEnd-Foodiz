@@ -89,7 +89,7 @@ function Carousels() {
       <div>
         <Carousel breakPoints={breakPoints}>
           {restaurants.map((rest) => (
-            <Box>
+            <Box key={rest._id}>
               <Link style={{ textDecoration: "none" }} to={`/restaurant/${rest._id}`}>
                 <Card style={cardstyle}>
                   <CardActionArea>
@@ -109,7 +109,7 @@ function Carousels() {
                         component="p"
                       >
                         {rest?.restaurantCategory.join(" ,")}
-                        <p>Rs.{rest.price} for Two</p>
+                        <span>Rs.{rest.price} for Two</span>
                       </Typography>
 
                       <Typography>

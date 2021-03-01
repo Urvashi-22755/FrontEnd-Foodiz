@@ -27,7 +27,7 @@ import Mirage from "@material-ui/core/colors";
 import FooterGrid from "./Footer";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { authUser } from './../services/authUser';
+import { authUser } from "./../services/authUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: "12px",
     fontWeight: "strong",
+  },
+  errorMessageAuth: {
+    color: "red",
+    fontSize: "16px",
+    fontWeight: "strong",
+    textAlign:"center"
   },
   submitButton: {
     backgroundColor: "#171a29",
@@ -139,12 +145,14 @@ export default function SignIn(props) {
     }
   };
 
-  const loginUser = (userData) => {
+  const loginUser =async (userData) => {
     //Posting Data to the Server.
 
-  
-    const response = authUser(userData,props);
-    console.log('Login Response', response)
+    const response = await authUser(userData, props);
+    if (response != null) {
+      setErrors((errors) => ({ ...errors, authError: response.message }));
+    }
+    console.log("Login Response", response);
     /* axios
       .post("http://localhost:5000/user/authenticate", userData) //User Id and User ROle in TOken
       .then((res) => {
@@ -242,6 +250,11 @@ export default function SignIn(props) {
                       </p>
                     </Grid>
                   </form>
+                  {errors?.authError ? (
+                    <div className={classes.errorMessageAuth}>
+                      {errors.authError}
+                    </div>
+                  ) : null}
                 </Box>
               </div>
             </Paper>

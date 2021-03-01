@@ -255,14 +255,18 @@ export default function SignUp(props) {
   /* Display feilds for delivery executive */
   const registerUser = async (userDetail) => {
     console.log("in register method", userDetail);
-    const res = await axios.post(
-      "http://localhost:5000/user/registeruser",
-      userDetail
-    );
     try {
+      const res = await axios.post(
+        "http://localhost:5000/user/registeruser",
+        userDetail
+      );
       console.log("USER SIGN UP ", res.data);
+      
+      props.history.replace("/login");
     } catch (err) {
-      console.log("USER REGITSER ERR", err);
+      
+      setErrors((errors) => ({...errors,userExists:err.response.data.message}));
+      console.log("USER REGITSER ERR", err.response);
     }
 
     //   props.history.replace("/login");
@@ -422,7 +426,8 @@ export default function SignUp(props) {
                     fullWidth
                   />
                   {errors ? (
-                    <div className={classes.errorMessage}>{errors.email}</div>
+                    <div className={classes.errorMessage}>{errors.email}{ errors.userExists}</div>
+
                   ) : null}
                   <TextField
                     className={classes.textField}
