@@ -7,11 +7,8 @@ const headers = {
 };
 
 export async function fetchUserDeatails(headers) {
-
-    const res = await axios
-        .get("http://localhost:5000/user/getuser", {
-            headers: headers,
-        });
-    return res.data;
-
+  const res = await axios.get("http://localhost:5000/user/getuser", {
+    headers: headers,
+  });
+  return res.data;
 }

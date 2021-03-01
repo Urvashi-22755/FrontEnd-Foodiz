@@ -24,7 +24,7 @@ import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery'
+import NoPlacedOrdersDelivery from "../EmptyPages/NoPlacedOrdersDelivery";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
   // noOrderImage:{
   //   alignItems:"center",
   //   justify:"center"
-   
+
   // }
 }));
 
@@ -205,8 +205,6 @@ export default function DeliveryPage() {
     })();
   }, []);
 
-
-
   const handleOrders = async (orderId) => {
     console.log("orderId in handle order" + orderId);
     const res = await axios.post(
@@ -220,7 +218,6 @@ export default function DeliveryPage() {
     handleClick(res.data.message);
     // console.log(  res.data.message)
   };
-  
 
   return (
     <React.Fragment>
@@ -262,19 +259,11 @@ export default function DeliveryPage() {
             </Grid>
           </Grid>
         </div>
-      
-      
-      
-      
-      
-      
-      
-        {orders.length > 0 ? (
-        <Container maxWidth="lg">
-          <Grid container spacing={3}>
-            <Grid item container xs={12} sm={12} md={12} lg={6} spacing={3}>
-             
 
+        {orders.length > 0 ? (
+          <Container maxWidth="lg">
+            <Grid container spacing={3}>
+              <Grid item container xs={12} sm={12} md={12} lg={6} spacing={3}>
                 {orders.map((order) => (
                   <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Paper className={classes.paper}>
@@ -369,26 +358,32 @@ export default function DeliveryPage() {
                     </Paper>
                   </Grid>
                 ))}
-             
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
         ) : (
           <>
-          <Container spacing={3} className={classes.noOrderImage}>
-          <Grid container spacing={3} direction="column"
-  alignItems="center"
-  justify="center">
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-              <NoPlacedOrdersDelivery/>
-              <h3>No Orders placed in your City!!</h3>
-          </Grid>
-          </Grid>
-          </Container>
+            <Container
+              spacing={3}
+              maxWidth="lg"
+              className={classes.noOrderImage}
+            >
+              <Grid
+                container
+                  spacing={3}
+                  display="flex"
+                direction="column"
+                alignItems="center"
+                justify="center"
+              >
+                <Grid item container xs={12} sm={12} md={12} lg={12}>
+                  <NoPlacedOrdersDelivery />
+                  <h3>No Orders placed in your City!!</h3>
+                </Grid>
+              </Grid>
+            </Container>
           </>
         )}
-
-
       </div>
 
       <FooterGrid></FooterGrid>

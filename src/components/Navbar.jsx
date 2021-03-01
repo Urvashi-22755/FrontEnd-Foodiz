@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
     },
     iconSection: {
       //padding: "20px",
-     // width: "60px",
-    //  height: "60px",
+      // width: "60px",
+      //  height: "60px",
       marginBottom: "20%",
     },
   },
@@ -88,11 +88,15 @@ export default function NavAppBar() {
   }
 
   /* User Name Data!! */
-  async function fetchUserData() {
+ /*  async function fetchUserData() {
     let userDetail = await fetchUserDeatails(headers);
     setuserName(userDetail.firstName);
+    console.log("USER DETAIL==============", userDetail.firstName);
   }
-  fetchUserData();
+
+  if (authenticated) {
+    setInterval(fetchUserData, 500);
+  } */
 
   /* Cart Data Detail!! */
   async function fetchCartData() {
@@ -106,8 +110,10 @@ export default function NavAppBar() {
 
     /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
   }
-  // if (authenticated) { setInterval(fetchCartData, 500); }
-
+/*   if (authenticated) {
+    setInterval(fetchCartData, 500);
+  }
+ */
   const handleLogout = () => {
     logout();
   };
@@ -123,9 +129,8 @@ export default function NavAppBar() {
                   <img
                     width="50"
                     height="50"
-                    src={process.env.PUBLIC_URL + 'images/LOGO_PROJECT.png'}
+                    src={process.env.PUBLIC_URL + "images/foodimage.jfif"}
                   />
-                 
                 </Link>
               </div>
             </Typography>
@@ -171,7 +176,11 @@ export default function NavAppBar() {
                       to={`/cart`}
                     >
                       <div className={classes.navbarLinks}>
-                        <StyledBadge badgeContent={(cartLength > 0) ? cartLength : 0} color="secondary" showZero>
+                        <StyledBadge
+                          badgeContent={cartLength > 0 ? cartLength : 0}
+                          color="secondary"
+                          showZero
+                        >
                           <ShoppingCartOutlinedIcon
                             style={{ marginRight: "5px" }}
                           />

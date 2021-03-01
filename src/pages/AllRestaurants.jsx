@@ -4,7 +4,7 @@ import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles,withStyles} from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
   fade,
   Grid,
@@ -15,7 +15,7 @@ import {
   Checkbox,
   Select,
   Paper,
-  FormControlLabel
+  FormControlLabel,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -30,7 +30,6 @@ import SearchBar from "material-ui-search-bar";
 import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import axios from "axios";
-
 
 const GreenCheckbox = withStyles({
   root: {
@@ -217,7 +216,9 @@ export default function AllRestaurants() {
   const handleVegCheckChange = (event) => {
     setVegChecked(!vegChecked);
     if (vegChecked != true) {
-      const restaurantFilter = restaurants.filter((restaurant) => restaurant.restaurantType == "Veg");
+      const restaurantFilter = restaurants.filter(
+        (restaurant) => restaurant.restaurantType == "Veg"
+      );
       console.log("in if", restaurantFilter);
       setRestaurants(restaurantFilter);
     } else {
@@ -238,16 +239,13 @@ export default function AllRestaurants() {
   };
 
   const getSearchedRestaurants = async (city, search) => {
-    if(search==""){
-      console.log("if search")
+    if (search == "") {
+      console.log("if search");
       return globalRestaurant;
-    }else{
-
+    } else {
       const resp = await axios.get(
         "http://localhost:5000/restaurant/searchrestaurants",
-        { params: 
-          { city: city, search: search } 
-        },
+        { params: { city: city, search: search } },
         {
           headers: headers,
         }

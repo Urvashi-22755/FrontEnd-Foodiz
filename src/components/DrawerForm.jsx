@@ -70,38 +70,6 @@ const DrawerExample = (props) => {
             >
               Address:
             </Typography>
-           {/*  <TextField
-              id="phoneNo"
-              name="phoneNo"
-              label="Contact Number"
-              className={classes.textField}
-              type="tel"
-              onChange={handleInputChange}
-              fullWidth
-              required
-            />
-            <TextField
-              id="FlatNo"
-              name="FlatNo"
-              label="Flat No"
-              className={classes.textField}
-              onChange={handleInputChange}
-              // value={inputs.aptName}
-              //  helperText={aptError}
-              // error={aptError ? true : false}
-              fullWidth
-              required
-            /> */}
-            <br />
-            {/* <TextField
-              id="locality"
-              name="locality"
-              label="Locality"
-              className={classes.textField}
-              onChange={handleInputChange}
-              fullWidth
-              required
-            /> */}
             <br />
             <TextField
               id="street"
@@ -161,7 +129,8 @@ const DrawerExample = (props) => {
               type="text"
               fullWidth
               required
-            /><br/>
+            />
+            <br />
             <TextField
               id="country"
               name="country"

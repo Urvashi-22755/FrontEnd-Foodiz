@@ -69,17 +69,17 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "40%",
     marginRight: "auto",
   },
-  foodie:{
+  foodie: {
     marginTop: "2%",
     marginLeft: "auto",
     marginRight: "auto",
   },
-  SignIn:{
-    cursor:'pointer'
-  }
+  SignIn: {
+    cursor: "pointer",
+  },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
 
   const [data, setData] = useState({ role: "NU" });
@@ -248,17 +248,24 @@ export default function SignUp() {
       return errors;
     } else {
       //axios call
-      //   registerUser(registerUserObj);
+      registerUser(registerUserObj);
     }
   };
 
   /* Display feilds for delivery executive */
   const registerUser = async (userDetail) => {
     console.log("in register method", userDetail);
+    const res = await axios.post(
+      "http://localhost:5000/user/registeruser",
+      userDetail
+    );
+    try {
+      console.log("USER SIGN UP ", res.data);
+    } catch (err) {
+      console.log("USER REGITSER ERR", err);
+    }
 
-    await axios
-      .post("http://localhost:5000/user/registeruser", userDetail)
-      .then((res) => console.log("Response of post", res.data));
+    //   props.history.replace("/login");
   };
 
   const radioYes = checked ? (
@@ -515,7 +522,6 @@ export default function SignUp() {
                     Sign Up
                   </Button>
                   <p className={classes.foodie}>
-                   
                     Already a Foodie?{" "}
                     <Link to="/login" className={classes.SignIn}>
                       Sign In.

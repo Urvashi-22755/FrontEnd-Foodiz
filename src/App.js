@@ -23,12 +23,16 @@ import SignUp from './components/SignUp'
 import ForgotPassword from './components/ForgotPassword';
 import SimpleRating  from './components/Rating';
 import DeliveryExecutiveDetails from './components/DeliveryExecutiveDetail';
+import HomeComponent from './HomeComponent';
 
 
 
 function App() {
   return (
     <div className="App">
+
+      <HomeComponent />
+
       <Switch>
         
         <Route path="/forgotpassword" exact component={ForgotPassword} />
@@ -64,8 +68,8 @@ function App() {
 
      </Switch> 
 
-      <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
-      <Route path="/simplerating" exact component={SimpleRating}></Route>
+     {/*  <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
+      <Route path="/simplerating" exact component={SimpleRating}></Route> */}
     </div>
   );
 }
