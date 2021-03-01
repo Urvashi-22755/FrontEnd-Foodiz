@@ -50,13 +50,12 @@ export async function authUser(userData, props) {
 }
 
 export function decodeToken(token) {
-  var token = localStorage.getItem("token", token);
-  let decodedToken = jwt_decode(token);
+    var token = localStorage.getItem("token",token);
+    let decodedToken = jwt_decode(token);
+    localStorage.setItem("role", decodedToken.role);
+    localStorage.setItem("userId", decodedToken.userId);
 
-  localStorage.setItem("role", decodedToken.role);
-  localStorage.setItem("userId", decodedToken.userId);
-
-  return decodedToken;
+    return decodedToken;
 }
 
 export function logout() {

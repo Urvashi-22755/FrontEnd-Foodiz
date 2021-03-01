@@ -208,7 +208,7 @@ export default function AllRestaurants() {
   const [restaurants, setRestaurants] = useState([]);
   const token = localStorage.getItem("token");
   const [vegChecked, setVegChecked] = useState(false);
-  const [globalRestaurant, setGlobalRestaurant] = useState([]);
+  const [globalRestaurant,setGlobalRestaurant]=useState([]);
   const headers = {
     // "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
