@@ -15,6 +15,8 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
 import NavAppBar from "../components/Navbar";
 import FooterGrid from "../components/Footer";
+import jwt_decode from "jwt-decode";
+
 const useStyles = makeStyles((theme) => ({
   root: {
      marginTop: '3%',
@@ -62,7 +64,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileSection() {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = React.useState(0);
-
+  var token = localStorage.getItem("token");
+  const decodedToken =   decodeToken(token);  
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -93,8 +96,18 @@ export default function ProfileSection() {
                       icon={<PersonIcon />}
                       label="Profile"
                     />
-
-                    <Tab
+                    {
+                      decodedToken.role=="DE"
+                      ?<Tab
+                      className={classes.tabtext}
+                      classes={{
+                        wrapper: classes.iconLabelWrapper,
+                        labelContainer: classes.labelContainer,
+                      }}
+                      icon={<ShoppingBasketIcon />}
+                      label="Completed Orders"
+                    />
+                      :<Tab
                       className={classes.tabtext}
                       classes={{
                         wrapper: classes.iconLabelWrapper,
@@ -103,8 +116,11 @@ export default function ProfileSection() {
                       icon={<ShoppingBasketIcon />}
                       label="Past Orders"
                     />
+                    }
+                    
                   </Tabs>
                 </Grid>
+
                 <Grid item sm={12} xs={12} lg={8} md={8}>
                   {selectedTab === 0 && <MyProfile />}
                   {selectedTab === 1 && <PastOrders />}
@@ -117,4 +133,14 @@ export default function ProfileSection() {
       <FooterGrid />
     </div>
   );
+}
+
+
+function decodeToken(token) {
+  var token = localStorage.getItem("token",token);
+  let decodedToken = jwt_decode(token);
+  localStorage.setItem("role", decodedToken.role);
+  localStorage.setItem("userId", decodedToken.userId);
+
+  return decodedToken;
 }

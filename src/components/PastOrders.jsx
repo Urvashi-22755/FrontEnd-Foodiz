@@ -22,6 +22,9 @@ import { Icon, InlineIcon } from "@iconify/react";
 import _ from "lodash";
 import Button from '@material-ui/core/Button';
 import axios from "axios";
+import {decodeToken} from '../services/authUser';
+import jwt_decode from "jwt-decode";
+
 const useStyles = makeStyles(theme => ({
   root: {
     //   margin: '2%',
@@ -136,10 +139,20 @@ const handleId = rest => {
     return res.data;
   };
    const fetchPastorders = async () => {
-     const resp = await axios.get("http://localhost:5000/order/getUserOrder", {
-      headers: headers,
-     })
-     return resp.data;
+    var token = localStorage.getItem("token");
+    const decodedToken =   decodeToken(token); 
+     if(decodedToken.role=="DE"){
+      const resp = await axios.get("http://localhost:5000/delivery/getdeliveryexecutivepastorders", {
+        headers: headers,
+       })
+       return resp.data;
+     }else{
+      const resp = await axios.get("http://localhost:5000/order/getUserOrder", {
+        headers: headers,
+       })
+       return resp.data;
+     }
+     
 }
 
   useEffect(() => {
@@ -148,11 +161,12 @@ const handleId = rest => {
       const resp = await fetchPastorders();
       console.log('my orders', result);
       console.log('past orders delivery', resp);
-      if (myOrders.role == "NU") {
-        setMyOrders(result);
-      } else {
-        setMyOrders(resp);
-      }
+      // if (myOrders.role == "NU") {
+      //   setMyOrders(result);
+      // } else {
+      //   setMyOrders(resp);
+      // }
+      setMyOrders(resp);
     })();
   }, []);
 

@@ -128,10 +128,10 @@ export default function SignIn(props) {
 
     validate(userData);
 
-    console.log("Validation response", errors);
+    // console.log("Validation response", errors);
 
     if (errors === {}) {
-      console.log("The resoonse in validation");
+      // console.log("The resoonse in validation");
       return errors;
     } else {
       //axios call

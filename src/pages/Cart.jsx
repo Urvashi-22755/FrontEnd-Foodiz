@@ -336,7 +336,7 @@ export default function Cart(props) {
                     </>
                   );
                 })}
-                )
+                
                 <b>
                   <hr />
                   <Box display="flex" direction="row-reverse">
