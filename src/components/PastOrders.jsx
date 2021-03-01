@@ -198,9 +198,7 @@ const handleId = rest => {
            
             {myOrders.length> 0 ? (myOrders?.map(order => (
               <Paper className={classes.paper1} key={order._id}>
-                   <Typography className={classes.pastordertext}>
-                Past Orders
-              </Typography>
+                   
                 <div className={classes.pastorders}>
                   <div className={classes.pastImage}>
                     <img className={classes.image} src={order?.restaurantDetails?.restaurantImages} />
