@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 
 import jwt_decode from "jwt-decode";
 
-import NavAppBar from "./Navbar";
+import NavAppBar from "./../components/Navbar/Navbar";
 
 import FooterGrid from "./Footer";
 import { Redirect } from "react-router-dom";
@@ -73,12 +73,11 @@ export default function ForgotPassword(props) {
   const classes = useStyles();
 
   const [userData, setUserData] = useState(initialState);
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState({});
   const [otp, setOtp] = useState(false);
   const [newPass, setnewPass] = useState(false);
   const [flag, setFlag] = useState(0);
   const [resOtp, setResOtp] = useState();
-
 
   const handleChange = (event) => {
     event.persist();
@@ -106,18 +105,19 @@ export default function ForgotPassword(props) {
 
       if (res.data.forgotPasswordOtp) {
         setResOtp(res.data.forgotPasswordOtp);
-        setErrors(res.data.message);
-        console.log(res.data.forgotPasswordOtp);
+        setErrors((error) => ({
+          ...error,
+          otpSent: "Otp has been sent succesfully to your email!",
+          errorOtp: null,
+          success: null,
+          errorPassword: null,
+        }));
       }
     }
 
     //if otp matched then
     if (userData.newPassword !== "" && userData.confirmPassword !== "") {
-      console.log("both not empty");
-
       if (userData.newPassword == userData.confirmPassword) {
-        console.log("both are SAME  ");
-
         try {
           let resetPassword = await axios.post(
             "http://localhost:5000/user/resetPassword",
@@ -125,16 +125,28 @@ export default function ForgotPassword(props) {
           );
 
           console.log("Response of reset password call", resetPassword);
-          setErrors("Password has been reseted successfully!");
-          //props.history.push("/");
+          setErrors((error) => ({
+            ...error,
+            success: "Password has been reseted successfully!",
+            errorOtp: null,
+            otpSent: null,
+            errorPassword: null,
+          }));
+          props.history.push("/");
         } catch (e) {
           if (e.response && e.response.data) {
             console.log(e.response.data.message); // some reason error message
           }
         }
+      } else {
+        setErrors((error) => ({
+          ...error,
+          errorPassword: "Password did not matched",
+          errorOtp: null,
+          otpSent: null,
+          success: null,
+        }));
       }
-    } else {
-      //setErrors("Please enter correct password.");
     }
   };
 
@@ -142,16 +154,26 @@ export default function ForgotPassword(props) {
   const handleNewPassword = (event) => {
     event.preventDefault();
 
-    if (userData.otp) {
-      console.log("in otp method", userData.otp);
-    }
-
-    if (userData.otp === resOtp) {
+    if (userData.otp == resOtp) {
       console.log("OTP matched!");
+      setErrors((error) => ({
+        ...error,
+        errorOtp: null,
+        otpSent: null,
+        success: null,
+        errorPassword: null,
+      }));
+
       setOtp(false);
       setnewPass(true);
     } else {
-      console.log("Otp did not matched");
+      setErrors((error) => ({
+        ...error,
+        errorOtp: "Otp did not matched",
+        otpSent: null,
+        success: null,
+        errorPassword: null,
+      }));
     }
   };
 
@@ -178,16 +200,17 @@ export default function ForgotPassword(props) {
                     <TextField
                       label="Email"
                       name="email"
+                      type="email"
                       placeholder="Enter Email to get OTP."
                       className={classes.textField}
                       onChange={handleChange}
                       disabled={otp ? true : false}
                       fullWidth
+                      required
                     />
-                    {errors ? (
+                    {errors && errors.otpSent ? (
                       <div style={{ color: "green", marginTop: "1%" }}>
-                        {" "}
-                        {errors}
+                        {errors.otpSent}
                       </div>
                     ) : null}
 
@@ -202,6 +225,7 @@ export default function ForgotPassword(props) {
                           className={classes.textField}
                           onChange={handleChange}
                         />
+
                         <Button
                           type="submit"
                           variant="contained"
@@ -214,27 +238,38 @@ export default function ForgotPassword(props) {
                         </Button>
                       </Box>
                     ) : null}
-
+                    {errors && errors.errorOtp ? (
+                      <div style={{ color: "red", marginTop: "1%" }}>
+                        {errors.errorOtp}
+                      </div>
+                    ) : null}
                     {newPass ? (
                       <>
                         <TextField
                           label="New Password"
                           name="newPassword"
-                          type="text"
+                          type="password"
                           placeholder="Enter New Password"
                           className={classes.textField}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
                         <TextField
                           label="Confirm Password"
                           name="confirmPassword"
-                          type="text"
+                          type="password"
                           placeholder="Enter Confirm Password"
                           className={classes.textField}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
+                        {errors && errors.errorPassword ? (
+                          <div style={{ color: "red", marginTop: "1%" }}>
+                            {errors.errorPassword}
+                          </div>
+                        ) : null}
                       </>
                     ) : null}
 
@@ -249,10 +284,9 @@ export default function ForgotPassword(props) {
                       {flag === 0 ? "Send OTP" : "Change Password"}
                     </Button>
 
-                    {errors ? (
+                    {errors && errors.success ? (
                       <div style={{ color: "green", marginTop: "1%" }}>
-                        {" "}
-                        {errors}
+                        {errors.success}
                       </div>
                     ) : null}
                   </form>

@@ -29,7 +29,7 @@ import SignIn from "../components/SignIn";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { decodeToken } from "../services/authUser";
 import { logout } from "./../services/authUser";
-import { fetchUserDeatails } from "./../services/UserService";
+import { fetchUserDetails } from "./../services/UserService";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 
 const theme = createMuiTheme({
@@ -219,7 +219,7 @@ export default function LandingPage(props) {
 
   let finalres;
   async function fetchUserData() {
-    let userDetail = await fetchUserDeatails(headers);
+    let userDetail = await fetchUserDetails();
     setuserName(userDetail.firstName);
     return finalres;
   }

@@ -14,10 +14,9 @@ import {
 import Typography from "@material-ui/core/Typography";
 // import SearchBar from "../components/SearchBar";
 import SearchBar from "material-ui-search-bar";
-
 import RestaurantItems from "../components/RestaurantItems";
 import foodData from "../data/FoodData";
-import NavAppBar from "../components/Navbar";
+import NavAppBar from "./../components/Navbar/Navbar";
 import FooterGrid from "../components/Footer";
 import Carousels from "../components/Carousels";
 import StarRateIcon from "@material-ui/icons/StarRate";
@@ -53,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginTop: 12,
     width: "100%",
+    backgroundColor: "#f5f2da",
     "& > *": {
       margin: theme.spacing(1),
       width: theme.spacing(16),
@@ -148,10 +148,6 @@ const useStyles = makeStyles((theme) => ({
   },
   ecoOutlinedIcon: {
     marginLeft: "0",
-  },
-  vegText: {
-    paddingLeft: "12%",
-    marginRight:"-10px"
   },
 }));
 
@@ -440,7 +436,6 @@ const RestaurantContainer = (props) => {
             <div className={classes.checkBoxStyle}>
               <Paper className={classes.vegSection}>
                 <span className={classes.vegText}>
-                
                   <FormControlLabel
                     control={
                       <GreenCheckbox

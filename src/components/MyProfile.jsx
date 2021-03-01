@@ -58,12 +58,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#37718e",
   },
   detailedText: {
-    marginTop: '5%',
-    fontFamily: 'font-family: Noto Sans HK, sans-serif'
+    marginTop: "5%",
+    fontFamily: "font-family: Noto Sans HK, sans-serif",
   },
   fields: {
     fontSize: "18px",
-    lineHeight: '2.5rem',
+    lineHeight: "2.5rem",
     color: "#37718e",
   },
   editicon: {
@@ -134,7 +134,7 @@ export default function MyProfile() {
         vehicleNumber: data.vehicleNumber,
       };
       updateData.vehicleNumber = data.vehicleNumber;
-      console.log("updatedata",updateData)
+      console.log("updatedata", updateData);
     }
     const res = await axios.post(
       "http://localhost:5000/user/updateprofile",
@@ -156,7 +156,7 @@ export default function MyProfile() {
       console.log("user details", res);
       setUserDetails(res);
       if (res.role == "DE") {
-        setData({
+        setData((data) => ({
           ...data,
           streetAddress:
             res?.deliveryExecutive?.deliveryExecutiveLocation?.streetAddress,
@@ -167,15 +167,15 @@ export default function MyProfile() {
           state: res?.deliveryExecutive?.deliveryExecutiveLocation?.state,
           country: res?.deliveryExecutive?.deliveryExecutiveLocation?.country,
           vehicleNumber: res?.deliveryExecutive?.vehicleNumber,
-        });
+        }));
       }
-      setData({
+      setData((data) => ({
         ...data,
         firstName: res?.firstName,
         lastName: res?.lastName,
         mobileNumber: res?.mobileNumber,
         role: res?.role,
-      });
+      }));
     })();
   }, []);
 
@@ -195,13 +195,11 @@ export default function MyProfile() {
 
   return (
     <div className={classes.root}>
-    <Container>
-    <Paper className={classes.paper}>
-        <Grid container spacing={3}>
-        
-          <Grid item sm={12} xs={12} lg={12} md={12}>
-           
-            <div className={classes.editicon}>
+      <Container>
+        <Paper className={classes.paper}>
+          <Grid container spacing={3}>
+            <Grid item sm={12} xs={12} lg={12} md={12}>
+              <div className={classes.editicon}>
                 {isAvatarSmallDevices && (
                   <Avatar
                     alt="Remy Sharp"
@@ -212,220 +210,231 @@ export default function MyProfile() {
                 )}
 
                 <EditIcon className={classes.edit} onClick={handleClickOpen} />
-              </div> 
-             
-          </Grid>
-             
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle className={classes.editHeading}>
-                  Edit Details
-                </DialogTitle>
-
-                <DialogContent>
-                  <TextField
-                    margin="dense"
-                    name="firstName"
-                    // label="First Name"
-                    type="text"
-                    value={data?.firstName}
-                    fullWidth
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="lastName"
-                    label="Last Name"
-                    type="text"
-                    value={data?.lastName}
-                    fullWidth
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="dense"
-                    name="mobileNumber"
-                    label="Mobile Number"
-                    type="number"
-                    value={data?.mobileNumber}
-                    fullWidth
-                    onChange={handleChange}
-                  />
-                  {userdetails?.role == "DE" ? (
-                    <>
-                      <TextField
-                        margin="dense"
-                        name="vehicleNumber"
-                        label="Vehicle Number"
-                        type="text"
-                        value={data?.vehicleNumber}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                      <TextField
-                        margin="dense"
-                        name="streetAddress"
-                        label="Street Address"
-                        type="text"
-                        value={data?.streetAddress}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                      <TextField
-                        margin="dense"
-                        name="landmark"
-                        label="Landmark"
-                        type="text"
-                        value={data?.landmark}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-
-                      <TextField
-                        margin="dense"
-                        name="area"
-                        label="Area"
-                        type="text"
-                        value={data?.area}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                      <TextField
-                        margin="dense"
-                        name="city"
-                        label="City"
-                        type="text"
-                        value={data?.city}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                      <TextField
-                        margin="dense"
-                        name="state"
-                        label="State"
-                        type="text"
-                        value={data?.state}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                      <TextField
-                        margin="dense"
-                        name="country"
-                        label="Country"
-                        type="text"
-                        value={data?.country}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={updateProfile} color="primary">
-                    Update
-                  </Button>
-                </DialogActions>
-              </Dialog>
-
-
-
-
-           
-            <Grid item  sm={6} xs={6} lg={6} md={6} className={classes.detailedText}>
-               
-                  <div>
-                        <div className={classes.fields}>Name</div>
-                        <div className={classes.fields}>Email Id</div>
-                        <div className={classes.fields}>Mobile Number</div>
-
-                        {userdetails?.role == "DE" ? 
-                        <>
-                        <div className={classes.fields}>Vehicle Number</div>
-                        <div className={classes.fields}>Street Address</div>
-                        <div className={classes.fields}>LandMark</div>
-                        <div className={classes.fields}>Area</div>
-                        <div className={classes.fields}>City</div>
-                        <div className={classes.fields}>State</div>
-                        <div className={classes.fields}>Country</div>
-                        <div className={classes.fields}>Zip</div>
-
-                        </> : null
-                        
-                        }
-                  </div>
-                 
-                  
+              </div>
             </Grid>
 
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle className={classes.editHeading}>
+                Edit Details
+              </DialogTitle>
 
+              <DialogContent>
+                <TextField
+                  margin="dense"
+                  name="firstName"
+                  // label="First Name"
+                  type="text"
+                  value={data?.firstName}
+                  fullWidth
+                  onChange={handleChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="lastName"
+                  label="Last Name"
+                  type="text"
+                  value={data?.lastName}
+                  fullWidth
+                  onChange={handleChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="mobileNumber"
+                  label="Mobile Number"
+                  type="number"
+                  value={data?.mobileNumber}
+                  fullWidth
+                  onChange={handleChange}
+                />
+                {userdetails?.role == "DE" ? (
+                  <>
+                    <TextField
+                      margin="dense"
+                      name="vehicleNumber"
+                      label="Vehicle Number"
+                      type="text"
+                      value={data?.vehicleNumber}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="streetAddress"
+                      label="Street Address"
+                      type="text"
+                      value={data?.streetAddress}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="landmark"
+                      label="Landmark"
+                      type="text"
+                      value={data?.landmark}
+                      onChange={handleChange}
+                      fullWidth
+                    />
 
-            <Grid item  sm={6} xs={6} lg={6} md={6} className={classes.detailedText}>
-               
-                  <div>
-                   
-                      <div className={classes.fields}> {userdetails?.firstName} {userdetails?.lastName}  </div>
-                      <div className={classes.fields}>{userdetails?.email}</div>               
-                      <div className={classes.fields}> {userdetails?.mobileNumber}</div>
+                    <TextField
+                      margin="dense"
+                      name="area"
+                      label="Area"
+                      type="text"
+                      value={data?.area}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="city"
+                      label="City"
+                      type="text"
+                      value={data?.city}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="state"
+                      label="State"
+                      type="text"
+                      value={data?.state}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="country"
+                      label="Country"
+                      type="text"
+                      value={data?.country}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={updateProfile} color="primary">
+                  Update
+                </Button>
+              </DialogActions>
+            </Dialog>
 
-                      {userdetails?.role == "DE" ? 
-                      
-                      (
+            <Grid
+              item
+              sm={6}
+              xs={6}
+              lg={6}
+              md={6}
+              className={classes.detailedText}
+            >
+              <div>
+                <div className={classes.fields}>Name</div>
+                <div className={classes.fields}>Email Id</div>
+                <div className={classes.fields}>Mobile Number</div>
 
-                        < >
-                      <div className={classes.fields}>  {userdetails?.deliveryExecutive?.vehicleNumber} </div>
-                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.streetAddress} </div>
-                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.landmark} </div>
-                      <div className={classes.fields}>{userdetails?.deliveryExecutive?.deliveryExecutiveLocation?.area}</div>
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.city
-                        }
-                      </div>
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.state
-                        }
-                      </div>
+                {userdetails?.role == "DE" ? (
+                  <>
+                    <div className={classes.fields}>Vehicle Number</div>
+                    <div className={classes.fields}>Street Address</div>
+                    <div className={classes.fields}>LandMark</div>
+                    <div className={classes.fields}>Area</div>
+                    <div className={classes.fields}>City</div>
+                    <div className={classes.fields}>State</div>
+                    <div className={classes.fields}>Country</div>
+                    <div className={classes.fields}>Zip</div>
+                  </>
+                ) : null}
+              </div>
+            </Grid>
 
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.country
-                        }
-                      </div>
+            <Grid
+              item
+              sm={6}
+              xs={6}
+              lg={6}
+              md={6}
+              className={classes.detailedText}
+            >
+              <div>
+                <div className={classes.fields}>
+                  {" "}
+                  {userdetails?.firstName} {userdetails?.lastName}{" "}
+                </div>
+                <div className={classes.fields}>{userdetails?.email}</div>
+                <div className={classes.fields}>
+                  {" "}
+                  {userdetails?.mobileNumber}
+                </div>
 
-                      <div className={classes.fields}>
-                        {
-                          userdetails?.deliveryExecutive
-                            ?.deliveryExecutiveLocation?.zip
-                        }
-                      </div>
-                      </>         
-                      )          
+                {userdetails?.role == "DE" ? (
+                  <>
+                    <div className={classes.fields}>
+                      {" "}
+                      {userdetails?.deliveryExecutive?.vehicleNumber}{" "}
+                    </div>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.streetAddress
+                      }{" "}
+                    </div>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.landmark
+                      }{" "}
+                    </div>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.area
+                      }
+                    </div>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.city
+                      }
+                    </div>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.state
+                      }
+                    </div>
 
-                    : null   }
-                     
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.country
+                      }
+                    </div>
 
-
-
-                  </div>
-                 
-              </Grid>
-                
-               
-             
-        </Grid>
+                    <div className={classes.fields}>
+                      {
+                        userdetails?.deliveryExecutive
+                          ?.deliveryExecutiveLocation?.zip
+                      }
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            </Grid>
+          </Grid>
         </Paper>
-        </Container>
+      </Container>
     </div>
   );
 }

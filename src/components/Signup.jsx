@@ -22,7 +22,7 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { grid } from "@material-ui/system";
-import NavAppBar from "./Navbar";
+import NavAppBar from "./../components/Navbar/Navbar";
 import FooterGrid from "./Footer";
 import { Redirect } from "react-router-dom";
 /* import * as Yup from "yup"; */
@@ -237,7 +237,6 @@ export default function SignUp(props) {
       };
       console.log(registerUserObj);
       let commonData = registerUserObj;
-
       registerUserObj = { ...commonData, deliveryExecutive };
     }
 
@@ -260,12 +259,14 @@ export default function SignUp(props) {
         "http://localhost:5000/user/registeruser",
         userDetail
       );
-      console.log("USER SIGN UP ", res.data);
-      
+      // console.log("USER SIGN UP ", res.data);
+
       props.history.replace("/login");
     } catch (err) {
-      
-      setErrors((errors) => ({...errors,userExists:err.response.data.message}));
+      setErrors((errors) => ({
+        ...errors,
+        userExists: err.response.data.message,
+      }));
       console.log("USER REGITSER ERR", err.response);
     }
 
@@ -426,8 +427,10 @@ export default function SignUp(props) {
                     fullWidth
                   />
                   {errors ? (
-                    <div className={classes.errorMessage}>{errors.email}{ errors.userExists}</div>
-
+                    <div className={classes.errorMessage}>
+                      {errors.email}
+                      {errors.userExists}
+                    </div>
                   ) : null}
                   <TextField
                     className={classes.textField}

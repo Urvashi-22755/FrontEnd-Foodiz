@@ -9,7 +9,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import NavAppBar from "./Navbar";
+import NavAppBar from './../components/Navbar/Navbar';
 import FooterGrid from "./Footer";
 import { grid } from "@material-ui/system";
 const useStyles = makeStyles((theme) => ({

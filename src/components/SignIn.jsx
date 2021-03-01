@@ -22,7 +22,7 @@ import { withRouter } from "react-router-dom";
 import { useState } from "react";
 import { Dialog, DialogContent } from "@material-ui/core";
 
-import NavAppBar from "./Navbar";
+import NavAppBar from "./../components/Navbar/Navbar";
 import Mirage from "@material-ui/core/colors";
 import FooterGrid from "./Footer";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: "16px",
     fontWeight: "strong",
-    textAlign:"center"
+    textAlign: "center",
   },
   submitButton: {
     backgroundColor: "#171a29",
@@ -145,7 +145,7 @@ export default function SignIn(props) {
     }
   };
 
-  const loginUser =async (userData) => {
+  const loginUser = async (userData) => {
     //Posting Data to the Server.
 
     const response = await authUser(userData, props);
@@ -153,26 +153,6 @@ export default function SignIn(props) {
       setErrors((errors) => ({ ...errors, authError: response.message }));
     }
     console.log("Login Response", response);
-    /* axios
-      .post("http://localhost:5000/user/authenticate", userData) //User Id and User ROle in TOken
-      .then((res) => {
-        console.log("Login res", res);
-        localStorage.setItem("token", res.data.token);
-
-        //Decoding the token and fetching the roles of the loggedIn user.
-        var token1 = localStorage.getItem("token", res.data.token);
-        var decoded = jwt_decode(token1);
-        console.log(decoded);
-        console.log("User decode d role", decoded.role);
-        localStorage.setItem("role", decoded.role);
-        localStorage.setItem("userId", decoded.userId);
-        // Rendering condition for User and Delivery Executive.
-        if ("DE" == decoded.role) {
-          props.history.push("/deliverypage");
-        } else {
-          props.history.push("/profile");
-        }
-      }); */
   };
 
   return (
@@ -239,7 +219,7 @@ export default function SignIn(props) {
                           to="/forgotpassword"
                           className={classes.forgetpassword}
                         >
-                          {"   "} Change Password.
+                          Change Password.
                         </Link>
                         <div className={classes.wantToregister}>
                           Want to register?

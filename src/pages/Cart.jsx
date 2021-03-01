@@ -14,9 +14,16 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Box } from "@material-ui/core";
 import DrawerExample from "../components/DrawerForm";
 import FooterGrid from "../components/Footer";
-import NavAppBar from "../components/Navbar";
+import NavAppBar from './../components/Navbar/Navbar';
 import axios from "axios";
-import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery';
+import NoPlacedOrdersDelivery from "../EmptyPages/NoPlacedOrdersDelivery";
+import {
+  fetchUserCartDeatails,
+  incrementCartItem,
+  decrementCartItem,
+  removeCartItem,
+  handleCartPlaceOrder,
+} from "../services/CartService";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -145,31 +152,23 @@ export default function Cart(props) {
   let totalValue = 0;
 
   const FetchCartData = async () => {
-    console.log("in cart ");
     const res = await axios.get("http://localhost:5000/cart/getcart", {
       headers: headers,
     });
-    console.log("full res", res);
     setTotalPrice(res.data.totalAmount);
     setItems(res.data.cartFoodList);
     setRestaurant(res.data.restaurantDetails);
-    console.log("price", totalprice);
     return res;
+    /* const res =  fetchUserCartDeatails();
+    return res; */
   };
 
   useEffect(() => {
     (async function () {
       const result = await FetchCartData();
-
-      setItems(result.data.cartFoodList);
-      setRestaurant(result.data.restaurantDetails);
-      setTotalPrice(result.data.totalAmount);
-      console.log("rest data", result.data.restaurantDetails);
-      console.log("Response Data food", result.data.cartFoodList);
-      console.log("price", totalprice);
-      //  await setItems(data);
-      /*       calculateTotalPrice(items);
-       */
+      setItems(result?.data.cartFoodList);
+      setRestaurant(result?.data.restaurantDetails);
+      setTotalPrice(result?.data.totalAmount);
     })();
   }, []);
 
@@ -178,74 +177,45 @@ export default function Cart(props) {
     else setDrawer(true);
   };
 
-  const handleSubmit = (addData) => {
-    //  e.preventDefault();
-    console.log("On Submit Data from drawee:", addData);
+  const handleSubmit = (addData, e) => {
+    e.preventDefault();
     setAddress(addData);
     setDrawer(false);
   };
 
   //Place order method
   const handlePlaceOrder = async (address) => {
-    // console.log("order for items", items);
-    console.log("delivery address", address);
-    console.log("before");
-    const res = await axios.post(
-      "http://localhost:5000/order/postorder",
-      { orderLocation: address },
-      {
-        headers: headers,
-      }
-    );
-    console.log("after");
-    console.log("order data : ", res);
+    const res = await handleCartPlaceOrder(address);
     props.history.push("/myorders");
   };
 
   //increment data
   const handleIncrement = async (currentItem) => {
-    console.log("increment");
     const data = {
       foodId: currentItem.foodItem._id,
       restaurantId: restaurant.restaurantId,
     };
 
-    const res = await axios.post("http://localhost:5000/cart/addtocart", data, {
-      headers: headers,
-    });
-    const response = await FetchCartData();
+    await incrementCartItem(data);
+    FetchCartData();
   };
 
   const handleDecrement = async (currentItem) => {
-    console.log(currentItem.foodItem._id);
     const data = {
       foodId: currentItem.foodItem._id,
     };
 
-    const res = await axios.post(
-      "http://localhost:5000/cart/reducequantitytocart",
-      data,
-      { headers: headers }
-    );
-
-    console.log("response decrement", res);
-
-    const response = await FetchCartData();
+    await decrementCartItem(data);
+    FetchCartData();
+    /*  await fetchUserCartDeatails(); */
   };
 
   const removeItem = async (currentItem) => {
-    console.log(currentItem.foodItem._id);
     const data = {
       foodId: currentItem.foodItem._id,
     };
 
-    const res = await axios.post(
-      "http://localhost:5000/cart/removefromcart",
-      data,
-      { headers: headers }
-    );
-
-    console.log("response remove item", res);
+    const res = await removeCartItem(data);
 
     const response = await FetchCartData();
   };
@@ -273,7 +243,11 @@ export default function Cart(props) {
                 {items?.map((item) => {
                   return (
                     <>
-                      <Card className={classes.cardstyle} variant="outlined">
+                      <Card
+                        className={classes.cardstyle}
+                        variant="outlined"
+                        key={item._id}
+                      >
                         <div className={classes.details}>
                           <CardContent className={classes.content}>
                             <Typography component="h5" variant="h5">
@@ -336,14 +310,14 @@ export default function Cart(props) {
                     </>
                   );
                 })}
-                )
+
                 <b>
                   <hr />
-                  <Box display="flex" direction="row-reverse">
+                  <Grid item container justify="flex-end">
                     <Typography variant="h5">
                       <b>Total Price:{totalprice} </b>
                     </Typography>
-                  </Box>
+                  </Grid>
                 </b>
               </Paper>
             </Grid>
@@ -408,21 +382,21 @@ export default function Cart(props) {
         </Container>
       ) : (
         <>
-        <Container spacing={3} className={classes.noOrderImage}>
-          <Grid
-            container
-            spacing={3}
-            direction="column"
-            alignItems="center"
-            justify="center"
-          >
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              <NoPlacedOrdersDelivery />
-              <h3>Empty Cart!!</h3>
+          <Container spacing={3} className={classes.noOrderImage}>
+            <Grid
+              container
+              spacing={3}
+              direction="column"
+              alignItems="center"
+              justify="center"
+            >
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <NoPlacedOrdersDelivery />
+                <h3>Empty Cart!!</h3>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </>
+          </Container>
+        </>
       )}
 
       <FooterGrid />

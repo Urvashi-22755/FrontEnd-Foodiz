@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavAppBar from "../components/Navbar";
+import NavAppBar from './../components/Navbar/Navbar';
 import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
 import { Link } from "react-router-dom";

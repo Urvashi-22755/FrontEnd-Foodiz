@@ -2,7 +2,6 @@ import LandingPage from "./pages/LandingPage";
 import { Route, Switch } from "react-router-dom";
 import ProfileSection from "./pages/ProfileSection";
 import PastOrders from "./components/PastOrders";
-import NavAppBar from "./components/Navbar";
 import FooterGrid from "./components/Footer";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -24,10 +23,10 @@ import ForgotPassword from './components/ForgotPassword';
 import SimpleRating  from './components/Rating';
 import DeliveryExecutiveDetails from './components/DeliveryExecutiveDetail';
 import HomeComponent from './HomeComponent';
-
-
+require('dotenv').config();
 
 function App() {
+
   return (
     <div className="App">
 

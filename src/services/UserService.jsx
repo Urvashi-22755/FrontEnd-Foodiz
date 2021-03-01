@@ -6,7 +6,7 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
-export async function fetchUserDeatails(headers) {
+export async function fetchUserDetails() {
   const res = await axios.get("http://localhost:5000/user/getuser", {
     headers: headers,
   });

@@ -17,6 +17,7 @@ import { Box } from "@material-ui/core";
 import axios from "axios";
 import { decodeToken } from "../services/authUser";
 import { fetchUserCartDeatails } from "../services/CartService";
+import StarRateIcon from "@material-ui/icons/StarRate";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginTop: theme.spacing(2),
     },
+  },
+  rating: {
+    backgroundColor: "#48c479",
+    color: "white",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "max-content",
+    paddingRight:"5px"
   },
   addTocart: {
     color: "white",
@@ -83,7 +92,7 @@ export default function ItemCard(props) {
     foodPrice,
     _id,
     avgRating,
-    customProps
+    customProps,
   } = props;
   const [openSnackBar, setSnackBar] = useState(false); //open close snack bar
   //  console.log('rest id in cart.jsx', restaurantId)
@@ -104,7 +113,7 @@ export default function ItemCard(props) {
   }
 
   const handleCart = async (_id) => {
-    if (authenticated) {
+    if (authenticated && authenticated.role == "NU") {
       const res = await axios.post(
         "http://localhost:5000/cart/addtocart",
         data,
@@ -115,11 +124,24 @@ export default function ItemCard(props) {
       console.log("addtocart data response", res);
       console.log("FOod Id, Rest ID, User Id", foodName, restaurantId);
       setSnackBar(true);
+    } else if (authenticated && authenticated.role == "DE") {
+      setSnackBar(true);
     } else {
       customProps.history.replace("/login");
-     
     }
-    console.log("PROPS",props)
+    if (authenticated) {
+      const res = await axios.post(
+        "http://localhost:5000/cart/addtocart",
+        data,
+        {
+          headers: headers,
+        }
+      );
+
+      setSnackBar(true);
+    } else {
+      customProps.history.replace("/login");
+    }
   };
 
   const handleCloseSnackBar = (event, reason) => {
@@ -148,7 +170,9 @@ export default function ItemCard(props) {
               Rs.{foodPrice}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              {avgRating}
+              <p className={classes.rating}>
+                <StarRateIcon /> {parseFloat(avgRating).toFixed(1)}
+              </p>
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
               {foodType}
@@ -180,12 +204,21 @@ export default function ItemCard(props) {
           autoHideDuration={3600}
           onClose={handleCloseSnackBar}
         >
-          <Alert
-            onClose={handleCloseSnackBar}
-            style={{ backgroundColor: "#157a21", width: "250px" }}
-          >
-            Item added to cart!
-          </Alert>
+          {authenticated && authenticated.role == "DE" ? (
+            <Alert
+              onClose={handleCloseSnackBar}
+              style={{ backgroundColor: "red", width: "300px" }}
+            >
+              Delivery Executive can't place an order!
+            </Alert>
+          ) : (
+            <Alert
+              onClose={handleCloseSnackBar}
+              style={{ backgroundColor: "#157a21", width: "250px" }}
+            >
+              Item added to cart!
+            </Alert>
+          )}
         </Snackbar>
       </div>
     </>

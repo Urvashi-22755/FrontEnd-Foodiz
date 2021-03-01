@@ -14,7 +14,7 @@ import {
 import StarRateIcon from "@material-ui/icons/StarRate";
 import Fade from "@material-ui/core/Fade";
 import axios from "axios";
-import { Link }  from "react-router-dom";
+import { Link } from "react-router-dom";
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
   { width: 768, itemsToShow: 2 },
@@ -71,9 +71,8 @@ function Carousels() {
   return (
     <>
       <div>
-        {" "}
         <Typography style={heading}>
-          Foodizz's Five Star{" "}
+          Foodizz's Five Star
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50"
@@ -90,7 +89,10 @@ function Carousels() {
         <Carousel breakPoints={breakPoints}>
           {restaurants.map((rest) => (
             <Box key={rest._id}>
-              <Link style={{ textDecoration: "none" }} to={`/restaurant/${rest._id}`}>
+              <Link
+                style={{ textDecoration: "none" }}
+                to={`/restaurant/${rest._id}`}
+              >
                 <Card style={cardstyle}>
                   <CardActionArea>
                     <CardMedia

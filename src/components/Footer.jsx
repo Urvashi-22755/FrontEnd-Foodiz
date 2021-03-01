@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: "left",
     border: "1px solid #171a29",
     color: "white",
-    height: "300px",
+    height: "350px",
     backgroundColor: "#171a29"
   },
   grid2: {

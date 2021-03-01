@@ -13,7 +13,7 @@ import { shadows } from "@material-ui/system";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 // import SvgIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
-import NavAppBar from "../components/Navbar";
+import NavAppBar from './../components/Navbar/Navbar';
 import FooterGrid from "../components/Footer";
 import jwt_decode from "jwt-decode";
 import { decodeToken }  from "../services/authUser";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavAppBar from "../components/Navbar";
+import NavAppBar from './../components/Navbar/Navbar';
 import FooterGrid from "../components/Footer";
 import foodData from "../data/Restaurants";
 import { Link } from "react-router-dom";
@@ -204,7 +204,7 @@ export default function AllRestaurants() {
   const classes = useStyles();
   // const restaurants = foodData();
   const [city, setCity] = useState("");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("Gandhinagar");
   const [restaurants, setRestaurants] = useState([]);
   const token = localStorage.getItem("token");
   const [vegChecked, setVegChecked] = useState(false);
@@ -226,29 +226,33 @@ export default function AllRestaurants() {
     }
   };
   const handleCityChange = async (event) => {
-    console.log(event.target.value);
+    console.log("In handle City Change city : ",event.target.value);
     setCity(event.target.value);
-    const data = await getSearchedRestaurants(city, search);
-    setRestaurants(data);
-  };
-  const handleSearchChange = async (event) => {
-    console.log(event);
-    setSearch(event);
-    const data = await getSearchedRestaurants(city, search);
+    const data = await getSearchedRestaurants(event.target.value, search);
     setRestaurants(data);
   };
 
+  const handleSearchChange = async (event) => {
+    console.log("In handle Search Change city :  search : ",city,event);
+    setSearch(event);
+    const data = await getSearchedRestaurants(city, search);
+    setRestaurants(data);
+    console.log("All rest after global",restaurants);
+  };
+
   const getSearchedRestaurants = async (city, search) => {
-    if (search == "") {
+    console.log("City : ", city, "Search : ", search);
+    if (search == "" && city=="") {
       console.log("if search");
       return globalRestaurant;
-    } else {
+    }else {
+      console.log("else search",city);
       const resp = await axios.get(
         "http://localhost:5000/restaurant/searchrestaurants",
         { params: { city: city, search: search } },
-        {
-          headers: headers,
-        }
+        // {
+        //   headers: headers,
+        // }
       );
       return resp.data;
     }
@@ -260,9 +264,10 @@ export default function AllRestaurants() {
       const res = await axios.get(
         "http://localhost:5000/restaurant/getrestaurants"
       );
-      console.log(res);
       setGlobalRestaurant(res.data);
       setRestaurants(res.data);
+      // const res1=await getSearchedRestaurants(city,search)
+      // setRestaurants(res1)
     })();
   }, []);
 
@@ -286,7 +291,7 @@ export default function AllRestaurants() {
                 label="Status"
                 className={classes.formselect}
               >
-                <option aria-label="None" value="" />
+                {/* <option aria-label="None" value="" /> */}
                 <option value="Gandhinagar">Gandhinagar</option>
                 {/* <option value={20}>In Process</option> */}
                 <option value="Abad">Abad</option>

@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import NavAppBar from '../components/Navbar';
+import NavAppBar from './../components/Navbar/Navbar';
 import FooterGrid from '../components/Footer';
 import { makeStyles } from "@material-ui/core/styles";
 import foodData from "../data/Restaurants";

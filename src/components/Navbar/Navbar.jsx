@@ -10,16 +10,18 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Box } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { decodeToken } from "../services/authUser";
-import { logout } from "./../services/authUser";
+import { decodeToken } from "../../services/authUser";
+import { logout } from "../../services/authUser";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
-import { fetchUserDeatails } from "./../services/UserService";
+import { fetchUserDetails } from "../../services/UserService";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import Badge from "@material-ui/core/Badge";
 import jwt_decode from "jwt-decode";
-import { fetchUserCartDeatails } from "../services/CartService";
+import { fetchUserCartDetails } from "../../services/CartService";
+import { StyledBadge } from "./NavBar.style";
+import { useStyles } from "./NavBar.style";
 
-const StyledBadge = withStyles((theme) => ({
+/* const StyledBadge = withStyles((theme) => ({
   badge: {
     right: 3,
     top: 15,
@@ -65,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   navbarLinkCard: {
     marginLeft: "10px",
   },
-}));
+})); */
 
 export default function NavAppBar() {
   const classes = useStyles();
@@ -89,7 +91,7 @@ export default function NavAppBar() {
 
   /* User Name Data!! */
   async function fetchUserData() {
-    let userDetail = await fetchUserDeatails(headers);
+    let userDetail = await fetchUserDetails();
     setuserName(userDetail.firstName);
   }
 
@@ -99,8 +101,9 @@ export default function NavAppBar() {
 
   /* Cart Data Detail!! */
   async function fetchCartData() {
+    console.log("IN FRTCH");
     let cartDetail = {};
-    cartDetail = await fetchUserCartDeatails(headers);
+    cartDetail = await fetchUserCartDetails(headers);
     if (cartDetail.cartFoodList) {
       setcartLength(cartDetail.cartFoodList.length);
     } else {
@@ -109,10 +112,10 @@ export default function NavAppBar() {
 
     /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
   }
-  /*   if (authenticated) {
-    setInterval(fetchCartData, 500);
-  }
- */
+  /*  if (authenticated) {
+    setInterval(fetchCartData, 1000);
+  } */
+
   const handleLogout = () => {
     logout();
   };
@@ -161,11 +164,21 @@ export default function NavAppBar() {
                   <>
                     <Link
                       style={{ textDecoration: "none", color: "white" }}
+                      to={`/allrestaurants`}
+                    >
+                      <div className={classes.navbarLinks}>
+                        <ListAltOutlinedIcon style={{ marginRight: "5px" }} />
+                        Restaurants
+                      </div>
+                    </Link>
+
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
                       to={`/myorders`}
                     >
                       <div className={classes.navbarLinks}>
                         <ListAltOutlinedIcon style={{ marginRight: "5px" }} />
-                        Orders
+                        Track Orders
                       </div>
                     </Link>
 
