@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { Grid, Paper } from "@material-ui/core";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import axios from "axios";
-
+import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery'
 /* styles */
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     height: "90%",
   },
+  noOrderImage:{
+    marginTop: '10%'
+  }
 }));
 
 function MyOrders(props) {
@@ -175,7 +178,22 @@ function MyOrders(props) {
               }))
               : 
 
-                <h1>No ORders Yet</h1>
+              <>
+              <Container spacing={3} className={classes.noOrderImage}>
+                <Grid
+                  container
+                  spacing={3}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                >
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <NoPlacedOrdersDelivery />
+                    <h3>No Orders Placed!</h3>
+                  </Grid>
+                </Grid>
+              </Container>
+            </>
               }
               
             </Grid>

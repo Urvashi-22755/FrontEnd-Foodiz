@@ -230,18 +230,18 @@ export default function DeliveryPage() {
         <div className={classes.deliveryImageDiv}>
           <Grid container spacing={1}>
             <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
-              <Grid item xs={4} sm={4} md={4} lg={4}>
+              <Grid item xs={12} sm={4} md={4} lg={4}>
                 <Link to={`/acceptedOrders`}>
                   <img
                     src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/cef389b486cb4827e6ba007f26ebddab.svg"
                     className={classes.imagesize}
                   />
                 </Link>
-                <div className={classes.imageText}>
-                  <b>Accepted Orders</b>
+                <div >
+           <Typography className={classes.imageText}>  <b>Accepted Orders</b></Typography>     
                 </div>
               </Grid>
-              <Grid item xs={4} sm={4} md={4} lg={4}>
+              <Grid item xs={12} sm={4} md={4} lg={4}>
                 <img
                   src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/7f56b34e6c253cb54a35bacf5150dde9.svg"
                   className={classes.imagesize}
@@ -250,7 +250,7 @@ export default function DeliveryPage() {
                   <b>Your restaurants Delivered</b>
                 </div>
               </Grid>
-              <Grid item xs={4} sm={4} md={4} lg={4}>
+              <Grid item xs={12} sm={4} md={4} lg={4}>
                 <img
                   src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/84d6770ca439c4b1ba2d6f53adc1d039.svg"
                   className={classes.imagesize}
@@ -272,48 +272,48 @@ export default function DeliveryPage() {
         {orders.length > 0 ? (
         <Container maxWidth="lg">
           <Grid container spacing={3}>
-            <Grid item container xs={12} sm={12} md={12} lg={6} spacing={3}>
+            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3}>
              
 
                 {orders.map((order) => (
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
                     <Paper className={classes.paper}>
                       <div className={classes.orderDetails}>
-                        <Grid item container xs={6} sm={6} md={12} lg={12}>
+                        <Grid item container xs={12} sm={12} md={12} lg={12}>
                           <Grid
                             item
-                            xs={12}
+                            xs={6}
                             sm={6}
                             md={6}
                             lg={6}
                             className={classes.orderdiv}
                           >
-                            <div className={classes.orderdiv}> Order Id: </div>
+                            <div className={classes.orderdiv}><b>Order Id:</b>  </div>
                             <div className={classes.orderdiv}>
                               {" "}
-                              Restaurant Name:
+                             <b>Restaurant Name:</b> 
                             </div>
                             <div className={classes.orderdiv}>
                               {" "}
-                              PickUp Address:{" "}
+                            <b> PickUp Address:</b> {" "}
                             </div>
                             <div className={classes.orderdiv}>
                               {" "}
-                              Drop address:{" "}
+                             <b>Drop address:</b> {" "}
                             </div>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
+                          <Grid item xs={6} sm={6} md={6} lg={6}>
                             <div className={classes.orderdivDetail}>
                               {" "}
-                              <b>#{order._id}</b>{" "}
+                              #{order._id}{" "}
                             </div>
                             <div className={classes.orderdivDetail}>
                               {" "}
-                              <b>{order.restaurantDetails.restaurantName}</b>
+                              {order.restaurantDetails.restaurantName}
                             </div>
                             <div className={classes.orderdivDetail}>
                               {" "}
-                              <b>
+                              
                                 {order.orderLocation.streetAddress},
                                 {order.orderLocation.landmark
                                   ? order.orderLocation.landmark + ","
@@ -321,16 +321,16 @@ export default function DeliveryPage() {
                                 {order.orderLocation.area},
                                 {order.orderLocation.city},
                                 {order.orderLocation.state}
-                              </b>
+                              
                             </div>
                             <div className={classes.orderdivDetail}>
                               {" "}
-                              <b>
+                              
                                 {
                                   order.restaurantDetails.restaurantLocation
                                     .streetAddress
                                 }
-                              </b>
+                             
                             </div>
                           </Grid>
 

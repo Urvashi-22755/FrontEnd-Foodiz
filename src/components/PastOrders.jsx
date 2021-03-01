@@ -24,7 +24,7 @@ import Button from '@material-ui/core/Button';
 import axios from "axios";
 import {decodeToken} from '../services/authUser';
 import jwt_decode from "jwt-decode";
-
+import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery'
 const useStyles = makeStyles(theme => ({
   root: {
     //   margin: '2%',
@@ -123,7 +123,7 @@ const handleId = rest => {
 
  function PastOrders(props) {
   const classes = useStyles();
-  const restaurants = foodData();
+  // const restaurants = foodData();
   const [myOrders, setMyOrders] = useState([]);
 
   const token = localStorage.getItem("token");
@@ -195,10 +195,74 @@ const handleId = rest => {
         <Grid container spacing={3}>
           <Grid item sm={12} xs={12} lg={12} md={12}>
             <Paper className={classes.paper}>
-              <Typography className={classes.pastordertext}>
+           
+            {myOrders.length> 0 ? (myOrders?.map(order => (
+              <Paper className={classes.paper1} key={order._id}>
+                   <Typography className={classes.pastordertext}>
                 Past Orders
               </Typography>
-              {myOrders?.map(order => (
+                <div className={classes.pastorders}>
+                  <div className={classes.pastImage}>
+                    <img className={classes.image} src={order?.restaurantDetails?.restaurantImages} />
+                  </div>
+                  <div className={classes.orderdetails}>
+                    <Typography
+                    >
+                     <b> Order Id:  </b>  #{order._id}
+                    </Typography>
+
+                    <Typography>  <b>{order?.restaurantDetails?.restaurantName}</b></Typography>
+                    <Typography>
+                      <b>Order Date:</b>
+                      <strong>
+                            {" "}
+                            {handleDate(order.orderDateAndTime)}
+                          </strong>
+                    </Typography>
+                   
+                    <Typography>
+                    <b>Order Time:</b>
+                          <strong>
+                            {" "}
+                            {handleTime(order.orderDateAndTime)}
+                          </strong>
+                    </Typography>
+                    <div className={classes.price}>
+                      <hr className={classes.hrcolor} />
+                      <Typography>
+                        Total Paid: <Icon icon={currencyInr} />
+                        {order.totalAmount}
+                      </Typography>
+                      <div className={classes.detailsBtn}>
+
+                      
+                        <Button
+                           onClick={() => handleOrderSummary(order._id)}
+                          className={classes.detailsBtn}>Order Details</Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Paper>
+            )) ): 
+            <Container spacing={3} className={classes.noOrderImage}>
+                <Grid
+                  container
+                  spacing={3}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                >
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <NoPlacedOrdersDelivery />
+                    <h3>No Orders Placed!</h3>
+                  </Grid>
+                </Grid>
+              </Container>
+            
+            }
+
+              {/* myOrders?.map(order => (
                 <Paper className={classes.paper1} key={order._id}>
                   <div className={classes.pastorders}>
                     <div className={classes.pastImage}>
@@ -245,7 +309,7 @@ const handleId = rest => {
                     </div>
                   </div>
                 </Paper>
-              ))}
+              ))} */}
             </Paper>
           </Grid>
         </Grid>
