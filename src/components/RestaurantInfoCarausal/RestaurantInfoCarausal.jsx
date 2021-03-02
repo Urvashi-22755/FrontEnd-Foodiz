@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-/* import images from '../data/RestCarausalData'; */
 import { useStyles } from "./RestaurantInfoCarausal.style";
 
 const RestaurantInfoCarausal = ({ images }) => {

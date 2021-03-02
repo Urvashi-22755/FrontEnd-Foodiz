@@ -11,7 +11,6 @@ import FooterGrid from "../../components/Footer/Footer";
 import "materialize-css/dist/css/materialize.min.css";
 import Parallax from "../../components/Parallex/Parallax";
 import Carousel from '../../components/Carousels/Carousels';
-import foodData from "../../data/Restaurants";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -53,7 +52,6 @@ export default function LandingPage(props) {
   const handleLogout = () => {
     logout();
   };
-  const restaurants = foodData();
 
   let finalres;
   async function fetchUserData() {

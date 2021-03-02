@@ -8,7 +8,6 @@ import { Route, Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import { shadows } from "@material-ui/system";
 import Avatar from "@material-ui/core/Avatar";
-import UsersData from "../../data/users";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import Dialog from "@material-ui/core/Dialog";
