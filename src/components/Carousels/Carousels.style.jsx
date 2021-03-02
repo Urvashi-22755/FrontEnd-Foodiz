@@ -1,7 +1,4 @@
 
-
-
-
 export let  cardstyle = {
     border: "2px solid white",
     width: "345px",
