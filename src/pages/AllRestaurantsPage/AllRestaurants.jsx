@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import NavAppBar from "../../components/Navbar/Navbar";
-import FooterGrid from "../../components/Footer/Footer";
+/* import NavAppBar from "../../components/Navbar/Navbar";
+ */import FooterGrid from "../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import {
@@ -27,6 +27,7 @@ import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import axios from "axios";
 import { useStyles, GreenCheckbox } from './AllRestaurantsPage.style';
+import ResponsiveDrawer from './../../ResponsiveDrawer';
 
 const handleId = (rest) => {
   console.log("Rest Id", rest);
@@ -98,7 +99,8 @@ export default function AllRestaurants() {
 
   return (
     <React.Fragment>
-      <NavAppBar></NavAppBar>
+      {/*  <NavAppBar></NavAppBar> */}
+     < ResponsiveDrawer />
 
       <Container maxWidth="lg" className={classes.foodsContainer}>
         <Typography className={classes.restPagetitle} variant="h4">
