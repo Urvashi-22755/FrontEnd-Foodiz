@@ -116,7 +116,7 @@ function Carousels() {
 
                       <Typography>
                         <p style={rating}>
-                          <StarRateIcon /> {rest.rating_avg}
+                          <StarRateIcon /> {parseFloat(rest.rating_avg).toFixed(1)}
                         </p>
                       </Typography>
                     </CardContent>

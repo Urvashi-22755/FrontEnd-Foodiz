@@ -22,7 +22,7 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { grid } from "@material-ui/system";
-import NavAppBar from "./../components/Navbar/Navbar";
+import NavAppBar from "./Navbar/Navbar";
 import FooterGrid from "./Footer";
 import { Redirect } from "react-router-dom";
 /* import * as Yup from "yup"; */

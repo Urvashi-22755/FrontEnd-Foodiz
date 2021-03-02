@@ -340,7 +340,7 @@ export default function AcceptedOrders() {
                       variant="h4"
                       className={classes.orderDetailsHeading}
                     >
-                      Order Details
+                      Accepted Order Details
                       <hr className={classes.hrstyle} />
                     </Typography>
 

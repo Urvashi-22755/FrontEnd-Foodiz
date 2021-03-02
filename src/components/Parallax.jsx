@@ -32,12 +32,12 @@ const Parallax = () => {
     // <ThemeProvider theme={theme}>
     <div className="parallax-container mt-5">
       {/*   <Typography className={classes.quotetext}>Every meal matters</Typography> */}
-      <Typography gutterBottom variant="h3" className={classes.quotetext} style={{ textAlign: "center" }}>
+      {/* <Typography gutterBottom variant="h3" className={classes.quotetext} style={{ textAlign: "center" }}>
         Why starve when you have us&nbsp;&nbsp;
         <span role="img" aria-label="fries" style={{ fontSize: 40 }}>
           🍟
         </span>
-      </Typography>
+      </Typography> */}
       <div className="parallax">
         <img
           width="auto"

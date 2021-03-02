@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import NavAppBar from './../components/Navbar/Navbar';
+import NavAppBar from "./../components/Navbar/Navbar";
 import FooterGrid from "../components/Footer";
-import foodData from "../data/Restaurants";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -17,9 +16,7 @@ import {
   Paper,
   FormControlLabel,
 } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-// import Avatar from "@material-ui/core/Avatar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -113,9 +110,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   foodsContainer: {
-    // paddingTop: theme.spacing(3)
+    marginTop: "6%",
   },
-  cardtitle: {
+  restPagetitle: {
     fontWeight: 700,
     fontSize: "4rem",
     textAlign: "center",
@@ -124,16 +121,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#282c3f",
   },
   card: {
-    // border: "2px solid white",
+   
     borderRadius: "5px",
     maxwidth: "100%",
-    /*  "&$selected": {
-          backgroundColor: "white !important"
-import { axios } from 'axios';
-import { InputBase } from '@material-ui/core/InputBase';
-import { InputBase } from '@material-ui/core/InputBase';
-
-        } */
+    height: '53vh',
     boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
     "&:hover": {
       transform: "translate3D(0,-7px,0) scale(1.05)",
@@ -194,6 +185,26 @@ import { InputBase } from '@material-ui/core/InputBase';
     marginRight: "2%",
     float: "left",
   },
+  hrstyle: {
+    // justifyContent: 'center',
+    width: "70%",
+    borderTop: "2px dashed #2c446e",
+  },
+  filterItemsAlign:{
+    marginTop: '5%'
+  },
+  alignRestcards:{
+    justifyContent: 'center'
+  },
+  checkboxstyle:{
+    width: '5%'
+  },
+  cardContent:{
+    fontWeight: 400 ,
+    color: '#4a4b52',
+    fontSize: '13px'
+  }
+ 
 }));
 
 const handleId = (rest) => {
@@ -208,7 +219,7 @@ export default function AllRestaurants() {
   const [restaurants, setRestaurants] = useState([]);
   const token = localStorage.getItem("token");
   const [vegChecked, setVegChecked] = useState(false);
-  const [globalRestaurant,setGlobalRestaurant]=useState([]);
+  const [globalRestaurant, setGlobalRestaurant] = useState([]);
   const headers = {
     // "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -226,30 +237,30 @@ export default function AllRestaurants() {
     }
   };
   const handleCityChange = async (event) => {
-    console.log("In handle City Change city : ",event.target.value);
+    console.log("In handle City Change city : ", event.target.value);
     setCity(event.target.value);
     const data = await getSearchedRestaurants(event.target.value, search);
     setRestaurants(data);
   };
 
   const handleSearchChange = async (event) => {
-    console.log("In handle Search Change city :  search : ",city,event);
+    console.log("In handle Search Change city :  search : ", city, event);
     setSearch(event);
     const data = await getSearchedRestaurants(city, search);
     setRestaurants(data);
-    console.log("All rest after global",restaurants);
+    console.log("All rest after global", restaurants);
   };
 
   const getSearchedRestaurants = async (city, search) => {
     console.log("City : ", city, "Search : ", search);
-    if (search == "" && city=="") {
+    if (search == "" && city == "") {
       console.log("if search");
       return globalRestaurant;
-    }else {
-      console.log("else search",city);
+    } else {
+      console.log("else search", city);
       const resp = await axios.get(
         "http://localhost:5000/restaurant/searchrestaurants",
-        { params: { city: city, search: search } },
+        { params: { city: city, search: search } }
         // {
         //   headers: headers,
         // }
@@ -276,55 +287,65 @@ export default function AllRestaurants() {
       <NavAppBar></NavAppBar>
 
       <Container maxWidth="lg" className={classes.foodsContainer}>
-        <Typography className={classes.cardtitle} variant="h4">
-          RESTAURANTS
+        <Typography className={classes.restPagetitle} variant="h4">
+          Restaurants In Your City
+          <hr className={classes.hrstyle} />
         </Typography>
 
-        <Box className={classes.searchAlign}>
-          <div className={classes.statusSelect}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel htmlFor="age-native-simple">Select City</InputLabel>
-              <Select
-                native
-                value={city}
-                onChange={handleCityChange}
-                label="Status"
-                className={classes.formselect}
-              >
-                {/* <option aria-label="None" value="" /> */}
-                <option value="Gandhinagar">Gandhinagar</option>
-                {/* <option value={20}>In Process</option> */}
-                <option value="Abad">Abad</option>
-              </Select>
-            </FormControl>
-          </div>
-          <div>
+        <Grid container >
+          <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6} className={classes.filterItemsAlign}> 
+            <Grid item xs={12} sm={3} md={3} lg={2}  justify="flex-start">
+
+                  <FormControl variant="outlined" >
+                    <InputLabel htmlFor="age-native-simple"  className={classes.checkboxstyle}>Select City</InputLabel>
+                    <Select
+                      native
+                      value={city}
+                      onChange={handleCityChange}
+                      label="Status"
+                   
+                    >
+                      {/* <option aria-label="None" value="" /> */}
+                      <option value="Gandhinagar">Gandhinagar</option>
+                      <option value="Abad">Abad</option>
+                    </Select>
+                  </FormControl>
+            
+            </Grid>
+            <Grid item xs={12} sm={5} md={6} lg={7} justify="center">
+
             <SearchBar
-              className={classes.searchbar}
+             
               placeholder="Search for Restaurants or dishes.."
               onChange={handleSearchChange}
             />
-            <div className={classes.checkBoxStyle}>
-              <Paper className={classes.vegSection}>
+            </Grid>
+            <Grid item xs={12} sm={4} md={3} lg={3}  justify="flex-end">
+
+            <div >
+              <Paper>
                 <FormControlLabel
                   control={
                     <GreenCheckbox
                       checked={vegChecked}
                       onChange={handleVegCheckChange}
+                     
                     />
                   }
+                  className={classes.PureVegCheckbox}
                 />
                 <EcoOutlinedIcon
-                  classes={classes.ecoOutlinedIcon}
                   style={{ color: "green", transform: "scaleX(-1)" }}
                 />
                 <EcoIcon style={{ marginLeft: "-13px", color: "green" }} />
                 <b>Pure Veg</b>
               </Paper>
             </div>
-          </div>
-        </Box>
+            </Grid>
+          </Grid>
+        </Grid>
 
+      
         {/* <FullWidthTabs></FullWidthTabs> */}
 
         <Grid
@@ -334,9 +355,9 @@ export default function AllRestaurants() {
           mt={10}
           className={classes.restcontainer}
         >
-          <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6}>
+          <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6} className={classes.alignRestcards}>
             {restaurants?.map((rest) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={rest._id}>
+              <Grid item xs={12} sm={6} md={4} lg={4} key={rest._id} >
                 <div className={classes.cardborder}>
                   <Link
                     style={{ textDecoration: "none" }}
@@ -351,32 +372,32 @@ export default function AllRestaurants() {
                           onClick={() => handleId(rest)}
                         />
                         <CardContent>
-                          <Typography gutterBottom variant="h5" component="h2">
+                          <Typography gutterBottom variant="h5" component="h2" >
                             {rest.restaurantName}
                           </Typography>
-                          <Typography variant="body2" color="textSecondary">
+                          <Typography variant="body2" className={classes.cardContent}>
                             {rest.restaurantCategory.join(",")}
                           </Typography>
                           <Typography
                             gutterBottom
                             variant="body2"
-                            component="p"
-                            color="textSecondary"
+                            className={classes.cardContent}
+                           
                           >
                             {rest.restaurantDescription}
                           </Typography>
                           <Typography
                             gutterBottom
                             variant="body2"
-                            component="p"
-                            color="textSecondary"
+                            className={classes.cardContent}
+                            
                           >
                             {rest.restaurantType}
                           </Typography>
                           <Typography
                             variant="body2"
-                            color="textSecondary"
-                            component="h3"
+                            className={classes.cardContent}
+                            
                           >
                             {rest?.restaurantLocation?.streetAddress +
                               "," +
