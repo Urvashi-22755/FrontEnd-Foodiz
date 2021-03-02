@@ -8,7 +8,7 @@ export let useStyles = makeStyles(theme => ({
       backgroundColor: "#171a29",
       flexGrow: 1,
       bottom: 0,
-      marginTop: "20%"
+      marginTop: "10%"
     },
     paper: {
       padding: theme.spacing(2),

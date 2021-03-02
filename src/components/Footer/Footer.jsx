@@ -8,36 +8,10 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 import Container from "@material-ui/core/Container";
 import { useStyles } from './Footer.style';
+import { Link } from 'react-router-dom';
  
 
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     padding: "1%",
-//     backgroundColor: "#171a29",
-//     flexGrow: 1,
-//     bottom: 0,
-//     marginTop: "20%"
-//   },
-//   paper: {
-//     padding: theme.spacing(2),
-//     textAlign: "left",
-//     border: "1px solid #171a29",
-//     color: "white",
-//     height: "350px",
-//     backgroundColor: "#171a29"
-//   },
-//   grid2: {
-//     padding: theme.spacing(2),
-//     marginTop: 0,
-//     textAlign: "left",
-//     color: "white",
-//     height: "250px",
-//     backgroundColor: "#171a29"
-//   },
-//   hr: {
-//     backgroundColor: "white"
-//   }
-// }));
+
 
 export default function FooterGrid() {
   const classes = useStyles();
@@ -46,6 +20,7 @@ export default function FooterGrid() {
     <div className={classes.root}>
       <Container>
         <Grid container spacing={3}>
+          
           <Grid item xs={4} md={4} lg={4}>
             <Paper className={classes.paper}>
               <h4>Cities With Foodizz</h4>
@@ -66,7 +41,10 @@ export default function FooterGrid() {
               <h4>Company </h4>
 
               <div>
-                <div>About Foodizz</div>
+              <Link
+                        style={{ textDecoration: "none", color: "black" }}
+                        to={`/aboutus `}
+                      >  <div>About Foodizz</div></Link>
                 <div>Team</div>
                 <div>Read Our Blog</div>
                 <div>Terms and Conditions</div>

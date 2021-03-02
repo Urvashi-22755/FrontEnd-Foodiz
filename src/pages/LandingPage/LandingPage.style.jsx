@@ -78,8 +78,10 @@ export let useStyles = makeStyles((theme) => ({
     quote: {
       alignItems: "center",
       justifyContent: "center",
-      marginTop: "200px",
-      marginRight: "30%",
+      position:"absolute",
+      top:'50%',
+      right:'10%'
+
     },
     logintext: {
       float: "right",
@@ -99,6 +101,7 @@ export let useStyles = makeStyles((theme) => ({
   
     foodsContainer: {
       paddingTop: theme.spacing(3),
+      marginBottom: '7%'
     },
     cardtitle: {
       fontWeight: 700,
@@ -152,5 +155,9 @@ export let useStyles = makeStyles((theme) => ({
         color: "#171A29",
       },
     },
+
+    cardsalign:{
+      justifyContent: 'center'
+    }
   }));
   

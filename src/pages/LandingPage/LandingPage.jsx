@@ -64,14 +64,17 @@ export default function LandingPage(props) {
   return (
     <ThemeProvider theme={theme}>
       <div>
+
+        
         <Grid item container xs={12} sm={12} md={12} lg={12}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <div className={classes.SignupLogin}>
+
               <div className={classes.logintext}>
                 <div className={classes.spaceText}>
                   {authenticated ? (
                     <>
-                      {/* username */}
+                    
                       <Link
                         style={{ textDecoration: "none", color: "black" }}
                         to={`/profile`}
@@ -84,7 +87,7 @@ export default function LandingPage(props) {
                         </div>
                       </Link>
 
-                      {/* logout */}
+                   
                       <Link
                         style={{ textDecoration: "none", color: "black" }}
                         to={`/`}
@@ -110,24 +113,27 @@ export default function LandingPage(props) {
                     </Link>
                   )}
 
-                  {/*  <Link style={{ textDecoration: "none" }} to="/login">
-                    <Button
-                      className={classes.signUText}
-                    
-                    >
-                      <ExitToAppIcon /> Login
-                    </Button>
-                  </Link> */}
+                  
                 </div>
               </div>
+             
+             
+             
               <div className={classes.quote}>
                 <Typography variant="h1">FOODIZ</Typography>
                 <Typography variant="h4">We Bring Joy to the Table</Typography>
               </div>
+            
+            
             </div>
           </Grid>
         </Grid>
 
+        
+        
+        
+        
+        
         <Container maxWidth="lg" className={classes.foodsContainer}>
           <Grid
             item
@@ -136,8 +142,10 @@ export default function LandingPage(props) {
             mt={10}
             className={classes.restcontainer}
           >
-            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6}>
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={3} className={classes.cardsalign}>
+
+
+              <Grid item xs={12} sm={6} md={4} lg={4}>
                 <Link style={{ textDecoration: "none" }} to="/allrestaurants">
                   <Card className={classes.card}>
                     <CardActionArea>
@@ -161,7 +169,8 @@ export default function LandingPage(props) {
                 </Link>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+              <Link style={{ textDecoration: "none" }} to="/allrestaurants">
                 <Card className={classes.card}>
                   <CardActionArea>
                     <CardMedia
@@ -179,9 +188,11 @@ export default function LandingPage(props) {
                     </CardContent>
                   </CardActionArea>
                 </Card>
+                </Link>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+              <Link style={{ textDecoration: "none" }} to="/allrestaurants">
                 <Card className={classes.card}>
                   <CardActionArea>
                     <CardMedia
@@ -191,14 +202,15 @@ export default function LandingPage(props) {
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">
-                        Grab some amazing food
+                      Good food and great vibes
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        Enjoy limitless dining privileges
+                      Your happy place
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Card>
+                </Link>
               </Grid>
             </Grid>
           </Grid>
@@ -207,9 +219,6 @@ export default function LandingPage(props) {
         <Parallax></Parallax>
         <Carousel></Carousel>
         <FooterGrid></FooterGrid>
-        {/* <TopRatedRests></TopRatedRests> */}
-
-        {/* <RecipeReviewCard></RecipeReviewCard> */}
       </div>
     </ThemeProvider>
   );

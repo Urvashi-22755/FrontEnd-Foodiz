@@ -13,6 +13,7 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import MyOrders from './pages/MyOrders/MyOrders';
 import SignIn from './components/SignIn/SignIn';
 import ResponsiveDrawer from './ResponsiveDrawer';
+import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
 
 
 require('dotenv').config();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/login" exact component={SignIn} />
         <Route path="/signup" exact component={SignUp} />
         <Route path="/" exact component={LandingPage} />
+        <Route path="/aboutus" exact component={AboutUsPage} />
         <Route
           path="/restaurant/:restaurantId"
           exact
@@ -66,3 +68,4 @@ function App() {
 }
 
 export default App;
+
