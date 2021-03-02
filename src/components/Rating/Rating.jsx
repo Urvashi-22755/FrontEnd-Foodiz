@@ -2,7 +2,7 @@
 import React from "react";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
-import RestaurantContainer from "./../pages/RestaurantContainer";
+import RestaurantContainer from "../../pages/RestaurantContainer";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Button from "@material-ui/core/Button";
 import { Form } from "@material-ui/core/FormControl";

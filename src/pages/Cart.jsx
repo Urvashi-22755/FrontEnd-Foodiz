@@ -13,10 +13,10 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import HomeIcon from "@material-ui/icons/Home";
 import { Box } from "@material-ui/core";
 import DrawerExample from "../components/DrawerForm";
-import FooterGrid from "../components/Footer";
-import NavAppBar from './../components/Navbar/Navbar';
+import FooterGrid from "../components/Footer/Footer";
+import NavAppBar from '../components/Navbar/NavAppBar';
 import axios from "axios";
-import NoPlacedOrdersDelivery from "../EmptyPages/NoPlacedOrdersDelivery";
+import NoPlacedOrdersDelivery from "./EmptyPages/NoPlacedOrdersDelivery";
 import {
   fetchUserCartDeatails,
   incrementCartItem,

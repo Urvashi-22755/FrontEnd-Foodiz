@@ -17,9 +17,9 @@ import { useState, useEffect } from "react";
 
 import jwt_decode from "jwt-decode";
 
-import NavAppBar from "./../components/Navbar/Navbar";
+import NavAppBar from "./Navbar/NavAppBar";
 
-import FooterGrid from "./Footer";
+import FooterGrid from "./Footer/Footer";
 import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

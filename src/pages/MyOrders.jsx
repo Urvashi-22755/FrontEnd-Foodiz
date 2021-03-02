@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import NavAppBar from './../components/Navbar/Navbar';
+import NavAppBar from '../components/Navbar/NavAppBar';
 import Container from "@material-ui/core/Container";
-import FooterGrid from "../components/Footer";
+import FooterGrid from "../components/Footer/Footer";
 import Button from "@material-ui/core/Button";
 import { Grid, Paper } from "@material-ui/core";
 import StarRateIcon from "@material-ui/icons/StarRate";

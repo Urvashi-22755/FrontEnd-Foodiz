@@ -7,62 +7,17 @@ import Container from "@material-ui/core/Container";
 import { Route, Link } from "react-router-dom";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import PastOrders from "../components/PastOrders";
-import MyProfile from "../components/MyProfile";
-import { shadows } from "@material-ui/system";
+import PastOrders from "../../components/PastOrders/PastOrders";
+import MyProfile from '../../components/MyProfile/MyProfile'
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 // import SvgIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
-import NavAppBar from './../components/Navbar/Navbar';
-import FooterGrid from "../components/Footer";
+import NavAppBar from '../../components/Navbar/NavAppBar';
+import FooterGrid from "../../components/Footer/Footer";
 import jwt_decode from "jwt-decode";
-import { decodeToken }  from "../services/authUser";
+import { decodeToken }  from "../../services/authUser";
+import { useStyles } from './ProfileSectionPage.style';
  
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: "3%",
-    //  padding: "2%",
-    height: "auto",
-    backgroundColor: "#d8dee8",
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "left",
-
-    color: "#dae2f0",
-    height: "auto",
-    // height: "auto",
-    width: "auto",
-    backgroundColor: "#ffffff",
-  },
-  tabs: {
-    marginTop: "6%",
-    paddingTop: "30%",
-    width: "auto",
-    backgroundColor: "#2c446e",
-    height: "90vh",
-  },
-  tabtext: {
-    fontSize: "20px",
-    color: "#d8dee8",
-    textAlign: "left",
-  },
-  labelContainer: {
-    width: "auto",
-    padding: 2,
-  },
-  iconLabelWrapper: {
-    flexDirection: "row",
-    // padding: '20px'
-  },
-
-  tabposition: {
-    padding: "20%",
-  },
-}));
-
 export default function ProfileSection() {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = React.useState(0);

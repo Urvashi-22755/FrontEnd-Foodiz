@@ -22,9 +22,9 @@ import { withRouter } from "react-router-dom";
 import { useState } from "react";
 import { Dialog, DialogContent } from "@material-ui/core";
 
-import NavAppBar from "./../components/Navbar/Navbar";
+import NavAppBar from "./Navbar/NavAppBar";
 import Mirage from "@material-ui/core/colors";
-import FooterGrid from "./Footer";
+import FooterGrid from "./Footer/Footer";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { authUser } from "./../services/authUser";

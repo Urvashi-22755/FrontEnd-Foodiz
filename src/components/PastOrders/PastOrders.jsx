@@ -1,121 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { withRouter} from 'react-router-dom';
-import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { Route, Link } from "react-router-dom";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import MyProfile from "./MyProfile";
-import foodData from "../data/Restaurants";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
-import { shadows } from "@material-ui/system";
 import currencyInr from "@iconify-icons/mdi/currency-inr";
 import { Icon, InlineIcon } from "@iconify/react";
 import _ from "lodash";
 import Button from '@material-ui/core/Button';
 import axios from "axios";
-import {decodeToken} from '../services/authUser';
+import {decodeToken} from '../../services/authUser';
 import jwt_decode from "jwt-decode";
-import NoPlacedOrdersDelivery from '../EmptyPages/NoPlacedOrdersDelivery'
-const useStyles = makeStyles(theme => ({
-  root: {
-    //   margin: '2%',
-    padding: "3%",
-    height: "100%",
-    // backgroundColor: '#37718e',
-    flexGrow: 1
-  },
-
-  paper: {
-    padding: theme.spacing(7),
-    textAlign: "left",
-    // border: '1px solid #171a29',
-    color: "black",
-    height: "100%",
-    // boxShadow: "0 14px 28px rgb(89, 130, 150), 0 10px 10px rgb(89, 130, 150)",
-    backgroundColor: "#ffffff"
-  },
-  paper1: {
-    padding: theme.spacing(2),
-    backgroundColor: "#ffffff",
-    margin: "2%",
-    color: "black",
-    boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)"
-  },
-  pastorders: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    marginLeft: 0,
-    paddingLeft: theme.spacing(1),
-    alignItems: "center"
-  },
-
-  image: {
-    borderRadius: "15px",
-    width: "100%",
-    height: "160px"
-  },
-  cardtitle: {
-    fontWeight: 400,
-    fontSize: "2rem",
-    textAlign: "center",
-
-    // paddingBottom: theme.spacing,
-    color: "#282c3f"
-  },
-  orderdetails: {
-    color: "#2c446e",
-    fontWeight: "100",
-    width: "65%",
-    marginTop: '5%'
-  },
-  media: {
-    height: 200
-  },
-  pastImage: {
-    borderRadius: "10px",
-    border: "2px solid white",
-    width: "40%",
-    margin: "2%"
-  },
-  card: {
-    border: "2px solid white",
-    maxwidth: "80%"
-    /*  "&$selected": {
-      backgroundColor: "white !important"
-    } */
-  },
- 
-  pastordertext: {
-    color: "#2c446e",
-    fontSize: "30px",
-    fontWeight: "200"
-  },
-  hrcolor: {
-    // backgroundColor: "#2c446e",
-    borderTop: "1px dashed #2c446e"
-  },
-  detailsBtn:{
-    float: 'right',
-    backgroundColor: '#2c446e',
-    width: '150px',
-    color: 'white',
-    borderRadius: '5px'
-  },
-
-  loaditems: {
-    height: "100px"
-  }
-}));
+import NoPlacedOrdersDelivery from '../../pages/EmptyPages/NoPlacedOrdersDelivery';
+import { useStyles } from './PastOrders.style';
 
 const handleId = rest => {
   console.log(rest);
@@ -123,7 +20,6 @@ const handleId = rest => {
 
  function PastOrders(props) {
   const classes = useStyles();
-  // const restaurants = foodData();
   const [myOrders, setMyOrders] = useState([]);
 
   const token = localStorage.getItem("token");

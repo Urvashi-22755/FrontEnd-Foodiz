@@ -9,8 +9,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import NavAppBar from './../components/Navbar/Navbar';
-import FooterGrid from "./Footer";
+import NavAppBar from './Navbar/NavAppBar';
+import FooterGrid from "./Footer/Footer";
 import { grid } from "@material-ui/system";
 const useStyles = makeStyles((theme) => ({
   root: {

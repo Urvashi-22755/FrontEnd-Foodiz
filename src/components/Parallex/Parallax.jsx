@@ -2,25 +2,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import M from "materialize-css";
 import Typography from "@material-ui/core/Typography";
-// import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-// const theme = createMuiTheme({
-//     typography: {
-//       fontFamily: [
-//         'Cinzel Decorative',
-//         'cursive',
-//       ].join(','),
-//     },});
+import { useStyles } from './Parallax.style';
 
-const useStyles = makeStyles((theme) => ({
-  quotetext: {
-    position: "absolute",
-    zIndex: 1000,
-    top: "250px",
-    left: "30%",
-    color: "#111940",
-    fontSize: "2rem",
-  },
-}));
 const Parallax = () => {
   useEffect(() => {
     let elements = document.querySelectorAll(".parallax");

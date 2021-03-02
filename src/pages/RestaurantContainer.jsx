@@ -16,9 +16,9 @@ import Typography from "@material-ui/core/Typography";
 import SearchBar from "material-ui-search-bar";
 import RestaurantItems from "../components/RestaurantItems";
 import foodData from "../data/FoodData";
-import NavAppBar from "./../components/Navbar/Navbar";
-import FooterGrid from "../components/Footer";
-import Carousels from "../components/Carousels";
+import NavAppBar from "../components/Navbar/NavAppBar";
+import FooterGrid from "../components/Footer/Footer";
+// import Carousels from "../components/Carousels";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import RestaurantInfoCarausal from "./../components/RestaurantInfoCarausal";
 import EcoIcon from "@material-ui/icons/Eco";
@@ -35,7 +35,7 @@ import axios from "axios";
 import images from "../data/RestCarausalData";
 
 import { getRestaurantById } from "../services/axiosData";
-import SimpleRating from "../components/Rating";
+import SimpleRating from "../components/Rating/Rating";
 
 const GreenCheckbox = withStyles({
   root: {

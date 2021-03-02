@@ -18,8 +18,8 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import Badge from "@material-ui/core/Badge";
 import jwt_decode from "jwt-decode";
 import { fetchUserCartDetails } from "../../services/CartService";
-import { StyledBadge } from "./NavBar.style";
-import { useStyles } from "./NavBar.style";
+import { StyledBadge } from "./NavAppBar.style";
+import { useStyles } from "./NavAppBar.style";
 
 /* const StyledBadge = withStyles((theme) => ({
   badge: {

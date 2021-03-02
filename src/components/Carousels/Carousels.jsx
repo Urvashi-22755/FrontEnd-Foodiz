@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import Carousel from "react-elastic-carousel";
 import Box from "@material-ui/core/Box";
-
-import foodData from "../data/Restaurants";
 import {
   Card,
   CardActionArea,
@@ -12,16 +9,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import StarRateIcon from "@material-ui/icons/StarRate";
-import Fade from "@material-ui/core/Fade";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { cardstyle, mediastyle, carddiv, rating, heading,rate } from './Carousels.style';
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
   { width: 768, itemsToShow: 2 },
   { width: 900, itemsToShow: 3 },
   { width: 1200, itemsToShow: 4 },
 ];
-
+ 
 function Carousels() {
   // const restaurants = foodData();
   const [restaurants, setRestaurants] = useState([]);
@@ -35,39 +32,39 @@ function Carousels() {
       setRestaurants(res.data);
     })();
   }, []);
-  const cardstyle = {
-    border: "2px solid white",
-    width: "345px",
-    marginTop: "10%",
+  // const cardstyle = {
+  //   border: "2px solid white",
+  //   width: "345px",
+  //   marginTop: "10%",
 
-    marginBottom: "5%",
-    boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-    borderRadius: "25px",
-    "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
-  };
-  const mediastyle = {
-    height: 250,
-    width: "100%",
-  };
-  const carddiv = {
-    maxWidth: "100%",
-  };
-  const rating = {
-    marginTop: "5%",
-    width: "60px",
-    backgroundColor: "#48c479",
-    color: "white",
-  };
-  const heading = {
-    marginTop: "8%",
-    fontWeight: 700,
-    fontSize: "4rem",
-    textAlign: "center",
-    color: "#282c3f",
-  };
-  const rate = {
-    color: "yellow",
-  };
+  //   marginBottom: "5%",
+  //   boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+  //   borderRadius: "25px",
+  //   "&:hover": { transform: "translate3D(0,-7px,0) scale(1.05)" },
+  // };
+  // const mediastyle = {
+  //   height: 250,
+  //   width: "100%",
+  // };
+  // const carddiv = {
+  //   maxWidth: "100%",
+  // };
+  // const rating = {
+  //   marginTop: "5%",
+  //   width: "60px",
+  //   backgroundColor: "#48c479",
+  //   color: "white",
+  // };
+  // const heading = {
+  //   marginTop: "8%",
+  //   fontWeight: 700,
+  //   fontSize: "4rem",
+  //   textAlign: "center",
+  //   color: "#282c3f",
+  // };
+  // const rate = {
+  //   color: "yellow",
+  // };
   return (
     <>
       <div>
