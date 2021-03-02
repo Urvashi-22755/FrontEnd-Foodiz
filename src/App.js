@@ -1,28 +1,19 @@
-import LandingPage from "./pages/LandingPage";
+import LandingPage from './pages/LandingPage/LandingPage';
 import { Route, Switch } from "react-router-dom";
-import ProfileSection from "./pages/ProfileSection";
-import PastOrders from "./components/PastOrders";
-import FooterGrid from "./components/Footer";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import AllRestaurants from "./pages/AllRestaurants";
-import RecipeReviewCard from "./card";
-import Cart from "./pages/Cart";
-import OrderSummaryPage from "./pages/OrderSummaryPage";
-import RestaurantContainer from "./pages/RestaurantContainer";
-import DeliveryPage from "./pages/DeliveryPage";
-import DeliveryLandingPage from "./pages/DeliveryLandingPage";
-import SelectDropdown from "./components/select";
-import MyOrders from "./pages/MyOrders";
-import AcceptedOrders from "./pages/AcceptedOrders";
-import PositionedSnackbar from "./components/snackbar";
+import ProfileSection from "./pages/ProfileSectionPage/ProfileSection";
+import AllRestaurants from './pages/AllRestaurantsPage/AllRestaurants';
+import Cart from "./pages/Cart/Cart";
+import OrderSummaryPage from "./pages/OrderSummaryPage/OrderSummaryPage"
+import RestaurantContainer from "./pages/RestaurantContainer/RestaurantContainer";
+import DeliveryPage from './pages/DeliveryPage/DeliveryPage'
+import AcceptedOrders from './pages/AcceptedOrdersPage/AcceptedOrders';
 import { AuthRoute, DeliveryExecutiveRoute, UserRoute } from "./routes/route";
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
-import ForgotPassword from './components/ForgotPassword';
-import SimpleRating  from './components/Rating';
-import DeliveryExecutiveDetails from './components/DeliveryExecutiveDetail';
-import HomeComponent from './HomeComponent';
+import SignUp from './components/SignUp/SignUp'
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import MyOrders from './pages/MyOrders/MyOrders';
+import SignIn from './components/SignIn/SignIn';
+
+
 require('dotenv').config();
 
 function App() {
@@ -67,8 +58,7 @@ function App() {
 
      </Switch> 
 
-     {/*  <Route path="/snackbar" exact component={PositionedSnackbar}></Route>
-      <Route path="/simplerating" exact component={SimpleRating}></Route> */}
+
     </div>
   );
 }
