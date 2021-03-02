@@ -57,7 +57,7 @@ export default function SignUp(props) {
   const validate = (userData) => {
     const errors = {};
     console.log(userData);
-
+    
     if (!userData.firstName) {
       errors.firstName = "First Name cannot be empty";
     } else {
@@ -142,10 +142,11 @@ export default function SignUp(props) {
         errors.country = "Country cannot be empty.";
       }
     }
-
     /*  return errors;
-     // return errors; */
+    // return errors; */
     setErrors(errors);
+    return true;
+    
   };
 
   const handleSubmit = (event) => {
@@ -187,7 +188,7 @@ export default function SignUp(props) {
 
     const validateResult = validate(registerUserObj);
 
-    if (errors === {}) {
+    if (errors == null) {
       console.log("The resoonse in validation");
       return errors;
     } else {
@@ -204,7 +205,6 @@ export default function SignUp(props) {
         "http://localhost:5000/user/registeruser",
         userDetail
       );
-      // console.log("USER SIGN UP ", res.data);
 
       props.history.replace("/login");
     } catch (err) {
@@ -215,7 +215,6 @@ export default function SignUp(props) {
       console.log("USER REGITSER ERR", err.response);
     }
 
-    //   props.history.replace("/login");
   };
 
   const radioYes = checked ? (

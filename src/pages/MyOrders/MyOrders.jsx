@@ -104,11 +104,11 @@ function MyOrders(props) {
                                 </p>
                               </b>
                             </Grid>
-                            <Grid item lg={2} md={2} sm={2} xs={2}>
+                            {/* <Grid item lg={2} md={2} sm={2} xs={2}>
                               <p className={classes.rating}>
                                 <StarRateIcon /> 5.0
                               </p>
-                            </Grid>
+                            </Grid> */}
                           </Grid>
                           <hr />
 

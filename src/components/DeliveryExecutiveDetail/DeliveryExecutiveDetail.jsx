@@ -76,11 +76,11 @@ function DeliveryExecutiveDetails(props) {
                           </p>
                         </b>
                       </Grid>
-                      <Grid item lg={2} md={2} sm={12} xs={12}>
+                      {/* <Grid item lg={2} md={2} sm={12} xs={12}>
                         <p className={classes.rating}>
                           <StarRateIcon /> 5.0
                         </p>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
 
                     <hr />
