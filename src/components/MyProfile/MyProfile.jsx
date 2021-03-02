@@ -25,7 +25,6 @@ export default function MyProfile() {
   });
 
   const classes = useStyles();
-  const users = UsersData();
   // console.log(users[0].firstName);
 
   const [open, setOpen] = React.useState(false);

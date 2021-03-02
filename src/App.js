@@ -12,18 +12,17 @@ import SignUp from './components/SignUp/SignUp'
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import MyOrders from './pages/MyOrders/MyOrders';
 import SignIn from './components/SignIn/SignIn';
-
-
 require('dotenv').config();
 
 function App() {
 
   return (
     <div className="App">
-
+   
+      
       {/* <HomeComponent /> */}
 
-      <Switch>
+   <Switch>
         
         <Route path="/forgotpassword" exact component={ForgotPassword} />
         <Route path="/login" exact component={SignIn} />

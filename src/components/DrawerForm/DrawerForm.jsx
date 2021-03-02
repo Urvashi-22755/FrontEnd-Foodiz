@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -11,19 +10,25 @@ import {
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import axios from "axios";
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
-import { useStyles } from './DrawerForm.style';
 
-
+import { useStyles } from "./DrawerForm.style";
 
 const DrawerExample = (props) => {
   const classes = useStyles();
   const { open, close, onSubmitData } = props;
   const [data, setData] = useState({});
+  const [coordinates, setCoordinates] = useState();
+
   let initalSplit;
   let newSplitValue;
   const getCurrentLocation = () => {
+    
     navigator.geolocation.getCurrentPosition(
       function (position) {
+        setCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        }); // sets the coordinates on the map
         getUserAddressByLatitudeAndLongitude(
           position.coords.latitude,
           position.coords.longitude
@@ -60,7 +65,7 @@ const DrawerExample = (props) => {
     console.log(longitude, latitude);
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyD1R9Z7TR31k1Gl0i0xOD_nWf9_RLYalmI`
       )
       .then((result) => {
         const address_components = result.data.results[0].address_components.map(
@@ -113,23 +118,34 @@ const DrawerExample = (props) => {
         anchor="left"
         transitionDuration={{ enter: 1000, exit: 30000 }}
       >
-        <div className={classes.geoMap}>
-          <Map
-            google={props.google}
-            zoom={8}
-            initialCenter={{ lat: 23.1547465, lng: 72.674234 }}
-          >
-            {/*  <Marker position={{ lat: 23.1547465, lng: 72.674234 }} />{" "} */}
-          </Map>
+        <div>
+          { coordinates != undefined ? (
+            <Map
+              google={props.google}
+              zoom={12}
+              center
+              gestureHandling="none"
+              zoomControl="false"
+              initialCenter={{ lat: coordinates.lat, lng: coordinates.lng }}
+              style={{
+                height: "200px",
+                width: "500px",
+                marginLeft: "70px",
+                marginTop: "10px",
+                border: "1px solid grey",
+              }}
+            >
+              <Marker lat={props.lat} lng={props.lng} />
+            </Map>
+          ) : null}
         </div>
-
         <div className={classes.address}>
-          <form onSubmit={() => onSubmitData(data, event)}>
+          <form onSubmit={() => onSubmitData(data)}>
             <Typography
               variant="body2"
               component="p"
               className={classes.addressTitle}
-              style={{ margin: "10px 10px 2px 10px" }}
+              style={{ margin: "20px 10px 2px 10px" }}
             >
               Address:
             </Typography>
@@ -221,7 +237,7 @@ const DrawerExample = (props) => {
               type="submit"
             >
               submit
-            </Button>{" "}
+            </Button>
           </form>
         </div>
       </Drawer>
@@ -229,5 +245,5 @@ const DrawerExample = (props) => {
   );
 };
 export default GoogleApiWrapper({
-  apiKey: `"${process.env.REACT_APP_GOOGLE_API_KEY}"`,
+  apiKey: "AIzaSyD1R9Z7TR31k1Gl0i0xOD_nWf9_RLYalmI",
 })(DrawerExample);

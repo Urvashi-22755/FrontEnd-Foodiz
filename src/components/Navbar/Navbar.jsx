@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Box } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -15,11 +14,11 @@ import { logout } from "../../services/authUser";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import { fetchUserDetails } from "../../services/UserService";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import Badge from "@material-ui/core/Badge";
-import jwt_decode from "jwt-decode";
 import { fetchUserCartDetails } from "../../services/CartService";
 import { StyledBadge } from "./NavBar.style";
 import { useStyles } from "./NavBar.style";
+import { makeStyles, withStyles, useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 export default function NavAppBar() {
   const classes = useStyles();
@@ -53,7 +52,6 @@ export default function NavAppBar() {
 
   /* Cart Data Detail!! */
   async function fetchCartData() {
-    console.log("IN FRTCH");
     let cartDetail = {};
     cartDetail = await fetchUserCartDetails(headers);
     if (cartDetail.cartFoodList) {
@@ -64,9 +62,9 @@ export default function NavAppBar() {
 
     /*    { cartDetail === {} ?  setcartLength(0): setcartLength(cartDetail.cartFoodList.length)  } */
   }
-  /*  if (authenticated) {
+  if (authenticated) {
     setInterval(fetchCartData, 1000);
-  } */
+  }
 
   const handleLogout = () => {
     logout();

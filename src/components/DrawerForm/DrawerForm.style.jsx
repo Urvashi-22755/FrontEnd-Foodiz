@@ -1,13 +1,14 @@
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { fade } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   address: {
     // border: "1px solid grey",
     marginLeft: "50px",
-    marginTop: "10%",
+    marginTop: "30%",
     // width: "40vw",
     "& > *": {
-      width: "40vw",
+      width: "30vw",
     },
   },
   textField: {
@@ -55,7 +56,6 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-
   mapStyles: {
     width: "50%",
     height: "50%",
