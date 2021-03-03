@@ -21,6 +21,10 @@ export let GreenCheckbox = withStyles({
     title: {
       flexGrow: 1,
     },
+    para: {
+      fontSize: "x-large",
+      marginLeft: "32%",
+    },
     image: {
       width: "80%",
       paddingTop: "5%",

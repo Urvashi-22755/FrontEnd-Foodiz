@@ -57,7 +57,6 @@ const DrawerExample = (props) => {
   }
   // fetches the latitude and longitude
   const getUserAddressByLatitudeAndLongitude = (latitude, longitude) => {
-    console.log(longitude, latitude);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
@@ -93,7 +92,6 @@ const DrawerExample = (props) => {
         }));
       })
       .catch((err) => {
-        console.log(err);
       });
   };
   const handleInputChange = (event) => {
@@ -113,16 +111,7 @@ const DrawerExample = (props) => {
         anchor="left"
         transitionDuration={{ enter: 1000, exit: 30000 }}
       >
-        <div className={classes.geoMap}>
-          <Map
-            google={props.google}
-            zoom={8}
-            initialCenter={{ lat: 23.1547465, lng: 72.674234 }}
-          >
-            {/*  <Marker position={{ lat: 23.1547465, lng: 72.674234 }} />{" "} */}
-          </Map>
-        </div>
-
+       
         <div className={classes.address}>
           <form onSubmit={() => onSubmitData(data, event)}>
             <Typography

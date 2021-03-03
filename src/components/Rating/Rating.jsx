@@ -18,12 +18,10 @@ export default function StarRating(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-   // console.log("handle change data", value);
     handleSubmitOfRating( value,event); //props handle submit
     onClose();
   };
 
- // console.log("Ankita value:", value);
   return (
     <div>
       <Box align="center"component="fieldset" mb={3} borderColor="transparent">

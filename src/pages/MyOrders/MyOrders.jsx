@@ -8,6 +8,7 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import { Typography } from "@material-ui/core";
 import axios from "axios";
 import { useStyles } from "./MyOrders.style";
+import NoPlacedOrdersDelivery from './../EmptyPages/NoPlacedOrdersDelivery';
 
 
 function MyOrders(props) {
@@ -36,13 +37,11 @@ function MyOrders(props) {
     (async () => {
       const result = await fetchOrdersData();
       setOrders(result);
-      console.log("ORDER DATA", result);
     })();
   }, []);
 
   /* redirect to order Summary */
   const handleOrderSummary = (id) => {
-    console.log(id);
     props.history.push("/ordersummary/" + id);
   };
   const handleDate = (date) => {
@@ -154,60 +153,27 @@ function MyOrders(props) {
                   );
                 })
               ) : (
-                <h1>No ORders Yet</h1>
+                <>
+                <Container spacing={3} className={classes.noOrderImage}>
+                  <Grid
+                    container
+                    spacing={3}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                  >
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <NoPlacedOrdersDelivery />
+                      <h3>No Active Orders!</h3>
+                    </Grid>
+                  </Grid>
+                </Container>
+              </>
+               
               )}
             </Grid>
 
-            {/* Second Part */}
-            {/*  <Grid item lg={6} xs={3} md={3}>
-              <Paper className={classes.paper} id="1234">
-                <Grid conatiner spacing={2}>
-                  <Grid item container direction="row" lg={12}>
-                    <Grid item lg={2}>
-                      <img
-                        width="70"
-                        height="40"
-                        src="https://images.unsplash.com/photo-1428515613728-6b4607e44363?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8cmVzdGF1cmFudHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                      ></img>
-                    </Grid>
-                    <Grid item lg={8}>
-                      <b>
-                        <p className={classes.restaurantTitle}>My restaurant</p>
-                      </b>
-                    </Grid>
-                    <Grid item lg={2}>
-                      <p className={classes.rating}>
-                        <StarRateIcon /> 5.0
-                      </p>
-                    </Grid>
-                  </Grid>
-                  <hr />
-
-                  <Grid item lg={12}>
-                    <p>Item name X Quantity | Item name X Quantity</p>
-                    <p> Item name X Quantity | Item name X Quantity </p>
-                    <p></p>
-                    <p></p>
-                    <b>Total Amount: Rs 1000</b>
-                  </Grid>
-                  <hr />
-
-                  <Grid item container justify="flex-end" lg={12}>
-                    <Button
-                      onClick={() => handleOrderSummary(1234)}
-                      className={classes.acceptButton}
-                      variant="contained"
-                      color="secondary"
-                    >
-                      Track Order
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid> */}
-            {/*  <Grid item lg={3}> */}
-            {/* <Paper className={classes.paper}>hello world</Paper> */}
-            {/*  </Grid> */}
+           
           </Grid>
         </Container>
         <FooterGrid />

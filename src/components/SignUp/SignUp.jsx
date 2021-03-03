@@ -32,7 +32,6 @@ export default function SignUp(props) {
   const [errors, setErrors] = useState();
 
   const handleCheckboxChange = (event) => {
-    console.log("chcekbox", event.target.value);
     // debugger;
     if (checked) {
       setChecked(false);
@@ -56,7 +55,6 @@ export default function SignUp(props) {
 
   const validate = (userData) => {
     const errors = {};
-    console.log(userData);
     
     if (!userData.firstName) {
       errors.firstName = "First Name cannot be empty";
@@ -151,7 +149,6 @@ export default function SignUp(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("onsubmit");
 
     let registerUserObj = {
       firstName: data.firstName,
@@ -181,7 +178,6 @@ export default function SignUp(props) {
         activityStatus: true,
         deliveryExecutiveRatings: [],
       };
-      console.log(registerUserObj);
       let commonData = registerUserObj;
       registerUserObj = { ...commonData, deliveryExecutive };
     }
@@ -189,7 +185,6 @@ export default function SignUp(props) {
     const validateResult = validate(registerUserObj);
 
     if (errors == null) {
-      console.log("The resoonse in validation");
       return errors;
     } else {
       //axios call
@@ -199,7 +194,6 @@ export default function SignUp(props) {
 
   /* Display feilds for delivery executive */
   const registerUser = async (userDetail) => {
-    console.log("in register method", userDetail);
     try {
       const res = await axios.post(
         "http://localhost:5000/user/registeruser",
@@ -212,7 +206,6 @@ export default function SignUp(props) {
         ...errors,
         userExists: err.response.data.message,
       }));
-      console.log("USER REGITSER ERR", err.response);
     }
 
   };

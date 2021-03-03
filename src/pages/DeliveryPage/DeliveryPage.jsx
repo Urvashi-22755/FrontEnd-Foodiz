@@ -48,8 +48,6 @@ export default function DeliveryPage() {
 
   // handle snackbar pop up with message
   const handleClick = (message) => {
-    console.log("in handle click");
-    console.log(message);
     setsnackState({ open: true, message: message });
   };
 
@@ -66,20 +64,17 @@ export default function DeliveryPage() {
         headers: headers,
       }
     );
-    console.log("get placed order for delivery executive :", res);
     return res.data;
   };
 
   useEffect(() => {
     (async function () {
       const res = await getPlacedOrderForDeliveryExecutive();
-      console.log("use effect res1", res);
       setOrders(res);
     })();
   }, []);
 
   const handleOrders = async (orderId) => {
-    console.log("orderId in handle order" + orderId);
     try {
       const res = await axios.post(
         "http://localhost:5000/delivery/addDeliveryExecutive",
@@ -90,6 +85,8 @@ export default function DeliveryPage() {
       ); 
       setColorStatus(true);
       handleClick(res.data.message);
+      const res1 = await getPlacedOrderForDeliveryExecutive();
+      setOrders(res1);
     } catch (err) {
       setColorStatus(false);
       handleClick(err.response.data.message);
@@ -243,6 +240,7 @@ export default function DeliveryPage() {
                             open={snackstate.open}
                             onClose={handleClose}
                             message={snackstate.message}
+                            autoHideDuration={1000}
                           >{
                             colorStatus
                             ?<Alert

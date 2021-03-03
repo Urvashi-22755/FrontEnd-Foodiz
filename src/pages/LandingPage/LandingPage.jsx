@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { Button, Grid, Card, Slide } from "@material-ui/core";
@@ -23,7 +23,6 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import { useStyles } from './LandingPage.style';
 
 const handleId = (rest) => {
-  console.log(rest);
 };
 
 const theme = createMuiTheme({
@@ -52,14 +51,20 @@ export default function LandingPage(props) {
   const handleLogout = () => {
     logout();
   };
-
+  useEffect(()=>{
+    (async function(){
+      if(authenticated){
+        setuserName(authenticated.email.split('@')[0]);
+      }
+    })()
+  })
   let finalres;
-  async function fetchUserData() {
-    let userDetail = await fetchUserDetails();
-    setuserName(userDetail.firstName);
-    return finalres;
-  }
-  fetchUserData();
+  // async function fetchUserData() {
+  //   let userDetail = await fetchUserDetails();
+  //   setuserName(userDetail.firstName);
+  //   return finalres;
+  // }
+  // fetchUserData();
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,8 +125,8 @@ export default function LandingPage(props) {
              
              
               <div className={classes.quote}>
-                <Typography variant="h1">FOODIZ</Typography>
-                <Typography variant="h4">We Bring Joy to the Table</Typography>
+                <Typography variant="h1">COMIDA</Typography>
+                <Typography variant="h4"><i>Your Hunger Destiny</i></Typography>
               </div>
             
             

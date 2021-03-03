@@ -7,20 +7,17 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 import Container from "@material-ui/core/Container";
-import { useStyles } from './Footer.style';
-import { Link } from 'react-router-dom';
- 
-
-
+import { useStyles } from "./Footer.style";
+import { Link } from "react-router-dom";
 
 export default function FooterGrid() {
   const classes = useStyles();
 
   return (
+    
     <div className={classes.root}>
       <Container>
         <Grid container spacing={3}>
-          
           <Grid item xs={4} md={4} lg={4}>
             <Paper className={classes.paper}>
               <h4>Cities With Foodizz</h4>
@@ -41,10 +38,13 @@ export default function FooterGrid() {
               <h4>Company </h4>
 
               <div>
-              <Link
-                        style={{ textDecoration: "none", color: "black" }}
-                        to={`/aboutus `}
-                      >  <div>About Foodizz</div></Link>
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to={`/aboutus `}
+                >
+                  {" "}
+                  <div>About Comida</div>
+                </Link>
                 <div>Team</div>
                 <div>Read Our Blog</div>
                 <div>Terms and Conditions</div>
@@ -71,7 +71,7 @@ export default function FooterGrid() {
             <Paper className={classes.grid2}>
               <div>
                 <h4>
-                  FOODIZ
+                  Comida
                   <img
                     width="80"
                     height="80"

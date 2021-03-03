@@ -69,14 +69,11 @@ export default function SignIn(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("login data", userData);
 
     validate(userData);
 
-    console.log("Validation response", errors);
 
     if (errors === {}) {
-      console.log("The resoonse in validation");
       return errors;
     } else {
       //axios call
@@ -91,7 +88,6 @@ export default function SignIn(props) {
     if (response != null) {
       setErrors((errors) => ({ ...errors, authError: response.message }));
     }
-    console.log("Login Response", response);
   };
 
   return (

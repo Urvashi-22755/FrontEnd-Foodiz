@@ -42,21 +42,18 @@ export default function AcceptedOrders() {
   };
 
   const getOrderDetailAcceptedByDeliveryExecutive = async () => {
-    console.log("In order deatils by delivery;");
     const res = await axios.get(
       "http://localhost:5000/delivery/getorderdetailacceptedbydeliveryexecutive",
       {
         headers: headers,
       }
     );
-    console.log("order detail accepted by delivery executive :", res);
     return res.data;
   };
 
   useEffect(() => {
     (async function () {
       const res = await getOrderDetailAcceptedByDeliveryExecutive();
-      console.log("use effect res2", res);
       setAcceptedOrder(res);
     })();
   }, []);
@@ -74,20 +71,17 @@ export default function AcceptedOrders() {
   const handleotp = (event) => {
     const otp = event.target.value;
     setOtp(otp);
-    console.log(otp);
+
   };
   const handleChange = (event) => {
     const name = event.target.value;
     setState(name);
   };
   const handleClick = (message) => {
-    console.log("in handle click");
-    console.log(message);
     setsnackState({ open: true, message: message });
   };
 
   const handleStatus = async () => {
-    console.log("In confirm", state);
     setsnackState((status) => ({ ...status, open: true }));
 
     if (state == "Completed") {
@@ -129,7 +123,6 @@ export default function AcceptedOrders() {
       }
       
 
-      // console.log("handle status", res);
     }
   };
 
@@ -403,6 +396,7 @@ export default function AcceptedOrders() {
         open={snackstate.open}
         onClose={handleClose}
         message={snackstate.message}
+        autoHideDuration={1000}
       >
         {colorStatus ? (
           <Alert

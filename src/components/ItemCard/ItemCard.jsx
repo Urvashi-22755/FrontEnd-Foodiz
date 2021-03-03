@@ -1,6 +1,4 @@
-import React, {
-  useState,
-} from "react";
+import React, { useState } from "react";
 
 //m-ui
 import Card from "@material-ui/core/Card";
@@ -13,7 +11,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { decodeToken } from "../../services/authUser";
 import StarRateIcon from "@material-ui/icons/StarRate";
-import { useStyles } from './ItemCard.style';
+import { useStyles } from "./ItemCard.style";
 
 function Alert(props) {
   return <MuiAlert elevation={10} variant="filled" {...props} />;
@@ -33,7 +31,7 @@ export default function ItemCard(props) {
     avgRating,
     customProps,
   } = props;
-  
+
   const [openSnackBar, setSnackBar] = useState(false); //open close snack bar
   const token = localStorage.getItem("token");
   const headers = {
@@ -59,8 +57,6 @@ export default function ItemCard(props) {
           headers: headers,
         }
       );
-      console.log("addtocart data response", res);
-      console.log("FOod Id, Rest ID, User Id", foodName, restaurantId);
       setSnackBar(true);
     } else if (authenticated && authenticated.role == "DE") {
       setSnackBar(true);
@@ -139,7 +135,7 @@ export default function ItemCard(props) {
       <div className={classes.snackbar}>
         <Snackbar
           open={openSnackBar}
-          autoHideDuration={3600}
+          autoHideDuration={1000}
           onClose={handleCloseSnackBar}
         >
           {authenticated && authenticated.role == "DE" ? (

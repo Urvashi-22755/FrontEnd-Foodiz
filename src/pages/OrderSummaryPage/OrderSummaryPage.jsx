@@ -29,11 +29,9 @@ const OrderSummaryPage = (props) => {
       `http://localhost:5000/order/getorderdetailbyorderid/${orderId}`,
       { headers: headers }
     );
-    console.log("Order Summary Page", res);
     return res.data;
   };
 
-  console.log("Id of order", props.match.params.orderId);
   useEffect(() => {
     (async () => {
       const res = await FetchOrderByID();
@@ -41,16 +39,11 @@ const OrderSummaryPage = (props) => {
 
       if (res.deliveryExecutiveData) {
         setdeliveryManDetails(res.deliveryExecutiveData);
-        console.log("DELIVER MANNNNNNNN", res.deliveryExecutiveData);
-      } else {
-        console.log("in else eee");
-      }
+      } 
 
-      console.log("response order sumary", res.orderData);
     })();
   }, []);
 
-  //console.log('Order status in order summary',orderData.orderStatus)
 
   return (
     <>
@@ -71,7 +64,7 @@ const OrderSummaryPage = (props) => {
                         color="Primary"
                         className={classes.Title}
                       >
-                        Order Summary!
+                    
                       </Typography>
                       <OrderSummary orderData={orderData} />
                       {deliveryManDetails != [] ? (
@@ -91,7 +84,7 @@ const OrderSummaryPage = (props) => {
                     color="Primary"
                     className={classes.Title}
                   >
-                    Order Summary!
+               
                   </Typography>
                   <OrderSummary orderData={orderData} />
 

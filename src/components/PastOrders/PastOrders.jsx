@@ -14,9 +14,7 @@ import jwt_decode from "jwt-decode";
 import NoPlacedOrdersDelivery from '../../pages/EmptyPages/NoPlacedOrdersDelivery';
 import { useStyles } from './PastOrders.style';
 
-const handleId = rest => {
-  console.log(rest);
-};
+
 
  function PastOrders(props) {
   const classes = useStyles();
@@ -55,20 +53,13 @@ const handleId = rest => {
     (async () => {
       const result = await fetchAllOrders();
       const resp = await fetchPastorders();
-      console.log('my orders', result);
-      console.log('past orders delivery', resp);
-      // if (myOrders.role == "NU") {
-      //   setMyOrders(result);
-      // } else {
-      //   setMyOrders(resp);
-      // }
+    
       setMyOrders(resp);
     })();
   }, []);
 
 
   const handleOrderSummary = (id) => {
-    console.log(id);
     props.history.push("/ordersummary/" + id);
   };
 
@@ -155,55 +146,6 @@ const handleId = rest => {
               </Container>
             
             }
-
-              {/* myOrders?.map(order => (
-                <Paper className={classes.paper1} key={order._id}>
-                  <div className={classes.pastorders}>
-                    <div className={classes.pastImage}>
-                      <img className={classes.image} src={order?.restaurantDetails?.restaurantImages} />
-                    </div>
-                    <div className={classes.orderdetails}>
-                      <Typography
-                      >
-                       <b> Order Id:  </b>  #{order._id}
-                      </Typography>
-
-                      <Typography>  <b>{order?.restaurantDetails?.restaurantName}</b></Typography>
-                      <Typography>
-                        <b>Order Date:</b>
-                        <strong>
-                              {" "}
-                              {handleDate(order.orderDateAndTime)}
-                            </strong>
-                      </Typography>
-                     
-                      <Typography>
-                      <b>Order Time:</b>
-                            <strong>
-                              {" "}
-                              {handleTime(order.orderDateAndTime)}
-                            </strong>
-                      </Typography>
-                      <div className={classes.price}>
-                        <hr className={classes.hrcolor} />
-                        <Typography>
-                          Total Paid: <Icon icon={currencyInr} />
-                          {order.totalAmount}
-                        </Typography>
-                        <div className={classes.detailsBtn}>
-
-                        
-                          <Button
-                             onClick={() => handleOrderSummary(order._id)}
-                            className={classes.detailsBtn}>Order Details</Button>
-                        
-                       
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Paper>
-              ))} */}
             </Paper>
           </Grid>
         </Grid>

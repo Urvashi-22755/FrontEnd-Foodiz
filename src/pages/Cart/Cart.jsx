@@ -57,6 +57,7 @@ export default function Cart(props) {
   useEffect(() => {
     (async function () {
       const result = await FetchCartData();
+      console.log("result", result)
       setItems(result?.data.cartFoodList);
       setRestaurant(result?.data.restaurantDetails);
       setTotalPrice(result?.data.totalAmount);

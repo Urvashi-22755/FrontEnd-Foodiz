@@ -29,7 +29,6 @@ import axios from "axios";
 import { useStyles, GreenCheckbox } from './AllRestaurantsPage.style';
 
 const handleId = (rest) => {
-  console.log("Rest Id", rest);
 };
 
 export default function AllRestaurants() {
@@ -51,7 +50,6 @@ export default function AllRestaurants() {
        const restaurantFilter = restaurants.filter(
          (restaurant) => restaurant.restaurantType == "Veg"
        );
-       console.log("in if", restaurantFilter);
        setRestaurants(restaurantFilter);
      } 
      else {
@@ -62,15 +60,12 @@ export default function AllRestaurants() {
      }
    };
    const handleCityChange = async (event) => {
-     console.log("In handle City : ", event.target.value);
      setCity(event.target.value);
    };
    const handleSearchChange = async (event) => {
-     console.log("In handle Search : ", event);
      setSearch(event);
    };
    const getSearchedRestaurants = async (city, search) => {
-     console.log("City : ", city, "Search : ", search);
      const resp = await axios.get(
        "http://localhost:5000/restaurant/searchrestaurants",
        { params: { city: city, search: search } },
@@ -88,10 +83,8 @@ export default function AllRestaurants() {
    }, []);
    useEffect(() => {
      (async function () {
-       console.log("sdfsdf");
        const res = await getSearchedRestaurants(city, search)
        setRestaurants(res);
-       console.log("search useeffect", restaurants);
        // handleVegCheckChange();
      })();
    }, [city, search]);
@@ -111,7 +104,7 @@ export default function AllRestaurants() {
             <Grid item xs={12} sm={3} md={3} lg={2}  justify="flex-start">
 
                   <FormControl variant="outlined" >
-                    <InputLabel htmlFor="age-native-simple"  className={classes.checkboxstyle}>Select City</InputLabel>
+                    <InputLabel htmlFor="age-native-simple"  className={classes.checkboxstyle}>City</InputLabel>
                     <Select
                       native
                       value={city}
@@ -119,9 +112,11 @@ export default function AllRestaurants() {
                       label="Status"
                    
                     >
-                      {/* <option aria-label="None" value="" /> */}
+                      <option aria-label="None" value="" />
                       <option value="Gandhinagar">Gandhinagar</option>
-                      <option value="Abad">Abad</option>
+                      <option value="Ahmedabad">Ahmedabad</option>
+                      <option value="Surat">Surat</option>
+                      <option value="Vadodara">Vadodara</option>
                     </Select>
                   </FormControl>
             
@@ -169,76 +164,85 @@ export default function AllRestaurants() {
           className={classes.restcontainer}
         >
           <Grid item container xs={12} sm={12} md={12} lg={12} spacing={6} className={classes.alignRestcards}>
-            {restaurants?.map((rest) => (
-              <Grid item xs={12} sm={6} md={4} lg={4} key={rest._id} >
-                <div className={classes.cardborder}>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    to={`restaurant/${rest._id}`}
-                  >
-                    <Card className={classes.card}>
-                      <CardActionArea>
-                        <CardMedia
-                          className={classes.media}
-                          image={rest.restaurantImages[0]}
-                          title=""
-                          onClick={() => handleId(rest)}
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="h2" >
-                            {rest.restaurantName}
-                          </Typography>
-                          <Typography variant="body2" className={classes.cardContent}>
-                            {rest.restaurantCategory.join(",")}
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            className={classes.cardContent}
-                           
-                          >
-                            {rest.restaurantDescription}
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            className={classes.cardContent}
-                            
-                          >
-                            {rest.restaurantType}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            className={classes.cardContent}
-                            
-                          >
-                            {rest?.restaurantLocation?.streetAddress +
-                              "," +
-                              rest?.restaurantLocation?.area +
-                              " ," +
-                              rest?.restaurantLocation?.landmark +
-                              " ," +
-                              rest?.restaurantLocation?.city +
-                              " ," +
-                              rest?.restaurantLocation?.state +
-                              " ," +
-                              rest?.restaurantLocation?.country}
-                          </Typography>
-                          <Typography>
-                            <p className={classes.rating}>
-                              <StarRateIcon />
-                              {parseFloat(rest.rating_avg).toFixed(1)}
-                            </p>
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-
-                      <CardActions></CardActions>
-                    </Card>
-                  </Link>
-                </div>
-              </Grid>
-            ))}
+            {
+              restaurants.length>0
+              ?(
+                restaurants?.map((rest) => (
+                  <Grid item xs={12} sm={6} md={4} lg={4} key={rest._id} >
+                    <div className={classes.cardborder}>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        to={`restaurant/${rest._id}`}
+                      >
+                        <Card className={classes.card}>
+                          <CardActionArea>
+                            <CardMedia
+                              className={classes.media}
+                              image={rest.restaurantImages[0]}
+                              title=""
+                              onClick={() => handleId(rest)}
+                            />
+                            <CardContent>
+                              <Typography gutterBottom variant="h5" component="h2" >
+                                {rest.restaurantName}
+                              </Typography>
+                              <Typography variant="body2" className={classes.cardContent}>
+                                {rest.restaurantCategory.join(",")}
+                              </Typography>
+                              <Typography
+                                gutterBottom
+                                variant="body2"
+                                className={classes.cardContent}
+                               
+                              >
+                                {rest.restaurantDescription}
+                              </Typography>
+                              <Typography
+                                gutterBottom
+                                variant="body2"
+                                className={classes.cardContent}
+                                
+                              >
+                                {rest.restaurantType}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                className={classes.cardContent}
+                                
+                              >
+                                {rest?.restaurantLocation?.streetAddress +
+                                  "," +
+                                  rest?.restaurantLocation?.area +
+                                  " ," +
+                                  rest?.restaurantLocation?.landmark +
+                                  " ," +
+                                  rest?.restaurantLocation?.city +
+                                  " ," +
+                                  rest?.restaurantLocation?.state +
+                                  " ," +
+                                  rest?.restaurantLocation?.country}
+                              </Typography>
+                              <Typography>
+                                <p className={classes.rating}>
+                                  <StarRateIcon />
+                                  {parseFloat(rest.rating_avg).toFixed(1)}
+                                </p>
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+    
+                          <CardActions></CardActions>
+                        </Card>
+                      </Link>
+                    </div>
+                  </Grid>
+                ))
+              )
+              :<><p className={classes.para}>
+              Oops, No Restaurant Found !!!
+            </p></>
+            }
+            
           </Grid>
         </Grid>
       </Container>

@@ -36,8 +36,8 @@ export let useStyles = makeStyles(theme => ({
     },
   
     image: {
-      borderRadius: "15px",
-      width: "100%",
+      borderRadius: "5px",
+      width: "80%",
       height: "160px"
     },
     cardtitle: {

@@ -28,7 +28,9 @@ export const useStyles = makeStyles((theme) => ({
     width: "60%",
   },
   Title: {
+    textAlign: 'center',
     marginTop: "2%",
     color: "#171a29",
   },
+
 }));

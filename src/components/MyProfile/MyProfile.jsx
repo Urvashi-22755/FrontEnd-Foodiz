@@ -20,12 +20,11 @@ import axios from "axios";
 import { useStyles } from './MyProfile.style';
 
 export default function MyProfile() {
-  const isAvatarSmallDevices = useMediaQuery({
-    query: "(min-device-width: 500px)",
-  });
+  // const isAvatarSmallDevices = useMediaQuery({
+  //   query: "(min-device-width: 500px)",
+  // });
 
   const classes = useStyles();
-  // console.log(users[0].firstName);
 
   const [open, setOpen] = React.useState(false);
   const token = localStorage.getItem("token");
@@ -39,9 +38,7 @@ export default function MyProfile() {
   const handleClose = () => {
     setOpen(false);
   };
-  // const handleSubmit = () => {
-  //   console.log(data);
-  // };
+  
 
   const headers = {
     // "Content-Type": "application/json",
@@ -72,7 +69,6 @@ export default function MyProfile() {
         vehicleNumber: data.vehicleNumber,
       };
       updateData.vehicleNumber = data.vehicleNumber;
-      console.log("updatedata", updateData);
     }
     const res = await axios.post(
       "http://localhost:5000/user/updateprofile",
@@ -81,9 +77,7 @@ export default function MyProfile() {
         headers: headers,
       }
     );
-    console.log("response for updated data :", res);
     const res1 = await fetchUserDeatails();
-    console.log("user details", res1);
     setUserDetails(res1);
     handleClose();
   };
@@ -91,7 +85,6 @@ export default function MyProfile() {
   useEffect(() => {
     (async () => {
       const res = await fetchUserDeatails();
-      console.log("user details", res);
       setUserDetails(res);
       if (res.role == "DE") {
         setData((data) => ({
@@ -112,6 +105,7 @@ export default function MyProfile() {
         firstName: res?.firstName,
         lastName: res?.lastName,
         mobileNumber: res?.mobileNumber,
+        gender:res?.gender,
         role: res?.role,
       }));
     })();
@@ -120,15 +114,12 @@ export default function MyProfile() {
   //Onchange for every input element.
   const handleChange = (event) => {
     event.persist();
-    console.log("aFADSFDSF");
     const key = event.target.name;
     const value = event.target.value;
-    console.log("before:", data);
     setData((inputs) => ({
       ...inputs,
       [key]: value,
     }));
-    console.log("After:", data);
   };
 
   return (
@@ -138,15 +129,28 @@ export default function MyProfile() {
           <Grid container spacing={3}>
             <Grid item sm={12} xs={12} lg={12} md={12}>
               <div className={classes.editicon}>
-                {isAvatarSmallDevices && (
-                  <Avatar
+              
+                  {/* <Avatar
                     alt="Remy Sharp"
                     variant="circular"
                     className={classes.avatarImage}
                     src="https://i.kinja-img.com/gawker-media/image/upload/t_original/ijsi5fzb1nbkbhxa2gc1.png"
+                  /> */}
+               
+                {data?.gender == "male" ? (
+                  <Avatar
+                    alt="Remy Sharp"
+                    variant="circular"
+                    className={classes.avatarImage}
+                    src="https://cdn4.vectorstock.com/i/1000x1000/44/58/happy-redhead-boy-face-avatar-little-child-male-vector-24014458.jpg"
+                  />
+                ) : (
+                  <Avatar
+                    alt="Remy Sharp"
+                    className={classes.avatarImage}
+                    src="https://cdn5.vectorstock.com/i/1000x1000/73/04/female-avatar-profile-icon-round-woman-face-vector-18307304.jpg"
                   />
                 )}
-
                 <EditIcon className={classes.edit} onClick={handleClickOpen} />
               </div>
             </Grid>

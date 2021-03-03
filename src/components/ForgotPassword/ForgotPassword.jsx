@@ -78,7 +78,6 @@ export default function ForgotPassword(props) {
             { email: userData.email, newPassword: userData.newPassword }
           );
 
-          console.log("Response of reset password call", resetPassword);
           setErrors((error) => ({
             ...error,
             success: "Password has been reseted successfully!",
@@ -89,7 +88,6 @@ export default function ForgotPassword(props) {
           props.history.push("/");
         } catch (e) {
           if (e.response && e.response.data) {
-            console.log(e.response.data.message); // some reason error message
           }
         }
       } else {
@@ -109,7 +107,6 @@ export default function ForgotPassword(props) {
     event.preventDefault();
 
     if (userData.otp == resOtp) {
-      console.log("OTP matched!");
       setErrors((error) => ({
         ...error,
         errorOtp: null,

@@ -78,7 +78,6 @@ const RestaurantContainer = (props) => {
     setVegChecked(!vegChecked);
     if (vegChecked != true) {
       const filterItem = items.filter((item) => item.foodType == "Veg");
-      console.log("in if", filterItem);
       setItems(filterItem);
     } else {
       setItems(restaurantData.menuDetails);
@@ -102,7 +101,7 @@ const RestaurantContainer = (props) => {
 
   return (
     <>
-      <NavAppBar></NavAppBar>
+    <NavAppBar />
       <Container>
         <Grid container className={classes.orderbox}>
           <Grid

@@ -10,17 +10,32 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useStyles } from "./DeliveryExecutiveDetail.style";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 function DeliveryExecutiveDetails(props) {
   const classes = useStyles();
   const { page, detail, status } = props;
   const [open, setOpen] = useState(false);
   const [ratings, setRatings] = useState({});
+  const [snackstate, setsnackState] = useState({
+    openSnackbar: false,
+    message: "Rating given Successfully!",
+  });
+/*   const { openSnackbar, message } = snackstate; */
 
   const token = localStorage.getItem("token");
   const headers = {
     //'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
+  };
+
+  //Rating success snackbar
+  const handleSnackbarClose = () => {
+    setsnackState((status) => ({ ...status, openSnackbar: false }));
+  };
+  const handleSnackbarClick = () => {
+    setsnackState((status) => ({ ...status, openSnackbar: true }));
   };
 
   //rating modal open
@@ -34,7 +49,6 @@ function DeliveryExecutiveDetails(props) {
 
   const handleSubmitOfRating = async (ratingData, event) => {
     event.preventDefault();
-    console.log("rating data in parent container statess");
     const res = await axios.post(
       "http://localhost:5000/rate/addratingtodeliveryexecutive",
       {
@@ -46,8 +60,7 @@ function DeliveryExecutiveDetails(props) {
         headers: headers,
       }
     );
-    console.log(res);
-    console.log("rating data in parent container statess", ratingData);
+    setsnackState((status) => ({ ...status, openSnackbar: true }));
   };
 
   return (
@@ -138,6 +151,27 @@ function DeliveryExecutiveDetails(props) {
                   </Grid>
                 </Paper>
 
+
+                {/* Snackbar popup */}
+                <Snackbar
+        open={snackstate.openSnackbar}
+        onClose={handleSnackbarClose}
+        message={snackstate.message}
+        autoHideDuration={1000}
+      >
+
+          <Alert
+            severity="success"
+            onClose={handleSnackbarClose}
+           
+            style={{
+              backgroundColor: "#1a5e2d",
+              color: "white",
+              width: "350px",
+            }}
+          >
+            {snackstate.message}
+          </Alert></Snackbar>
                 {/* Rating Dailog */}
 
                 <Dialog
@@ -154,7 +188,6 @@ function DeliveryExecutiveDetails(props) {
                       handleSubmitOfRating={handleSubmitOfRating}
                       onClose={handleClose}
                     />{" "}
-                    {console.log("Value of stars", ratings)}
                   </DialogContent>
                 </Dialog>
               </Grid>

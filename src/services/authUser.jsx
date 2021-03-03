@@ -26,27 +26,7 @@ export async function authUser(userData, props) {
   } catch (err) {
     return err.response.data;
   }
-  // axios
-  //   .post("http://localhost:5000/user/authenticate", userData) //User Id and User ROle in TOken
-  //   .then((res) => {
-  //     //  console.log("Login res", res);
-  //     localStorage.setItem("token", res.data.token);
-
-  //     //Decoding the token and fetching the roles of the loggedIn user.
-
-  //     var token = localStorage.getItem("token", res.data.token);
-
-  //     const decodedToken = decodeToken(token); //fetch the token
-
-  //     // Rendering condition for User and Delivery Executive.
-  //     if ("DE" == decodedToken.role) {
-  //       props.history.push("/deliverypage");
-  //     } else {
-  //       props.history.replace("/");
-  //     }
-  //   })
-
-  // return decodedToken;
+  
 }
 
 export function decodeToken(token) {
